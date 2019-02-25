@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
-
     private ViewPager mViewPager;
 
     @Override
