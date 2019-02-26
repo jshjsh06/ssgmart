@@ -41,7 +41,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
         Item item = list.get(position);
         holder.name.setText(item.getName());
         holder.description.setText(item.getDescription());
-        holder.price.setText(item.getPrice());
+        holder.price.setText(item.getPrice()+"원");
         Picasso.with(context)
                 .load(item.getThumbnail())
                 .into(holder.thumbnail);
