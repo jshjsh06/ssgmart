@@ -15,6 +15,9 @@ import android.view.View;
 
 import sinc.com.ssgmartapp.adapter.SectionsPagerAdapter;
 
+/**
+ * 메인 앞쪽에 SSG페이 버튼 및 스크린 화면 넣어야 함.
+ */
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener{
 
 

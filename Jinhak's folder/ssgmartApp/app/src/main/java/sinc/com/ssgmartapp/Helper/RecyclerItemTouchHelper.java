@@ -1,4 +1,4 @@
-package sinc.com.ssgmartapp.Helper;
+package sinc.com.ssgmartapp.helper;
 
 import android.graphics.Canvas;
 import android.support.annotation.NonNull;

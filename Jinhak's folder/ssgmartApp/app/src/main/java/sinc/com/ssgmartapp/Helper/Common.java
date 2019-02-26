@@ -1,4 +1,4 @@
-package sinc.com.ssgmartapp.Helper;
+package sinc.com.ssgmartapp.helper;
 
 import sinc.com.ssgmartapp.remote.IMenuRequest;
 import sinc.com.ssgmartapp.remote.RetrofitClient;
