@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "결제 방법을 선택하세요!!!", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "장바구니 QR코드", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

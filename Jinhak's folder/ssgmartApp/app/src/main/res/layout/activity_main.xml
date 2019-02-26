@@ -56,8 +56,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFFFFF"
-            app:tabTextAppearance="@style/AppTabTextAppearance"
-            app:tabSelectedTextColor="@color/colorAccent">
+            app:tabSelectedTextColor="@color/colorAccent"
+            app:tabTextAppearance="@style/AppTabTextAppearance">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem"
@@ -87,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@drawable/ic_credit_card_black_24dp"
-        tools:ignore="VectorDrawableCompat" />
+        android:scaleType="center"
+        app:srcCompat="@drawable/qr_code" />
 
 </android.support.design.widget.CoordinatorLayout>
