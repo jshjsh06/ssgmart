@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
 
-        // Create the adapter that will return a fragment for each of the two
-        // primary sections of the activity.
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-
+        //각각 탭 Page가 바뀌었을 때
 //        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //
 //        });
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "결제 방법을 선택하세요!!!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });

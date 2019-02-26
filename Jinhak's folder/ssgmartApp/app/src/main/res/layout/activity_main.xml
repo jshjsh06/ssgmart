@@ -38,6 +38,8 @@
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
+            app:tabSelectedTextColor="#FFFFFF"
+            android:background="@color/itemName"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TabItem
@@ -68,6 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@drawable/ic_credit_card_black_24dp"
+        tools:ignore="VectorDrawableCompat" />
 
 </android.support.design.widget.CoordinatorLayout>

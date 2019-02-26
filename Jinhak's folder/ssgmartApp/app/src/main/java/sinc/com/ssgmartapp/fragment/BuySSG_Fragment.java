@@ -38,11 +38,10 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
     View mFragmentView;
 
-    private final String URL_API ="https://api.androidhive.info/json/menu.json";
+    private final String URL_API = "https://api.androidhive.info/json/menu.json";
     private RecyclerView recyclerView;
     private List<Item> list;
     private CardListAdapter adapter;
-    private ConstraintLayout rootLayout;
 
     IMenuRequest mService;
 
@@ -57,26 +56,26 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mFragmentView = inflater.inflate(R.layout.fragment_buy_ssg,container,false);
+        mFragmentView = inflater.inflate(R.layout.fragment_buy_ssg, container, false);
 
 
         mService = Common.getMenuRequest();
         recyclerView = mFragmentView.findViewById(R.id.buy_ssg_recycler_view);
         list = new ArrayList<>();
-        adapter = new CardListAdapter(getContext(),list);
+        adapter = new CardListAdapter(getContext(), list);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallBack
-                = new RecyclerItemTouchHelper(0,ItemTouchHelper.RIGHT,this);
+                = new RecyclerItemTouchHelper(0, ItemTouchHelper.RIGHT, this);
 
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
         addItemToCart();
-        
+
         return mFragmentView;
     }
 
@@ -99,7 +98,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        if(viewHolder instanceof CardListAdapter.MyViewHolder){
+        if (viewHolder instanceof CardListAdapter.MyViewHolder) {
             String name = list.get(viewHolder.getAdapterPosition()).getName();
 
             final Item deletedItem = list.get(viewHolder.getAdapterPosition());
@@ -107,11 +106,11 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
             adapter.sendBasket(deleteIndex);
 
-            Snackbar snackbar = Snackbar.make(mFragmentView,name+"send from cart!",Snackbar.LENGTH_SHORT);
-            snackbar.setAction("UNDO", new View.OnClickListener() {
+            Snackbar snackbar = Snackbar.make(mFragmentView, name + "를 장바구니에 넣었어요!!", Snackbar.LENGTH_SHORT);
+            snackbar.setAction("취소", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    adapter.restoreItem(deletedItem,deleteIndex);
+                    adapter.restoreItem(deletedItem, deleteIndex);
                 }
             });
             snackbar.setActionTextColor(Color.YELLOW);
