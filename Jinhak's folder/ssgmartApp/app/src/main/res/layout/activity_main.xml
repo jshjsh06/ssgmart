@@ -25,22 +25,39 @@
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <TextView
+                android:id="@+id/toolbar_title01"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
-                android:textSize="20dp"
-                android:textColor="#FFFFFF"
                 android:layout_gravity="center"
-                android:id="@+id/toolbar_title" />
+                android:text="@string/ssgmart_text"
+                android:textColor="@color/colorAccent"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/space"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/toolbar_title02"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/shopping_text"
+                android:textColor="#FFFFFF"
+                android:textSize="20dp" />
 
         </android.support.v7.widget.Toolbar>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
-            app:tabSelectedTextColor="#FFFFFF"
-            android:background="@color/itemName"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            app:tabTextAppearance="@style/AppTabTextAppearance"
+            app:tabSelectedTextColor="@color/colorAccent">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabItem"
