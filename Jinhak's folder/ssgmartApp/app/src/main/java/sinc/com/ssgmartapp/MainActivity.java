@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
 
-        final ActionBar bar = getActionBar();
         // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());

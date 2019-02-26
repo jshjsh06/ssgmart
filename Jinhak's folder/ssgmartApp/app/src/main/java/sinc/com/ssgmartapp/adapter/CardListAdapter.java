@@ -23,6 +23,10 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
     private Context context;
     private List<Item> list;
 
+        public CardListAdapter(Context context,List<Item> list){
+            this.context = context;
+            this.list = list;
+        }
 
     @NonNull
     @Override

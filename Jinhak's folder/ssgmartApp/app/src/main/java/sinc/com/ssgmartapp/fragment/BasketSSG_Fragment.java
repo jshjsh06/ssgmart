@@ -19,6 +19,7 @@ public class BasketSSG_Fragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        System.out.println("BasketSSG_Fragment.onCreate");
         super.onCreate(savedInstanceState);
     }
 
