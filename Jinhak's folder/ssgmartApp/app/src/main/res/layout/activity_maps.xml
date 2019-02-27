@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="4"
-            android:hint="Search Location Here" />
+            android:hint="@string/emart_search_text" />
 
 
         <Button
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:onClick="onMapSearch"
-            android:text="Search" />
+            android:text="@string/label_btn_find" />
 
     </LinearLayout>
 
