@@ -1,16 +1,18 @@
 package sinc.com.ssgmartapp;
 
 import android.app.ActionBar;
-import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,19 +70,17 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             public void onClick(View view) {
 //                Snackbar.make(view, "장바구니 QR코드", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
-                Dialog dialog = new Dialog(MainActivity.this);
-                dialog.setContentView(R.layout.qr_dialog);
-                imageView = dialog.findViewById(R.id.qr_Dialog_imageView);
 
-                dialog.setCancelable(true);
-                dialog.setTitle(R.string.qr_code_title);
+                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+                View v = inflater.inflate(R.layout.qr_dialog, null);
+                imageView = v.findViewById(R.id.qr_Dialog_imageView);
 
                 //QR코드에 들어갈 내용 넣어주기
                 String qr_text = "123456";
 
                 MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                 try {
-                    BitMatrix bitMatrix = multiFormatWriter.encode(qr_text, BarcodeFormat.QR_CODE, 400, 400);
+                    BitMatrix bitMatrix = multiFormatWriter.encode(qr_text, BarcodeFormat.QR_CODE, 500, 500);
                     BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                     Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
@@ -90,7 +90,14 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     e.printStackTrace();
                 }
 
-                dialog.show();
+
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+                        .setView(v)
+                        .setTitle(R.string.qr_code_title)
+                        .setCancelable(true)
+                        .create();
+
+                alertDialog.show();
 
             }
         });
@@ -112,7 +119,10 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_market_search) {
+            Log.d("SelectMenu","SelectMenu");
+            Intent intent = new Intent(MainActivity.this,MapActivity.class);
+            startActivity(intent);
             return true;
         }
 
