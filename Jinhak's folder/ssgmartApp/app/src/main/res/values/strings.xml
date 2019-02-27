@@ -7,4 +7,6 @@
     <string name="text_basket">Basket</string>
     <string name="ssgmart_text">쓱마트</string>
     <string name="shopping_text">쇼핑</string>
+    <string name="close">닫기</string>
+    <string name="qr_code_title">POS에 읽혀주세요</string>
 </resources>

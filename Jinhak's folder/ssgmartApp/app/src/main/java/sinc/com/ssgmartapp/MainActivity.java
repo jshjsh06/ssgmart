@@ -1,7 +1,9 @@
 package sinc.com.ssgmartapp;
 
 import android.app.ActionBar;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,18 +14,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import sinc.com.ssgmartapp.adapter.SectionsPagerAdapter;
 
 /**
  * 메인 앞쪽에 SSG페이 버튼 및 스크린 화면 넣어야 함.
  */
-public class MainActivity extends AppCompatActivity implements ActionBar.TabListener{
+public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
+    private ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +61,37 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 //
 //        });
 
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "장바구니 QR코드", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "장바구니 QR코드", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Dialog dialog = new Dialog(MainActivity.this);
+                dialog.setContentView(R.layout.qr_dialog);
+                imageView = dialog.findViewById(R.id.qr_Dialog_imageView);
+
+                dialog.setCancelable(true);
+                dialog.setTitle(R.string.qr_code_title);
+
+                //QR코드에 들어갈 내용 넣어주기
+                String qr_text = "123456";
+
+                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                try {
+                    BitMatrix bitMatrix = multiFormatWriter.encode(qr_text, BarcodeFormat.QR_CODE, 400, 400);
+                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+
+                    imageView.setImageBitmap(bitmap);
+
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
+
+                dialog.show();
+
             }
         });
 
