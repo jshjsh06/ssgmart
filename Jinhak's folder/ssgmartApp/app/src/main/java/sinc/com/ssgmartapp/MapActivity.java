@@ -5,21 +5,24 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
 import java.util.List;
-import sinc.com.ssgmartapp.R;
 
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -58,13 +61,33 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(27.746974, 85.301582);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Kathmandu, Nepal"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+
+        //신세계 아이앤씨 좌표
+        LatLng s_inc = new LatLng(37.5597219, 126.9823744);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(s_inc));
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
+        mMap.animateCamera(zoom);
+
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        markerOptions.position(s_inc).title("신세계_아이앤씨, 본사");
+
+        mMap.addMarker(markerOptions).showInfoWindow();
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mMap.setMyLocationEnabled(true);
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                Toast.makeText(getApplicationContext(), marker.getTitle() + " 클릭했음", Toast.LENGTH_SHORT).show();
+
+                return false;
+            }
+        });
     }
 }
