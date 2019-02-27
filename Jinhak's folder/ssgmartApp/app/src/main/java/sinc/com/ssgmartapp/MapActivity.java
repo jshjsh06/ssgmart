@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -43,11 +44,12 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         String location = locationSearch.getText().toString();
         List<Address> addressList = null;
 
-        if (location != null || !location.equals("")) {
+        if (location.equals("")) {
+            Toast.makeText(getApplicationContext(), "위치를 넣어주세요.", Toast.LENGTH_SHORT).show();
+        } else {
             Geocoder geocoder = new Geocoder(this);
             try {
                 addressList = geocoder.getFromLocationName(location, 1);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
