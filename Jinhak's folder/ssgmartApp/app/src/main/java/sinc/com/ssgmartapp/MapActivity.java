@@ -23,9 +23,15 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * 이마트 24 검색 Activity
+ *
+ * 명동 주변 이마트24 좌표 마커로 찍어야함.
+ */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private MarkerOptions markerOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +59,13 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             }
             Address address = addressList.get(0);
             LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+
+            markerOptions = new MarkerOptions();
+            markerOptions.position(latLng).title(location);
+            mMap.addMarker(markerOptions).showInfoWindow();
             mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+
+
         }
     }
 
@@ -69,7 +80,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
         mMap.animateCamera(zoom);
 
-        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions = new MarkerOptions();
 
         markerOptions.position(s_inc).title("신세계_아이앤씨, 본사");
 
