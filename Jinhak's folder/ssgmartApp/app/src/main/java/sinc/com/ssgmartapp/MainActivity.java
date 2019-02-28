@@ -4,6 +4,10 @@ import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -29,13 +33,17 @@ import sinc.com.ssgmartapp.adapter.SectionsPagerAdapter;
 /**
  * 메인 앞쪽에 SSG페이 버튼 및 스크린 화면 넣어야 함.
  */
-public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
+public class MainActivity extends AppCompatActivity implements ActionBar.TabListener, SensorEventListener {
 
-
-    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     private ViewPager mViewPager;
-    private ImageView imageView;
+
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
+    private long mShakeTime;
+    private static final int SHAKE_SKIP_TIME = 500;
+    private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         getSupportActionBar().setTitle(null);
 
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
@@ -68,39 +76,13 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "장바구니 QR코드", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-
-                LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
-                View v = inflater.inflate(R.layout.qr_dialog, null);
-                imageView = v.findViewById(R.id.qr_Dialog_imageView);
-
-                //QR코드에 들어갈 내용 넣어주기
-                String qr_text = "123456";
-
-                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-                try {
-                    BitMatrix bitMatrix = multiFormatWriter.encode(qr_text, BarcodeFormat.QR_CODE, 500, 500);
-                    BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                    Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-
-                    imageView.setImageBitmap(bitmap);
-
-                } catch (WriterException e) {
-                    e.printStackTrace();
-                }
-
-
-                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
-                        .setView(v)
-                        .setTitle(R.string.qr_code_title)
-                        .setCancelable(true)
-                        .create();
-
-                alertDialog.show();
-
+                qrDialog();
             }
         });
+
+        //SensorManager
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
     }
 
@@ -120,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_market_search) {
-            Log.d("SelectMenu","SelectMenu");
-            Intent intent = new Intent(MainActivity.this,MapActivity.class);
+            Log.d("SelectMenu", "SelectMenu");
+            Intent intent = new Intent(MainActivity.this, MapActivity.class);
             startActivity(intent);
             return true;
         }
@@ -142,5 +124,79 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     @Override
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
+    }
+
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float axisX = event.values[0];
+            float axisY = event.values[1];
+            float axisZ = event.values[2];
+
+            float gravityX = axisX / SensorManager.GRAVITY_EARTH;
+            float gravityY = axisY / SensorManager.GRAVITY_EARTH;
+            float gravityZ = axisZ / SensorManager.GRAVITY_EARTH;
+
+            Float f = gravityX * gravityX + gravityY * gravityY + gravityZ + gravityZ;
+            double sqaredD = Math.sqrt(f.doubleValue());
+            float gForce = (float) sqaredD;
+
+            if (gForce > SHAKE_THRESHOLD_GRAVITY) {
+                long currentTime = System.currentTimeMillis();
+                if (mShakeTime + SHAKE_SKIP_TIME > currentTime) {
+                    return;
+                }
+                mShakeTime = currentTime;
+                qrDialog();
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSensorManager.unregisterListener(this);
+    }
+
+    //QR 코드 다이얼로그
+    public void qrDialog() {
+        LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+        View v = inflater.inflate(R.layout.qr_dialog, null);
+        ImageView imageView = v.findViewById(R.id.qr_Dialog_imageView);
+
+        //QR코드에 들어갈 내용 넣어주기
+        String qr_text = "123456";
+
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(qr_text, BarcodeFormat.QR_CODE, 500, 500);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+
+            imageView.setImageBitmap(bitmap);
+
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+                .setView(v)
+                .setTitle(R.string.qr_code_title)
+                .setCancelable(true)
+                .create();
+
+        alertDialog.show();
     }
 }
