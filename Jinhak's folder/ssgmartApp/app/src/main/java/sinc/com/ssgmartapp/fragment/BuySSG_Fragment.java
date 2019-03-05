@@ -1,5 +1,6 @@
 package sinc.com.ssgmartapp.fragment;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,9 +17,11 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,13 +47,12 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     private List<Item> list;
     private CardListAdapter adapter;
     private SwipeRefreshLayout swipeLayout;
-
+    private TextView locationTextView;
     IMenuRequest mService;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        System.out.println("BuySSG_Fragment.onCreate");
         super.onCreate(savedInstanceState);
     }
 
@@ -59,11 +61,16 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragmentView = inflater.inflate(R.layout.fragment_buy_ssg, container, false);
 
-
         mService = Common.getMenuRequest();
         recyclerView = mFragmentView.findViewById(R.id.buy_ssg_recycler_view);
         list = new ArrayList<>();
         adapter = new CardListAdapter(getContext(), list);
+        locationTextView = mFragmentView.findViewById(R.id.marker_location_textView);
+
+        Intent intent = Objects.requireNonNull(getActivity()).getIntent();
+        String emartName = intent.getStringExtra("marker_location");
+        locationTextView.setText(emartName);
+
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
