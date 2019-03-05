@@ -7,6 +7,7 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,22 +17,30 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
+
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
 
 /**
  * 이마트 24 검색 Activity
- *
+ * <p>
  * 명동 주변 이마트24 좌표 마커로 찍어야함.
  */
 public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private MarkerOptions markerOptions;
+    private List<String> emart24_location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,9 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        emart24_location = new ArrayList<>();
+        getLocationExcel();
+
     }
 
     public void onMapSearch(View view) {
@@ -71,6 +83,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+
+        for (int i = 0; i < emart24_location.size(); i++) {
+            String[] emartInfo_Token = emart24_location.get(i).split("#");
+            String emartAdress = emartInfo_Token[0];
+            double emartLat = Double.parseDouble(emartInfo_Token[1]);
+            double emartLon = Double.parseDouble(emartInfo_Token[2]);
+
+            MarkerOptions marker = new MarkerOptions();
+            marker.position(new LatLng(emartLat, emartLon))
+                    .title(emartAdress + " 점")
+                    .snippet("emart");
+            googleMap.addMarker(marker).showInfoWindow(); // 마커추가,화면에출력
+        }
+
+
+
         mMap = googleMap;
 
         //신세계 아이앤씨 좌표
@@ -101,4 +130,30 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             }
         });
     }
+
+    public void getLocationExcel() {
+
+        Workbook workbook;
+        Sheet sheet;
+        try {
+            InputStream inputStream = getBaseContext().getResources().getAssets().open("emart24_location01.xls");
+            workbook = Workbook.getWorkbook(inputStream);
+            sheet = workbook.getSheet(0);
+            int MaxColumn = 2, RowStart = 3, RowEnd = sheet.getColumn(MaxColumn - 1).length - 1,
+                    ColumnStart = 0,
+                    ColumnStart1 = 2,
+                    ColumnStart2 = 3;
+            for (int row = RowStart; row <= RowEnd; row++) {
+                String emartAdress = sheet.getCell(ColumnStart, row).getContents();
+                String emartLat = sheet.getCell(ColumnStart1, row).getContents();
+                String emartLon = sheet.getCell(ColumnStart2, row).getContents();
+                emart24_location.add(emartAdress + "#" + emartLat + "#" + emartLon);
+            }
+            workbook.close();
+
+        } catch (IOException | BiffException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

@@ -37,6 +37,8 @@ dependencies {
     //Google map
     implementation 'com.google.android.gms:play-services:12.0.1'
 
+    //excel
+    implementation group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6.12'
 
 
     testImplementation 'junit:junit:4.12'

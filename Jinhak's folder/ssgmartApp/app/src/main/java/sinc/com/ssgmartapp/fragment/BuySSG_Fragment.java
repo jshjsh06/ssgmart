@@ -39,7 +39,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
     View mFragmentView;
 
-    private final String URL_API = "https://api.androidhive.info/json/menu.json";
+    private final String URL_API = "https://ssg-mart-app.firebaseio.com/menu.json";
     private RecyclerView recyclerView;
     private List<Item> list;
     private CardListAdapter adapter;
