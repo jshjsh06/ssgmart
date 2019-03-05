@@ -17,7 +17,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +51,8 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     private CardListAdapter adapter;
     private SwipeRefreshLayout swipeLayout;
     private TextView locationTextView;
+    private Spinner categorySpinner;
+
     IMenuRequest mService;
 
 
@@ -86,6 +91,10 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         addItemToCart();
 
         discountListRefreshed();
+
+        //category 선택시
+        categorySpinner = mFragmentView.findViewById(R.id.category_spinner);
+        setCategorySpinner();
 
         return mFragmentView;
     }
@@ -157,5 +166,24 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
                 android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light
         );
+    }
+
+    public void setCategorySpinner(){
+        categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    return;
+                } else {
+                    addItemToCart();
+                    Toast.makeText(getContext(), "선택된 카테고리 : " + categorySpinner.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 }

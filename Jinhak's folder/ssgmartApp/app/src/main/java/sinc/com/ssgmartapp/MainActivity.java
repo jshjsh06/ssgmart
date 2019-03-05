@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             Log.d("SelectMenu", "SelectMenu");
             Intent intent = new Intent(MainActivity.this, MapActivity.class);
             startActivity(intent);
+            finish();
             return true;
         }
 
