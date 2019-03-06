@@ -11,5 +11,7 @@
     <string name="qr_code_title">POS에 읽혀주세요</string>
     <string name="emart_search_text">이마트24 찾기</string>
     <string name="label_btn_find">검색</string>
+    <string name="login_EditText_txt">ID를 입력하세요</string>
+    <string name="pwd_EditText_txt">패스워드를 입력하세요</string>
 
 </resources>

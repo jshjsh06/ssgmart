@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     private static final int SHAKE_SKIP_TIME = 500;
     private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 //        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //
 //        });
-
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
