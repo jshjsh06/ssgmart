@@ -1,4 +1,4 @@
-package com.sinc.project.store.model.vo;
+package com.sinc.project.model.vo;
 
 public class StoreVO {
 	private String id;
@@ -35,4 +35,11 @@ public class StoreVO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
+	@Override
+	public String toString() {
+		return "StoreVO [id=" + id + ", name=" + name + ", address=" + address + "]";
+	}
+	
+	
 }

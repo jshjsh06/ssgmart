@@ -3,8 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.sinc.mybatis.store">
-	<select id="storeRow" parameterType="store" resultType="store">
+<mapper namespace="com.sinc.mybatis.stock">
+	<select id="stockRow" parameterType="stock" resultType="stock">
 		SELECT 	ID, NAME, ADDRESS
 		FROM	STORETEST
 		WHERE	ID = #{id} AND NAME = #{name}
