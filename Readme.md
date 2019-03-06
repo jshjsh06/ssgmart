@@ -42,6 +42,20 @@
 
 
 
+### git 넣는 법
+
+* 폴더에 들어가서 마우스 오른쪽 클릭 후 git bash here
+* git pull https://github.com/jshjsh06/ssgmart.git
+* git status --> red line 확인
+* git add * --> 초록색 바꿈
+* git status --> green line 확인
+* git commit -m "메세지 아무거나"
+* git push origin master
+
+
+
+
+
 ### 시스템 전체 구성도
 
 ![map](./map.jpeg)

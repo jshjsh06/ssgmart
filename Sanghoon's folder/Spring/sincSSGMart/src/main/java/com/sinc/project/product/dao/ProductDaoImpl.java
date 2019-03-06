@@ -1,11 +1,15 @@
 package com.sinc.project.product.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.sinc.project.store.model.vo.StoreVO;
+import com.sinc.project.model.vo.StockStoreVO;
+import com.sinc.project.model.vo.StoreVO;
 
 @Repository("productDao")
 public class ProductDaoImpl implements ProductDao{
@@ -14,6 +18,7 @@ public class ProductDaoImpl implements ProductDao{
 	private SqlSession session;
 	
 	private StoreVO storeVo;
+	private StockStoreVO stockStoreVo;
 	
 	@Override
 	public Object productsRow(Object obj) {
@@ -23,10 +28,20 @@ public class ProductDaoImpl implements ProductDao{
 		storeVo = (StoreVO) obj;
 		System.out.println(storeVo.getId() + "///" + storeVo.getName());
 		
-		Object obj2 = session.selectOne("com.sinc.mybatis.store.productsRow", obj);
-		System.out.println(((StoreVO)obj2).getAddress());
+		Object obj2 = session.selectList("com.sinc.mybatis.stockstore.stockStoreRow", obj);
 		
-		return null;
+		System.out.println((ArrayList)obj2);
+		
+		return session.selectList("com.sinc.mybatis.stockstore.stockStoreRow", obj);
+	}
+
+	@Override
+	public List<Object> productsRow2(Object obj) {
+		System.out.println("ProductDaoImpl2 is running");
+		Object obj2 = session.selectList("com.sinc.mybatis.stockstore.stockStoreRow", obj);
+		System.out.println((ArrayList)obj2);
+		
+		return session.selectList("com.sinc.mybatis.stockstore.stockStoreRow", obj);
 	}
 
 }

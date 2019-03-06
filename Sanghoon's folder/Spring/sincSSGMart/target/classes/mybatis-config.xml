@@ -4,7 +4,10 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-		<typeAlias type="com.sinc.project.store.model.vo.StoreVO" alias="store" />
+		<typeAlias type="com.sinc.project.model.vo.StoreVO" alias="store" />
+		<typeAlias type="com.sinc.project.model.vo.ProductVO" alias="product" />
+		<typeAlias type="com.sinc.project.model.vo.StockVO" alias="stock" />
+		<typeAlias type="com.sinc.project.model.vo.StockStoreVO" alias="stockstore" />
 	</typeAliases>
 	
 </configuration>

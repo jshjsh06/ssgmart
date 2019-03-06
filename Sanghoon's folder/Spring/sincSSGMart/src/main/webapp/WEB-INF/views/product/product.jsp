@@ -1,13 +1,16 @@
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 
-<!-- <form action="getProducts.do" method="post">
- --><form id="add-form" action="" method="post">
-{"id":"1", "name":"a"}
+<form action="getProducts.do" method="POST">
+
+ <!-- <form id="add-form" action="" method="post"> -->
+{"id":"1", "name":"1"}
+
   <div class="form-group has-feedback">
-    <input type="text" name="id" class="form-control" placeholder="USER ID"/>
+    <input type="text" name="id" class="form-control" placeholder="ID"/>
     <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
   </div>
   <div class="form-group has-feedback">
-    <input type="text" name="name" class="form-control" placeholder="Password"/>
+    <input type="text" name="name" class="form-control" placeholder="Name"/>
     <span class="glyphicon glyphicon-lock form-control-feedback"></span>
   </div>
   
@@ -25,8 +28,10 @@
   </div>
 </form>
 
+
 <p id="hi">hihihihihi</p>
 
+<!-- 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-Latest.js"></script>
 <script type="text/javascript">	
@@ -49,4 +54,4 @@
 		         })	
 			});
 		});
-</script>
+</script> -->
