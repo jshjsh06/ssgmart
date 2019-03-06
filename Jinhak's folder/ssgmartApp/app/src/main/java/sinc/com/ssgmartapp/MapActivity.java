@@ -1,14 +1,10 @@
 package sinc.com.ssgmartapp;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,26 +14,20 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import jxl.Sheet;
-import jxl.Workbook;
-import jxl.read.biff.BiffException;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sinc.com.ssgmartapp.dto.Item;
 import sinc.com.ssgmartapp.dto.Location;
 import sinc.com.ssgmartapp.helper.Common;
-import sinc.com.ssgmartapp.remote.IMenuRequest;
+import sinc.com.ssgmartapp.remote.RequestService;
 
 /**
  * 이마트 24 검색 Activity
@@ -47,7 +37,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     private MarkerOptions markerOptions;
     private List<Location> emart24_location;
     private final String URL_API = "https://ssg-mart-app.firebaseio.com/location.json";
-    IMenuRequest mService;
+    RequestService mService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

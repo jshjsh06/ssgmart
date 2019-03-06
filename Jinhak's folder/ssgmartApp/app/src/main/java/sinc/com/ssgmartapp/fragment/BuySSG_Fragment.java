@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,13 +28,13 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import sinc.com.ssgmartapp.helper.Common;
-import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelper;
-import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
 import sinc.com.ssgmartapp.R;
 import sinc.com.ssgmartapp.adapter.CardListAdapter;
 import sinc.com.ssgmartapp.dto.Item;
-import sinc.com.ssgmartapp.remote.IMenuRequest;
+import sinc.com.ssgmartapp.helper.Common;
+import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelper;
+import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
+import sinc.com.ssgmartapp.remote.RequestService;
 
 
 /**
@@ -53,7 +52,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     private TextView locationTextView;
     private Spinner categorySpinner;
 
-    IMenuRequest mService;
+    RequestService mService;
 
 
     @Override
