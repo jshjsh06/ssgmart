@@ -18,6 +18,8 @@
     <string name="next">NEXT</string>
     <string name="skip">SKIP</string>
     <string name="start">로그인</string>
+    <string name="create_QR_text">QR 코드 생성</string>
+    <string name="share_basket_text">공유하기</string>
 
 
 </resources>
