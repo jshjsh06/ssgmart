@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -39,6 +39,9 @@ dependencies {
 
     //excel
     implementation group: 'net.sourceforge.jexcelapi', name: 'jxl', version: '2.6.12'
+
+    //firebase
+    implementation 'com.google.firebase:firebase-auth:16.0.3'
 
 
     testImplementation 'junit:junit:4.12'
