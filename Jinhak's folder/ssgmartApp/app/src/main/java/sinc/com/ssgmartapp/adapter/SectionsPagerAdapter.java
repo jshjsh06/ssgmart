@@ -3,6 +3,7 @@ package sinc.com.ssgmartapp.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import sinc.com.ssgmartapp.fragment.BasketSSG_Fragment;
 import sinc.com.ssgmartapp.fragment.BuySSG_Fragment;

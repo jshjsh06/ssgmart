@@ -54,7 +54,6 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
     RequestService mService;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
