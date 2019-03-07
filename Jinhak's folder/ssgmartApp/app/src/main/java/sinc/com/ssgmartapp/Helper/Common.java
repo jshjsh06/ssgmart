@@ -10,6 +10,7 @@ public class Common {
     }
 
     public static RequestService getLoginService() {
-        return RetrofitClient.getClient("http://10.149.179.61:8088/user/").create(RequestService.class);
+        return RetrofitClient.getClient("http://10.149.178.156:8088/user/").create(RequestService.class);
     }
+
 }

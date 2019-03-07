@@ -14,4 +14,10 @@
     <string name="login_EditText_txt">ID를 입력하세요</string>
     <string name="pwd_EditText_txt">패스워드를 입력하세요</string>
 
+
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="start">로그인</string>
+
+
 </resources>
