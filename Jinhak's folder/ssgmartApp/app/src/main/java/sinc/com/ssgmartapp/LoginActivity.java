@@ -50,7 +50,15 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signIn(id_editText.getText().toString(),pw_editText.getText().toString());
+
+                if(id_editText.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(), "아이디 입력해주세요", Toast.LENGTH_LONG).show();
+                }
+                else if(pw_editText.getText().toString().equals("")){
+                    Toast.makeText(getApplicationContext(), "비밀번호 입력해주세요", Toast.LENGTH_LONG).show();
+                }else{
+                    loginCheck(id_editText.getText().toString(), pw_editText.getText().toString());
+                }
             }
         });
 
@@ -67,10 +75,10 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                             startActivity(intent);
                             finish();
-//                          loginCheck(id_editText.getText().toString(), pw_editText.getText().toString());
+                            loginCheck(id_editText.getText().toString(), pw_editText.getText().toString());
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -89,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
                     Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {

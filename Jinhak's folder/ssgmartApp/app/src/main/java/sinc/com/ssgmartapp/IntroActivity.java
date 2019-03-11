@@ -36,6 +36,7 @@ public class IntroActivity extends AppCompatActivity {
 
         myadapter = new SlideAdapter(this);
         viewpager.setAdapter(myadapter);
+        viewpager.setOffscreenPageLimit(3);
         adddots(0);
 
         viewpager.addOnPageChangeListener(viewlistener);

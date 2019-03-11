@@ -123,7 +123,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private void launchHomeScreen() {
         //주석 풀면 설치하고 한번만 실행됨.
         //prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+        startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
         finish();
     }
 

@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".IntroActivity"
+            android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,8 +31,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".IntroActivity"/>
         <activity android:name=".WelcomeActivity"/>
-        <activity android:name=".LoginActivity"/>
         <activity android:name=".MainActivity"/>
         <activity android:name=".MapActivity"/>
 
