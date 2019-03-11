@@ -40,7 +40,10 @@ public class ProductDaoImpl implements ProductDao{
 		System.out.println("ProductDaoImpl2 is running");
 		Object obj2 = session.selectList("com.sinc.mybatis.stockstore.stockStoreRow", obj);
 		System.out.println((ArrayList)obj2);
-		
+		// 아래 코드를 통해 selectList는 역시 StockStoreVO로 이루어진 ArrayList인 것을 알 수 있다. Mapper에서도 그렇게 정의했고.
+//		ArrayList<StockStoreVO> aryList = (ArrayList)obj2;
+//		System.out.println(aryList.get(0));
+//		System.out.println(aryList.get(1));
 		return session.selectList("com.sinc.mybatis.stockstore.stockStoreRow", obj);
 	}
 

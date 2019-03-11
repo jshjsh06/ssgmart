@@ -10,7 +10,9 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </head>
 
-
+<div>
+<p>${lists}</p>
+</div>
 <div class="container">
   <h2>Product Table</h2>
   <p>Combine .table-dark and .table-striped to create a dark, striped table:</p>            
@@ -35,6 +37,7 @@
     </tbody>
   </table>
 </div>
+
 
 </body>
 </html>
