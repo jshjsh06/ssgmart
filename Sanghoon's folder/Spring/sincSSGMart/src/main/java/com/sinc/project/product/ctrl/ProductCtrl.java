@@ -110,6 +110,21 @@ public class ProductCtrl {
 		return jArray;
 	}
 	
+	@RequestMapping(value="/test.do", method = RequestMethod.POST)
+	public String test(@ModelAttribute StoreVO storevo, Model model) { 
+		// @ModelAttribute는 @getParams와 달리 객체 자체를 받을 수 있고, 또한 자동으로 VO와 연결해서 풀어진다. 단일 변수를 받고 싶으면 getParams를 쓰면된다.
+		// 사실 @ModelAttribute를 굳이 쓰지 않아도 되지만 써봄.
+		System.out.println("storevo : " + storevo.toString());
+		this.storevo.setId(storevo.getId());
+		this.storevo.setName(storevo.getName());
+		System.out.println("this.storevo : " + storevo.toString());
+		System.out.println("getProducts is running");
+//		model.addAttribute("lists", service.getProducts2(this.storevo));
+		model.addAttribute("lists", toJson(service.getProducts2(this.storevo)));
+		
+		return "product/productList";
+	}
+	
 	
 	/**
 	@RequestMapping(value="/getProducts.do", method = RequestMethod.POST)
