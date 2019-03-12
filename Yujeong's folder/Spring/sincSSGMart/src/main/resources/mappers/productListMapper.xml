@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sinc.mybatis.productList">
+	<select id="productRow" resultType="productList">		
+		SELECT E.NAME AS STORENAME, A.NAME AS PRODUCTNAME , A.PRICESELL AS PRICE , A.TEXTTIP AS VALID, C.NAME AS CATEGORY, (A.STOCKVOLUME + B.UNITS) AS STOCK
+		FROM PRODUCTS A
+		JOIN STOCKCURRENT  B ON(A.ID = B.PRODUCT)
+		JOIN CATEGORIES  C ON(A.CATEGORY = C.ID)
+		JOIN LOCATIONS E ON(E.ID = B.LOCATION)
+	</select>
+	
+ 	<select id="productStoreRow" parameterType="productList" resultType="productList">		
+		SELECT E.NAME AS STORENAME, A.NAME AS PRODUCTNAME , A.PRICESELL AS PRICE , A.TEXTTIP AS VALID, C.NAME AS CATEGORY, (A.STOCKVOLUME + B.UNITS) AS STOCK
+		FROM PRODUCTS A
+		JOIN STOCKCURRENT  B ON(A.ID = B.PRODUCT)
+		JOIN CATEGORIES  C ON(A.CATEGORY = C.ID)
+		JOIN LOCATIONS E ON(E.ID = B.LOCATION)
+		WHERE E.NAME = #{storeName}
+	</select>
+	
+	<select id="productCategoryRow" parameterType="productList" resultType="productList">
+		SELECT E.NAME AS STORENAME, A.NAME AS PRODUCTNAME , A.PRICESELL AS PRICE , A.TEXTTIP AS VALID, C.NAME AS CATEGORY, (A.STOCKVOLUME + B.UNITS) AS STOCK
+		FROM PRODUCTS A
+		JOIN STOCKCURRENT  B ON(A.ID = B.PRODUCT)
+		JOIN CATEGORIES  C ON(A.CATEGORY = C.ID)
+		JOIN LOCATIONS E ON(E.ID = B.LOCATION)
+		WHERE E.NAME = #{storeName} and C.NAME = #{category}
+	</select>
+	
+</mapper>  

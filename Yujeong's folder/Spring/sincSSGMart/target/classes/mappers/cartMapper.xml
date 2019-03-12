@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.sinc.mybatis.cart">
+
+	<select id="cartListsRow" resultType="cart">
+		SELECT	PRODUCT_ID,PRODUCT_NAME,PRODUCT_PRICE, AMOUNT
+		FROM	FRM_CART_TBL
+		JOIN	FRM_PRODUCT_TBL USING(PRODUCT_ID)
+	</select>
+
+</mapper>  
