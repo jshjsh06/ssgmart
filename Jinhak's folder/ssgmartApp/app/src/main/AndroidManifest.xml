@@ -35,6 +35,7 @@
         <activity android:name=".WelcomeActivity"/>
         <activity android:name=".MainActivity"/>
         <activity android:name=".MapActivity"/>
+        <activity android:name=".SSGMainActivity"/>
 
         <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyB5M5UuJsazjk1c-TeQ42rIivSjjxz1qIY" />
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />

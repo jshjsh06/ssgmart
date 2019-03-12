@@ -41,7 +41,6 @@ public class WelcomeActivity extends AppCompatActivity {
         prefManager = new PreferenceManager(this);
         if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
-            finish();
         }
 
         // Making notification bar transparent
@@ -123,8 +122,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private void launchHomeScreen() {
         //주석 풀면 설치하고 한번만 실행됨.
         //prefManager.setFirstTimeLaunch(false);
-        startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
-        finish();
+        startActivity(new Intent(WelcomeActivity.this, SSGMainActivity.class));
     }
 
     //  viewpager change listener

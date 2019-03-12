@@ -28,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,17 +49,17 @@ import sinc.com.ssgmartapp.remote.RequestService;
 /**
  * 올때 쓱 Fragment
  */
-public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener,ValueEventListener {
+public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener {
 
     View mFragmentView;
 
-    private final String URL_API = "https://ssg-mart-app.firebaseio.com/menu.json";
     private RecyclerView recyclerView;
     private List<Item> list;
     private CardListAdapter adapter;
     private SwipeRefreshLayout swipeLayout;
     private TextView locationTextView;
     private Spinner categorySpinner;
+    private String emartName;
 
     RequestService mService;
 
@@ -74,7 +75,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragmentView = inflater.inflate(R.layout.fragment_buy_ssg, container, false);
 
-        mService = Common.getMenuRequest();
+        mService = Common.getMenuRequestByMarketName();
         recyclerView = mFragmentView.findViewById(R.id.buy_ssg_recycler_view);
         list = new ArrayList<>();
         adapter = new CardListAdapter(getContext(), list);
@@ -82,8 +83,15 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         mDatabase = FirebaseDatabase.getInstance();
 
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
-        String emartName = intent.getStringExtra("marker_location");
-        locationTextView.setText(emartName);
+        emartName = intent.getStringExtra("marker_location");
+
+        if (emartName == null) {
+            emartName ="명동센터";
+            locationTextView.setText(emartName);
+        }
+        {
+            locationTextView.setText(emartName);
+        }
 
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -97,7 +105,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
 
-        addItemToCart();
+        addItemToCart(emartName);
 
         discountListRefreshed();
 
@@ -113,18 +121,19 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
      * 19/02/28 (위진학)
      * 매장 별 할인 품목 올때 쓱 리스트에 담기
      */
-    private void addItemToCart() {
-        mService.getMenuList(URL_API)
-                .enqueue(new Callback<List<Item>>() {
+    private void addItemToCart(String storeName) {
+        Log.d("storeName",storeName);
+        mService.getMenuListByMarketName(storeName)
+                .enqueue(new Callback<JsonObject>() {
                     @Override
-                    public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
-                        list.clear();
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                        /*list.clear();
                         list.addAll(response.body());
-                        adapter.notifyDataSetChanged();
+                        adapter.notifyDataSetChanged();*/
                     }
 
                     @Override
-                    public void onFailure(Call<List<Item>> call, Throwable t) {
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
 
                     }
                 });
@@ -145,18 +154,41 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
             mDatabase.getReference().child("users").child(getUid()).child("myBasket").push().setValue(addItem);
             adapter.sendBasket(addIndex);
 
+            insertItem(addItem);
+
             Snackbar snackbar = Snackbar.make(mFragmentView, name + "를 장바구니에 넣었어요!!", Snackbar.LENGTH_SHORT);
             snackbar.setAction("취소", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     adapter.restoreItem(addItem, addIndex);
                     //삭제를 어떻게 시킬것인가??
-                    mDatabase.getReference().child("users").child(getUid()).child("myBasket").removeValue();
+                    // mDatabase.getReference().child("users").child(getUid()).child("myBasket").removeValue();
                 }
             });
             snackbar.setActionTextColor(Color.YELLOW);
             snackbar.show();
         }
+    }
+
+    private void insertItem(Item item) {
+
+        mService.ItemInsert(item).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                try {
+                    Log.d("InsertItem", response.body().toString());
+                    Toast.makeText(getContext(), "Insert 성공", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Integer> call, Throwable t) {
+                Toast.makeText(getContext(), "Insert실패", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
     /**
@@ -168,7 +200,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                addItemToCart();
+                addItemToCart(emartName);
                 swipeLayout.setRefreshing(false);
             }
         });
@@ -180,14 +212,14 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         );
     }
 
-    public void setCategorySpinner(){
+    public void setCategorySpinner() {
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     return;
                 } else {
-                    addItemToCart();
+                    addItemToCart(emartName);
                     Toast.makeText(getContext(), "선택된 카테고리 : " + categorySpinner.getItemAtPosition(position), Toast.LENGTH_SHORT).show();
                 }
             }

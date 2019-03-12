@@ -5,13 +5,15 @@ import com.google.gson.JsonObject;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import sinc.com.ssgmartapp.dto.Item;
 import sinc.com.ssgmartapp.dto.Location;
 
-public interface RequestService {
+public interface                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          RequestService {
 
     @GET
     Call<List<Item>> getMenuList(@Url String uri);
@@ -19,8 +21,15 @@ public interface RequestService {
     @GET
     Call<List<Location>> getLocationList(@Url String uri);
 
-    @GET("android.do")
+    @GET("user/android.do")
     Call<JsonObject> userLogin(@Query("username") String username,
                                   @Query("password") String password);
+
+    @POST("androidInsert.do")
+    Call<Integer> ItemInsert(@Body Item item);
+
+    @GET("productList/productList1.do")
+    Call<JsonObject> getMenuListByMarketName(@Query("storeName") String storeName);
+
 
 }

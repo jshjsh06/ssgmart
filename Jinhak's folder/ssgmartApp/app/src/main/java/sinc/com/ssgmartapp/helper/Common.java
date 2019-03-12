@@ -6,11 +6,15 @@ import sinc.com.ssgmartapp.remote.RetrofitClient;
 public class Common {
 
     public static RequestService getMenuRequest(){
-        return RetrofitClient.getClient("https://api.androidhive.info/").create(RequestService.class);
+        return RetrofitClient.getClient("https://ssg-mart-app.firebaseio.com/").create(RequestService.class);
     }
 
     public static RequestService getLoginService() {
-        return RetrofitClient.getClient("http://10.149.179.175:8088/user/").create(RequestService.class);
+        return RetrofitClient.getClient("http://10.149.178.149:8088/").create(RequestService.class);
+    }
+
+    public static RequestService getMenuRequestByMarketName(){
+        return RetrofitClient.getClient("http://10.149.178.149:8088/").create(RequestService.class);
     }
 
 }

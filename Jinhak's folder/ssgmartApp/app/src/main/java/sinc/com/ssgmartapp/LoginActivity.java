@@ -57,6 +57,8 @@ public class LoginActivity extends AppCompatActivity {
                 else if(pw_editText.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(), "비밀번호 입력해주세요", Toast.LENGTH_LONG).show();
                 }else{
+                    Log.d("click","LoginButton");
+                    //signIn(id_editText.getText().toString(),pw_editText.getText().toString());
                     loginCheck(id_editText.getText().toString(), pw_editText.getText().toString());
                 }
             }
@@ -74,10 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
+ /*                         FirebaseUser user = mAuth.getCurrentUser();
                             Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                             startActivity(intent);
-                            finish();
+                            finish();*/
+                            Log.d("loginSuccess","loginSuccess");
                             loginCheck(id_editText.getText().toString(), pw_editText.getText().toString());
 
                         } else {

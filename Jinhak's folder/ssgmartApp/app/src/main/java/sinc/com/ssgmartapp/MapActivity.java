@@ -5,6 +5,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -57,23 +59,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     public void onMapReady(GoogleMap googleMap) {
 
         getLocationData(googleMap);
-
         mMap = googleMap;
-
-        //신세계 아이앤씨 좌표
-        LatLng s_inc = new LatLng(37.5597219, 126.9823744);
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(s_inc));
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(15);
-        mMap.animateCamera(zoom);
-
-        markerOptions = new MarkerOptions();
-
-        markerOptions.position(s_inc).title("신세계_아이앤씨");
-        markerOptions.snippet("본사");
-        mMap.addMarker(markerOptions).showInfoWindow();
-
-
     }
 
     /**
@@ -112,9 +98,23 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             MarkerOptions marker = new MarkerOptions();
             marker.position(new LatLng(emartLat, emartLon))
                     .title(emartName)
-                    .snippet(emartAdress);
+                    .snippet(emartAdress)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
             googleMap.addMarker(marker).showInfoWindow(); // 마커추가,화면에출력
         }
+
+
+        //회현이프라자점 좌표
+        LatLng s_inc = new LatLng(37.5577087, 126.9731124);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(s_inc, 15));
+
+        markerOptions = new MarkerOptions();
+        markerOptions.position(s_inc).title("회현이프라자점");
+        markerOptions.snippet("서울특별시 중구 남대문로5가 세종대로4길 25");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+
+        googleMap.addMarker(markerOptions).showInfoWindow();
+
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
