@@ -7,6 +7,7 @@ import android.util.Log;
 
 import sinc.com.ssgmartapp.fragment.BasketSSG_Fragment;
 import sinc.com.ssgmartapp.fragment.BuySSG_Fragment;
+import sinc.com.ssgmartapp.fragment.SharedBasketSSG_Fragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -26,6 +27,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 return new BuySSG_Fragment();
             case 1:
                 return new BasketSSG_Fragment();
+            case 2:
+                return new SharedBasketSSG_Fragment();
             default:
                 break;
         }
@@ -35,7 +38,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     //Swipe Page 개수
     @Override
     public int getCount() {
-        // Show 2 total pages.
-        return 2;
+        // Show 3 total pages.
+        return 3;
     }
 }

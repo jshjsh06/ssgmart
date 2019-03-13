@@ -10,11 +10,11 @@ public class Common {
     }
 
     public static RequestService getLoginService() {
-        return RetrofitClient.getClient("http://10.149.178.149:8088/").create(RequestService.class);
+        return RetrofitClient.getClient("http://10.149.178.13:8088/").create(RequestService.class);
     }
 
     public static RequestService getMenuRequestByMarketName(){
-        return RetrofitClient.getClient("http://10.149.178.149:8088/").create(RequestService.class);
+        return RetrofitClient.getClient("http://10.149.178.13:8088/").create(RequestService.class);
     }
 
 }

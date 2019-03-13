@@ -15,13 +15,11 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -30,6 +28,7 @@ import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import sinc.com.ssgmartapp.adapter.SectionsPagerAdapter;
+import sinc.com.ssgmartapp.helper.Util;
 
 /**
  * 메인 앞쪽에 SSG페이 버튼 및 스크린 화면 넣어야 함.
@@ -45,10 +44,13 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     private static final int SHAKE_SKIP_TIME = 500;
     private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
     private FloatingActionButton fab;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Util.setGlobalFont(this, getWindow().getDecorView());
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         mViewPager = findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+
         //Tab And ViewPager 함께 이동
         TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
         fab = findViewById(R.id.fab);
 
-        //각각 탭 Page가 바뀌었을 때
+        //각각 탭 Page가 바뀌었을 때(플로팅 버튼 숨기기)
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -81,12 +84,12 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     case 0:
                         fab.show();
                         break;
-
                     default:
                         fab.hide();
                         break;
                 }
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
 

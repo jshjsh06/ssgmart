@@ -10,26 +10,26 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
-import sinc.com.ssgmartapp.dto.Item;
 import sinc.com.ssgmartapp.dto.Location;
+import sinc.com.ssgmartapp.dto.ProductListVO;
 
-public interface                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          RequestService {
+public interface RequestService {
 
     @GET
-    Call<List<Item>> getMenuList(@Url String uri);
+    Call<List<ProductListVO>> getMenuList(@Url String uri);
 
     @GET
     Call<List<Location>> getLocationList(@Url String uri);
 
     @GET("user/android.do")
     Call<JsonObject> userLogin(@Query("username") String username,
-                                  @Query("password") String password);
+                               @Query("password") String password);
 
     @POST("androidInsert.do")
-    Call<Integer> ItemInsert(@Body Item item);
+    Call<Integer> ItemInsert(@Body ProductListVO item);
 
     @GET("productList/productList1.do")
-    Call<JsonObject> getMenuListByMarketName(@Query("storeName") String storeName);
+    Call<List<ProductListVO>> getMenuListByMarketName(@Query("storeName") String storeName);
 
 
 }

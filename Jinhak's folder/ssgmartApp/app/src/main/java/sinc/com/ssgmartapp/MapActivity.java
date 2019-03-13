@@ -5,12 +5,10 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,6 +28,7 @@ import retrofit2.Response;
 import sinc.com.ssgmartapp.dto.Location;
 import sinc.com.ssgmartapp.helper.Common;
 import sinc.com.ssgmartapp.remote.RequestService;
+import sinc.com.ssgmartapp.helper.Util;
 
 /**
  * 이마트 24 검색 Activity
@@ -44,6 +43,8 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Util.setGlobalFont(this, getWindow().getDecorView());
+
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -57,7 +58,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         getLocationData(googleMap);
         mMap = googleMap;
     }
@@ -75,7 +75,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
                         emart24_location.addAll(response.body());
                         drawEmartMarker(googleMap);
                     }
-
                     @Override
                     public void onFailure(Call<List<Location>> call, Throwable t) {
 

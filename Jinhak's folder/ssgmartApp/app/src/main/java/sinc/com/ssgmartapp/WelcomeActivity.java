@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import sinc.com.ssgmartapp.helper.PreferenceManager;
+import sinc.com.ssgmartapp.helper.Util;
 
 /**
  * Edited by Jinhak on 07-03-2019.
@@ -36,6 +37,7 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Util.setGlobalFont(this,getWindow().getDecorView());
 
         // Checking for first time launch - before calling setContentView()
         prefManager = new PreferenceManager(this);

@@ -23,12 +23,12 @@
         android:id="@+id/nextMain_button"
         android:layout_width="107dp"
         android:layout_height="129dp"
-        android:layout_marginStart="265dp"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="15dp"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         app:layout_constraintVertical_bias="0.6"
         app:srcCompat="@drawable/img_icon" />
@@ -39,20 +39,21 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="18dp"
+        android:paddingTop="10dp"
         android:text="@string/SSGMart_shop_txt"
+        android:textColor="@color/welcome_up_background"
+        android:textSize="17sp"
         android:textStyle="bold"
-        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+        app:layout_constraintEnd_toEndOf="@+id/nextMain_button"
+        app:layout_constraintStart_toStartOf="@+id/nextMain_button" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="405dp" />
+        app:layout_constraintGuide_begin="408dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline2"

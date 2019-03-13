@@ -14,7 +14,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -22,6 +21,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sinc.com.ssgmartapp.helper.Common;
 import sinc.com.ssgmartapp.remote.RequestService;
+import sinc.com.ssgmartapp.helper.Util;
 
 /**
  * 로그인
@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Util.setGlobalFont(this, getWindow().getDecorView());
 
         id_editText = findViewById(R.id.login_editText);
         pw_editText = findViewById(R.id.pw_editText);

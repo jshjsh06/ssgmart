@@ -52,27 +52,101 @@
             android:ellipsize="end"
             android:fontFamily="sans-serif"
             android:maxLines="1"
+            android:hint="제품명"
+            android:textStyle="bold"
             android:textColor="@color/itemName"
             android:textSize="17sp" />
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/normal_price_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/name"
             android:layout_marginTop="5dp"
+            android:text="정상가"
             android:layout_toRightOf="@+id/thumbnail"
-            android:textColor="@color/Description"
-            android:textSize="12sp" />
+            android:textColor="@color/welcome_up_background"
+            android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/price"
+            android:id="@+id/normal_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/description"
+            android:layout_below="@+id/name"
+            android:layout_marginTop="5dp"
+            android:hint="@string/normal_price_txt"
+            android:layout_toRightOf="@+id/normal_price_txt"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/Description"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/valid_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/normal_price"
+            android:layout_marginTop="5dp"
+            android:text="@string/valid_txt_txt"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textColor="@color/welcome_up_background"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/valid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/normal_price"
+            android:layout_marginTop="5dp"
+            android:hint="유통기한"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/valid_txt"
+            android:textColor="@color/Description"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/stock_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/valid"
+            android:layout_marginTop="5dp"
+            android:text="재고"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textColor="@color/welcome_up_background"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/valid"
+            android:layout_marginTop="5dp"
+            android:hint="재고"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@+id/stock_txt"
+            android:textColor="@color/Description"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/discountPrice_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/valid"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toLeftOf="@+id/discountPrice"
+            android:text="@string/discountPrice_txt"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/discountPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/valid"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
+            android:hint="할인가"
             android:textColor="@color/colorAccent"
             android:textSize="20sp" />
 

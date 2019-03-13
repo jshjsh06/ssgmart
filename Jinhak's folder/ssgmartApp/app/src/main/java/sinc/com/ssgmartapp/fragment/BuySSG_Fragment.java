@@ -28,7 +28,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +38,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sinc.com.ssgmartapp.R;
 import sinc.com.ssgmartapp.adapter.CardListAdapter;
-import sinc.com.ssgmartapp.dto.Item;
+import sinc.com.ssgmartapp.dto.ProductListVO;
 import sinc.com.ssgmartapp.helper.Common;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelper;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
+import sinc.com.ssgmartapp.helper.Util;
 import sinc.com.ssgmartapp.remote.RequestService;
 
 
@@ -54,7 +54,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     View mFragmentView;
 
     private RecyclerView recyclerView;
-    private List<Item> list;
+    private List<ProductListVO> list;
     private CardListAdapter adapter;
     private SwipeRefreshLayout swipeLayout;
     private TextView locationTextView;
@@ -67,6 +67,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Util.setGlobalFont(getContext(), getActivity().getWindow().getDecorView());
         super.onCreate(savedInstanceState);
     }
 
@@ -77,6 +78,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
         mService = Common.getMenuRequestByMarketName();
         recyclerView = mFragmentView.findViewById(R.id.buy_ssg_recycler_view);
+
         list = new ArrayList<>();
         adapter = new CardListAdapter(getContext(), list);
         locationTextView = mFragmentView.findViewById(R.id.marker_location_textView);
@@ -86,7 +88,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         emartName = intent.getStringExtra("marker_location");
 
         if (emartName == null) {
-            emartName ="명동센터";
+            emartName ="명동센터점";
             locationTextView.setText(emartName);
         }
         {
@@ -124,16 +126,17 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     private void addItemToCart(String storeName) {
         Log.d("storeName",storeName);
         mService.getMenuListByMarketName(storeName)
-                .enqueue(new Callback<JsonObject>() {
+                .enqueue(new Callback<List<ProductListVO>>() {
                     @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                        /*list.clear();
+                    public void onResponse(Call<List<ProductListVO>> call, Response<List<ProductListVO>> response) {
+                        list.clear();
                         list.addAll(response.body());
-                        adapter.notifyDataSetChanged();*/
+                        Log.d("storeName",response.body().toString());
+                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
+                    public void onFailure(Call<List<ProductListVO>> call, Throwable t) {
 
                     }
                 });
@@ -146,9 +149,9 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CardListAdapter.MyViewHolder) {
-            String name = list.get(viewHolder.getAdapterPosition()).getName();
+            String name = list.get(viewHolder.getAdapterPosition()).getProductName();
 
-            final Item addItem = list.get(viewHolder.getAdapterPosition());
+            final ProductListVO addItem = list.get(viewHolder.getAdapterPosition());
             final int addIndex = viewHolder.getAdapterPosition();
 
             mDatabase.getReference().child("users").child(getUid()).child("myBasket").push().setValue(addItem);
@@ -170,7 +173,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         }
     }
 
-    private void insertItem(Item item) {
+    private void insertItem(ProductListVO item) {
 
         mService.ItemInsert(item).enqueue(new Callback<Integer>() {
             @Override

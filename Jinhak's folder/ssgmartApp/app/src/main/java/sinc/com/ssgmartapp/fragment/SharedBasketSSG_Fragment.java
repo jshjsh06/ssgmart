@@ -1,7 +1,6 @@
 package sinc.com.ssgmartapp.fragment;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,12 +31,11 @@ import sinc.com.ssgmartapp.adapter.DeleteCardListAdapter;
 import sinc.com.ssgmartapp.dto.ProductListVO;
 import sinc.com.ssgmartapp.helper.RecyclerDeleteItemTouchHelper;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
-import sinc.com.ssgmartapp.helper.Util;
 
 /**
  * 장바구니 Fragment
  */
-public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener {
+public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener {
 
     View mFragmentView;
 
@@ -47,21 +45,19 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
     private SwipeRefreshLayout swipeLayout;
     private FirebaseDatabase mDatabase;
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         System.out.println("BasketSSG_Fragment.onCreate");
-
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragmentView = inflater.inflate(R.layout.fragment_basket_ssg, container, false);
-        recyclerView = mFragmentView.findViewById(R.id.basket_ssg_recycler_view);
 
+        recyclerView = mFragmentView.findViewById(R.id.basket_ssg_recycler_view);
         list = new ArrayList<>();
         adapter = new DeleteCardListAdapter(getContext(), list);
 
