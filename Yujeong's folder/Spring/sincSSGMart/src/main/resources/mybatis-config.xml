@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.sinc.project.model.vo.StoreVO" alias="store" />
+		<typeAlias type="com.sinc.project.model.vo.ProductVO" alias="product" />
+		<typeAlias type="com.sinc.project.model.vo.ProductListVO" alias="productList" />
+		<typeAlias type="com.sinc.project.model.vo.StockVO" alias="stock" />
+		<typeAlias type="com.sinc.project.model.vo.StockStoreVO" alias="stockstore" />
+		<typeAlias type="com.sinc.project.model.vo.CartVO" alias="cart" />
+		<typeAlias type="com.sinc.project.model.vo.UserVO" 	alias = "user"/>
+	</typeAliases>
+	
+</configuration>
+
