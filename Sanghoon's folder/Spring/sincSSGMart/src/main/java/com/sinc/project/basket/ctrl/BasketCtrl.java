@@ -1,0 +1,122 @@
+package com.sinc.project.basket.ctrl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.sinc.project.basket.service.BasketService;
+import com.sinc.project.model.vo.BasketVO;
+import com.sinc.project.model.vo.MyBasketVO;
+import com.sinc.project.model.vo.ProductListVO;
+import com.sinc.project.model.vo.UserVO;
+
+@Controller
+@RequestMapping(value = "/basket")
+public class BasketCtrl {
+	
+	@Resource(name = "basketService")
+	private BasketService service;
+	private BasketVO basketvo;
+	private	Map<String, String> insertMap;
+	private	Map<String, String> deleteMap;
+
+
+	public BasketCtrl() {
+		basketvo = new BasketVO();
+		insertMap = new HashMap<String, String>();
+		deleteMap = new HashMap<String, String>();
+	}
+	
+	@RequestMapping(value = "/home.do") // 8080/product/product.do 가 실행되면 이 함수가 실행된다!!
+	public String home() {
+		System.out.println("home call~~~~~");
+		return "pos/index"; // 이 리턴은 webapp에 있는 WEB-INF-views를 기준으로 한다!!!! product 폴더를 사용하고 싶으면 product/~~ 를 해야지!!
+	}
+
+	/*
+	 * @RequestMapping(value="/insertMyBasket.do", method = RequestMethod.GET)
+	 * 
+	 * @ResponseBody public List<Object> insertMyBasket(ProductListVO productList,
+	 * UserVO user) { // 안드로이드에서 ProductList와 User 정보를 동시에 보낼거임. 이렇게 받을 수 있는지 확인해야하는
+	 * 부분! // 상품목록에서 내 장바구니로 Swifing시 내 장바구니에 목록이 담기는 Ctrl // Insert문으로 MYBASKET
+	 * 테이블에 담기고, UserId를 Where 검색을 통해 MYBASKET에 담긴 물품들을 리턴함
+	 * System.out.println("insertMyBasket is running"); insertMap.put("product_Id",
+	 * productList.getProduct_Id()); insertMap.put("user_Id", user.getId());
+	 * 
+	 * List<Object> list = service.insertMyBasket(insertMap); insertMap.clear();
+	 * 
+	 * return list; }
+	 */
+	
+	@RequestMapping(value="/insertMyBasket.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void insertMyBasket(@RequestBody MyBasketVO myBasket) {  
+		// 상품목록에서 내 장바구니로 Swifing시 내 장바구니에 목록이 담기는 Ctrl
+		System.out.println("insertMyBasket is running");
+		
+//		System.out.println(myBasket.toString());
+		
+//		List<Object> list = service.insertMyBasket(myBasket);
+		service.insertMyBasket(myBasket);
+//		return list;
+	}
+	
+	@RequestMapping(value="/selectMyBasket.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Object> selectMyBasket(@RequestParam("user_Id") String id) {  
+		System.out.println("selectMyBasket is running");
+		
+		System.out.println("user_Id : " + id);
+		
+		List<Object> list = service.selectMyBasket(id);
+		
+		return list;
+	}
+	
+
+	@RequestMapping(value="/deleteMyBasket.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Object> deleteMyBasket(ProductListVO productList, UserVO user) { 
+		// 내장바구니에서 상품을 삭제하는 Ctrl. 거의 insertMyBasket와 유사
+		System.out.println("deleteMyBasket is running");
+		deleteMap.put("product_Id", productList.getProduct_Id());
+		deleteMap.put("user_Id", user.getUser_Id());
+		
+		List<Object> list = service.deleteMyBasket(deleteMap);
+		
+		return list;
+	}
+	
+	@RequestMapping(value="/insertBasketId.do", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Object> insertBasketId(ProductListVO productList, UserVO user) { 
+		// 내장바구니에서 상품을 삭제하는 Ctrl. 거의 insertMyBasket와 유사
+		System.out.println("insertBasketId is running");
+		deleteMap.put("product_Id", productList.getProduct_Id());
+		deleteMap.put("user_Id", user.getUser_Id());
+		
+		List<Object> list = service.deleteMyBasket(deleteMap);
+		
+		return list;
+	}
+	
+	@RequestMapping(value="/pos.do", method = RequestMethod.POST) // ResonseBody를 사용하면 AJAX에서 자동으로 json으로 받을거에여!!
+	@ResponseBody
+	public List<Object> getBasketByBarcode(String user_Id) { 
+		System.out.println("getBasketByBarcode is running");
+		System.out.println(user_Id);
+		
+		List<Object> list = service.getBasketByBarcode(user_Id);
+//		System.out.println(list);
+		return list;
+	}
+}

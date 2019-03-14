@@ -2,15 +2,15 @@ package com.sinc.project.model.vo;
 
 public class PosVO {
 	private String name;
-	private int count;
+	private int cnt;
 	private int priceSell;
 	
 	public PosVO() {}
 	
-	public PosVO(String name, int count, int priceSell) {
+	public PosVO(String name, int cnt, int priceSell) {
 		super();
 		this.name = name;
-		this.count = count;
+		this.cnt = cnt;
 		this.priceSell = priceSell;
 	}
 
@@ -22,12 +22,12 @@ public class PosVO {
 		this.name = name;
 	}
 
-	public int getCount() {
-		return count;
+	public int getCnt() {
+		return cnt;
 	}
 
-	public void setCount(int count) {
-		this.count = count;
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
 	}
 
 	public int getPriceSell() {
@@ -40,6 +40,6 @@ public class PosVO {
 
 	@Override
 	public String toString() {
-		return "PosVO [name=" + name + ", count=" + count + ", priceSell=" + priceSell + "]";
+		return "PosVO [name=" + name + ", cnt=" + cnt + ", priceSell=" + priceSell + "]";
 	}
 }

@@ -22,19 +22,24 @@
 				<table class="table table-bordered">
 					<tr>
 						<th>매장명</th>
+						<th>이미지</th>
 						<th>제품명</th>
 						<th>가격</th>
+						<th>할인가격</th>
 						<th>유통기한</th>
 						<th>카테고리</th>
 						<th>재고수</th>
+						
 					</tr>
 				
 					<tbody id = "tbody">
 						<c:forEach items="${productlists}" var="productListVO">
 							<tr>
 								<td>${productListVO.storeName}</td>
+								<td>${productListVO.image}</td>
 								<td>${productListVO.productName}</td>
 								<td>${productListVO.price}</td>
+								<td>${productListVO.discountPrice}</td>
 								<td>${productListVO.valid}</td>
 								<td>${productListVO.category}</td>
 								<td>${productListVO.stock}</td>

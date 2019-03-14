@@ -17,12 +17,20 @@
 	<!-- <bean id="testService" class="com.sinc.service.TestServiceImpl" /> -->
 	
 	<!-- 1. DataSource 설정추가하고 JUnit 연결 테스트하기 -->
-	<bean id="dataSource"
+<!-- 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
 		<property name="url" value="jdbc:oracle:thin:@127.0.0.1:1521:xe"></property>
 		<property name="username" value="hr"></property>
 		<property name="password" value="hr"></property>
+	</bean> -->
+	
+	<bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"></property>
+		<property name="url" value="jdbc:oracle:thin:@10.149.179.137:1521:xe"></property>
+		<property name="username" value="project"></property>
+		<property name="password" value="1234"></property>
 	</bean>
 	
 	<!-- 2. MyBatis 연동을 위한 추가 -->

@@ -11,6 +11,7 @@
 		<typeAlias type="com.sinc.project.model.vo.StockStoreVO" alias="stockstore" />
 		<typeAlias type="com.sinc.project.model.vo.CartVO" alias="cart" />
 		<typeAlias type="com.sinc.project.model.vo.UserVO" 	alias = "user"/>
+		<typeAlias type="com.sinc.project.model.vo.BasketVO" 	alias = "basket"/>
 	</typeAliases>
 	
 </configuration>
