@@ -1,2 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/main/webapp/WEB-INF/views/pos/index.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/pos/pos.jsp=UTF-8
+encoding//src/main/webapp/WEB-INF/views/postheme/tables.jsp=UTF-8
 encoding//src/main/webapp/WEB-INF/views/product/productList.jsp=UTF-8
