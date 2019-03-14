@@ -1,7 +1,6 @@
 package sinc.com.ssgmartapp.fragment;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +12,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +27,18 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import sinc.com.ssgmartapp.R;
+import sinc.com.ssgmartapp.adapter.CardListAdapter;
 import sinc.com.ssgmartapp.adapter.DeleteCardListAdapter;
 import sinc.com.ssgmartapp.dto.ProductListVO;
+import sinc.com.ssgmartapp.helper.Common;
 import sinc.com.ssgmartapp.helper.RecyclerDeleteItemTouchHelper;
+import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelper;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
-import sinc.com.ssgmartapp.helper.Util;
+import sinc.com.ssgmartapp.remote.RequestService;
 
 /**
  * 장바구니 Fragment
@@ -43,27 +49,27 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     private RecyclerView recyclerView;
     private List<ProductListVO> list;
-    private DeleteCardListAdapter adapter;
+    private CardListAdapter adapter;
     private SwipeRefreshLayout swipeLayout;
     private FirebaseDatabase mDatabase;
+
+    RequestService mService;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         System.out.println("BasketSSG_Fragment.onCreate");
-
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        list = new ArrayList<>();
+        mService = Common.getUrlService();
         mFragmentView = inflater.inflate(R.layout.fragment_basket_ssg, container, false);
         recyclerView = mFragmentView.findViewById(R.id.basket_ssg_recycler_view);
-
-        list = new ArrayList<>();
-        adapter = new DeleteCardListAdapter(getContext(), list);
+        adapter = new CardListAdapter(getContext(), list);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -71,9 +77,11 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
         ItemTouchHelper.SimpleCallback itemTouchHelperCallBack
-                = new RecyclerDeleteItemTouchHelper(0, ItemTouchHelper.LEFT, this);
+                = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
 
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
+
+        addItemToCart(getUserEmail());
 
         return mFragmentView;
     }
@@ -122,6 +130,28 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         }
     }
 
+    /**
+     * 19/03/14 (위진학)
+     * 나의 장바구니 페이지에 내 장바구니 목록 담기
+     */
+    private void addItemToCart(String user_Id) {
+
+        mService.getMyBasketListByMyId(user_Id)
+                .enqueue(new Callback<List<ProductListVO>>() {
+                    @Override
+                    public void onResponse(Call<List<ProductListVO>> call, Response<List<ProductListVO>> response) {
+                        list.clear();
+                        list.addAll(response.body());
+                        Log.d("storeName", response.body().toString());
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<ProductListVO>> call, Throwable t) {
+
+                    }
+                });
+    }
 
     @NonNull
     private String getUid() {
@@ -129,11 +159,19 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         return currentUser.getUid();
     }
 
+    @NonNull
+    private String getUserEmail() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        return currentUser.getEmail();
+    }
+
     @Override
     public void onStart() {
         super.onStart();
         FirebaseDatabase.getInstance().getReference().addValueEventListener(this);
     }
+
+
 
     @Override
     public void onStop() {

@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     private static final int SHAKE_SKIP_TIME = 500;
     private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
     private FloatingActionButton fab;
+    private SectionsPagerAdapter mSectionsPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         getSupportActionBar().setTitle(null);
 
 
-        final SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = findViewById(R.id.container);
@@ -84,7 +86,12 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     case 0:
                         fab.show();
                         break;
+                    case 1:
+                        refresh();
+                        fab.hide();
+                        break;
                     default:
+                        refresh();
                         fab.hide();
                         break;
                 }
@@ -201,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         ImageView imageView = v.findViewById(R.id.qr_Dialog_imageView);
 
         //QR코드에 들어갈 내용 넣어주기
-        String qr_text = "123456";
+        String qr_text = "wlsgkr@gmail.com";
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
@@ -223,4 +230,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
         alertDialog.show();
     }
+
+    public void refresh() {
+        mSectionsPagerAdapter.notifyDataSetChanged();
+    }
+
 }

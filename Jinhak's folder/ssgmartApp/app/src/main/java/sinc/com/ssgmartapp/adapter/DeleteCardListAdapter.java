@@ -42,9 +42,10 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
         return new MyViewHolder(itemView);
     }
 
+
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull DeleteCardListAdapter.MyViewHolder holder, int position) {
         ProductListVO productListVO = list.get(position);
         holder.name.setText(productListVO.getProductName());
         holder.normalPrice.setText((Integer.parseInt(String.valueOf(Math.round(productListVO.getPrice()))) + "원"));
@@ -79,6 +80,7 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
         notifyItemInserted(position);
     }
 
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView name, normalPrice, discountPrice, stock, valid;
@@ -95,6 +97,7 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
             thumbnail = itemView.findViewById(R.id.thumbnail);
             viewBackground = itemView.findViewById(R.id.view_background);
             viewForeground = itemView.findViewById(R.id.view_foreground);
+
         }
     }
 }

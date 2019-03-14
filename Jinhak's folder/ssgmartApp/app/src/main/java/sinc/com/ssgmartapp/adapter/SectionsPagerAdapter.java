@@ -1,5 +1,6 @@
 package sinc.com.ssgmartapp.adapter;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -33,6 +34,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 break;
         }
         return null;
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
     }
 
     //Swipe Page 개수

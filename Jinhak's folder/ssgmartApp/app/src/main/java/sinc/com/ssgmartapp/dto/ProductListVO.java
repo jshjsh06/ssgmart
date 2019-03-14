@@ -2,9 +2,17 @@ package sinc.com.ssgmartapp.dto;
 
 public class ProductListVO {
 
-    private String storeName, productName, category, image;
-    private double price, discountPrice,stock;
+    private String product_Id, storeName, productName, category, image;
+    private double price, discountPrice, stock;
     private String valid;
+
+    public String getProduct_Id() {
+        return product_Id;
+    }
+
+    public void setProduct_Id(String product_Id) {
+        this.product_Id = product_Id;
+    }
 
     public double getPrice() {
         return price;
@@ -74,13 +82,14 @@ public class ProductListVO {
     @Override
     public String toString() {
         return "ProductListVO{" +
-                "storeName='" + storeName + '\'' +
+                "product_Id='" + product_Id + '\'' +
+                ", storeName='" + storeName + '\'' +
                 ", productName='" + productName + '\'' +
                 ", category='" + category + '\'' +
                 ", image='" + image + '\'' +
-                ", price='" + price + '\'' +
-                ", discountPrice='" + discountPrice + '\'' +
-                ", stock='" + stock + '\'' +
+                ", price=" + price +
+                ", discountPrice=" + discountPrice +
+                ", stock=" + stock +
                 ", valid='" + valid + '\'' +
                 '}';
     }

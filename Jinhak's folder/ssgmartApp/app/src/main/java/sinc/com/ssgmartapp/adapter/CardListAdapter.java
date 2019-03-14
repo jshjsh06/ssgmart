@@ -39,7 +39,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cardlist_item, parent, false);
-        Util.setGlobalFont(context,itemView);
+        Util.setGlobalFont(context, itemView);
         return new MyViewHolder(itemView);
     }
 
