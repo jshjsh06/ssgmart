@@ -21,21 +21,23 @@
 				<div class="box-body">
 				<table class="table table-bordered">
 					<tr>
-						<th>ID</th>
-						<th>NAME</th>
-						<th>PRICE</th>
-						<th>삭제</th>
+						<th>매장명</th>
+						<th>제품명</th>
+						<th>가격</th>
+						<th>유통기한</th>
+						<th>카테고리</th>
+						<th>재고수</th>
 					</tr>
 				
 					<tbody id = "tbody">
-						<c:forEach items="${cartlists}" var="cartVO">
+						<c:forEach items="${basketlists}" var="basketVO">
 							<tr>
-								<td>${cartVO.product_id}</td>
-								<td>${cartVO.product_name}</td>
-								<td>${cartVO.product_price}</td>
-								<td>
-									<a href = /cart/delete.do?cart_id=${1}">삭제</a>
-								</td>
+								<td>${basketVO.storeName}</td>
+								<td>${basketVO.productName}</td>
+								<td>${basketVO.price}</td>
+								<td>${basketVO.valid}</td>
+								<td>${basketVO.category}</td>
+								<td>${basketVO.stock}</td>
 							</tr>
 						</c:forEach>
 					</tbody> 
