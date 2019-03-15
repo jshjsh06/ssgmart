@@ -161,7 +161,7 @@
 	                        	<input style="border-color:#18ce0f" type="text" class="form-control"  placeholder="Barcode Scanner" name="barcode" id="barcode" onkeypress="if( event.keyCode==13 ){goSearch();}"/>                              
 	                        </div>
 	                        <div class="col-lg-3">	                        
-		                       	<button class="btn btn-primary btn-round btn-simple float-right hidden-xs m-l-10" style="padding: 6px 14px;" id="searchBtn">Search</button>	                        
+		                       	<button class="btn btn-primary btn-round btn-simple float-right hidden-xs m-l-10" style="padding: 6px 14px;" id="searchBtn" onclick="document.getElementById('barcode').value = ''">Search</button>	                        
 	                        </div>
                         </div>
                     </div>
@@ -304,6 +304,8 @@
  					$("#totalPrice").html(S_price);
  					$("#totalCount").html(S_units);
  					$("#saleAmount").html(saleAmount);
+ 					$("#barcode").value = ' ';
+ 					
  				}
  			})
  		});

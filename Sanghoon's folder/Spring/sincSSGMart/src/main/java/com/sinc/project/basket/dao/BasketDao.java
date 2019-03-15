@@ -7,7 +7,7 @@ public interface BasketDao {
 
 	public void insertMyBasketRow(Object obj);
 	public List<Object> selectMyBasketRow(String username);
-	public List<Object> deleteMyBasketRow(Object obj);
+	public void deleteMyBasketRow(Object obj);
 	public List<Object> barcodeBasketRow(String barcode);
 	
 }

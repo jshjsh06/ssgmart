@@ -32,10 +32,10 @@ public class BasketServiceImpl implements BasketService{
 	}
 	
 	@Override
-	public List<Object> deleteMyBasket(Object obj) {
+	public void deleteMyBasket(Object obj) {
 		System.out.println("deleteMyBasket Impl is running");
 		
-		return dao.deleteMyBasketRow(obj);
+		dao.deleteMyBasketRow(obj);
 	}
 
 	@Override
