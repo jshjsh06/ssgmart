@@ -4,11 +4,11 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 	<typeAliases>
-
 		<typeAlias type="com.sinc.project.model.vo.PosVO" alias="pos" />
 		<typeAlias type="com.sinc.project.model.vo.ProductListVO" alias="productList" />
 		<typeAlias type="com.sinc.project.model.vo.UserVO" alias="user" />
 		<typeAlias type="com.sinc.project.model.vo.MyBasketVO" alias="myBasket" />
+		<typeAlias type="com.sinc.project.model.vo.MyProductListVO" alias="myProductList" />		
 	</typeAliases>
 	
 </configuration>

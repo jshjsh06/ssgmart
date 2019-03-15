@@ -42,23 +42,21 @@ public class BasketDaoImpl implements BasketDao{
 		System.out.println("selectMyBasketRow is running");		
 		
 		Object obj2 = session.selectList("com.sinc.mybatis.basket.selectMyBasketRow", user_Id);
-		System.out.println((ArrayList) obj2 + "@@@@@@@@@@@@@@@@");
+//		System.out.println((ArrayList) obj2 + "@@@@@@@@@@@@@@@@");
 		
 		// MYBASKET Table에서 나의 ID를 검색해서 SELECT 구문
 		return session.selectList("com.sinc.mybatis.basket.selectMyBasketRow", user_Id);
 	}
 	
 	@Override
-	public List<Object> deleteMyBasketRow(Object obj) {
+	public void deleteMyBasketRow(Object obj) {
 		System.out.println("deleteMyBasketRow is running");
-		System.out.println(obj);
+//		System.out.println(obj);
 		
-		// MYBASKET Table에 INSERT 하는 구문
-		session.insert("com.sinc.mybatis.basket.deleteMyBaksetRow", obj);
+		// MYBASKET Table에 DELETE 하는 구문
+		session.insert("com.sinc.mybatis.basket.deleteMyBasketRow", obj);
 //		Object obj2 = session.selectList("com.sinc.mybatis.basket.selectMyBasketRows", map);
 		
-		// MYBASKET Table에서 나의 ID를 검색해서 SELECT 구문
-		return session.selectList("com.sinc.mybatis.basket.selectMyBasketRows", obj);
 	}
 
 	@Override

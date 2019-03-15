@@ -20,7 +20,8 @@
 		<!--/.col (left) -->
 	</div>
 	<!-- /.row -->
-</section>
+</section>wlsgkr@gmail.com
+
 <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
