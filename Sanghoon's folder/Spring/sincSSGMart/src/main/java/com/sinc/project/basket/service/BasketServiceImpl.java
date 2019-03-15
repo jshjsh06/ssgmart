@@ -25,18 +25,26 @@ public class BasketServiceImpl implements BasketService{
 	}
 	
 	@Override
-	public List<Object> selectMyBasket(String user_Id) {
+	public List<Object> selectMyBasket(String username) {
 		System.out.println("insertMyBasket Impl is running");
 		
-		return dao.selectMyBasketRow(user_Id);
+		return dao.selectMyBasketRow(username);
 	}
 	
 	@Override
-	public List<Object> deleteMyBasket(Object obj) {
+	public void deleteMyBasket(Object obj) {
 		System.out.println("deleteMyBasket Impl is running");
 		
-		return dao.deleteMyBasketRow(obj);
+		dao.deleteMyBasketRow(obj);
 	}
+	
+	@Override
+	public void updateBasket(List<Object> obj) {
+		System.out.println("updateBasket Impl is running");
+		
+		dao.updateBasketRow(obj);
+	}
+	
 
 	@Override
 	public List<Object> getBasketByBarcode(String user_Id) {

@@ -7,45 +7,61 @@
  <insert id="insertMyBasketRow" parameterType="myBasket">
 	MERGE INTO MY_BASKET
 	USING DUAL
-	ON(PRODUCT_ID = #{product_Id} AND USER_ID = #{user_Id})
+	ON(PRODUCT_ID = #{product_Id} AND USER_ID = #{user_Id} AND STORE = #{storeName})
 	WHEN MATCHED THEN
 	UPDATE SET CNT = CNT + 1
 	WHEN NOT MATCHED THEN
-	INSERT (PRODUCT_ID, USER_ID, CNT)
-	VALUES (#{product_Id}, #{user_Id}, 1)
+	INSERT (PRODUCT_ID, USER_ID, CNT, STORE)
+	VALUES (#{product_Id}, #{user_Id}, 1, #{storeName})
+	
  </insert>
  
-  <delete id="deleteMyBasketRow" parameterType="map">
-	DELETE 	FROM	MY_BASKET
-	WHERE	USER_ID = #{user_Id} AND PRODUCT_ID = #{product_Id}
+  <delete id="deleteMyBasketRow" parameterType="myProductList">
+	DELETE  FROM MY_BASKET
+	WHERE USER_ID = #{user_Id} AND PRODUCT_ID = #{product_Id}
  </delete>
  
- <select id="selectMyBasketRow" parameterType="String" resultType="productList">
-<!--  	SELECT A.NAME
- 	FROM PRODUCTS A
- 	JOIN MY_BASKET B ON (A.ID = B.PRODUCT_ID)
- 	WHERE B.USER_ID = #{user_Id} -->
+ <select id="selectMyBasketRow" parameterType="String" resultType="myProductList">
  	
- 		<![CDATA[  
-		SELECT E.NAME AS STORENAME, A.ID AS PRODUCT_ID, A.NAME AS PRODUCTNAME , A.PRICESELL AS PRICE , A.TEXTTIP AS VALID, C.NAME AS CATEGORY, (A.STOCKVOLUME + B.UNITS) AS STOCK,	
+ 	<![CDATA[  
+	SELECT E.NAME AS STORENAME, A.ID AS PRODUCT_ID, A.NAME AS PRODUCTNAME , A.PRICESELL AS PRICE , A.TEXTTIP AS VALID, C.NAME AS CATEGORY, (A.STOCKVOLUME + B.UNITS) AS STOCK,	
 	(CASE WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 > 360 THEN A.PRICESELL
-	  WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 360 THEN A.PRICESELL * 0.9
-	  WHEN(TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 300 THEN A.PRICESELL * 0.85
-	  WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 240 THEN A.PRICESELL * 0.8
-	  WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 180 THEN A.PRICESELL * 0.7
-	  WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 120 THEN A.PRICESELL * 0.6
-	  WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 60 THEN A.PRICESELL * 0.5
-	END) AS DISCOUNTPRICE, A.IMAGE AS IMAGE
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 60 THEN A.PRICESELL * 0.5
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 120 THEN A.PRICESELL * 0.6
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 180 THEN A.PRICESELL * 0.7
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 240 THEN A.PRICESELL * 0.8
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 300 THEN A.PRICESELL * 0.85
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 360 THEN A.PRICESELL * 0.9
+	END) AS DISCOUNTPRICE, A.IMAGE AS IMAGE, Z.CNT AS CNT, Z.USER_ID AS USER_ID
 		FROM PRODUCTS A
 		JOIN STOCKCURRENT  B ON(A.ID = B.PRODUCT)
 		JOIN CATEGORIES  C ON(A.CATEGORY = C.ID)
 		JOIN LOCATIONS E ON(E.ID = B.LOCATION)
 		JOIN MY_BASKET Z ON (A.ID = Z.PRODUCT_ID)
-		WHERE Z.USER_ID = #{user_Id}
+		WHERE Z.USER_ID = #{user_Id} AND Z.STORE = #{storeName}
 		
-		 ]]>	
+	]]>	
  	
  </select>
+ 
+ 
+   <update id="updateBasketRow" parameterType="myProductList">
+  <![CDATA[ 
+	 UPDATE (SELECT USER_ID, PRODUCT_ID, CNT, DISCOUNT, (CASE WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 > 360 THEN A.PRICESELL
+	       WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 60 THEN A.PRICESELL * 0.5
+	       WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 120 THEN A.PRICESELL * 0.6
+	       WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 180 THEN A.PRICESELL * 0.7
+	       WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 240 THEN A.PRICESELL * 0.8
+	       WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 300 THEN A.PRICESELL * 0.85
+	       WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 360 THEN A.PRICESELL * 0.9
+	       END) AS DISCOUNTPRICE
+	        FROM MY_BASKET B, PRODUCTS A 
+	        WHERE A.ID = B.PRODUCT_ID
+	    )
+	 SET    DISCOUNT = DISCOUNTPRICE, CNT = #{cnt}
+	 WHERE USER_ID = #{user_Id} AND PRODUCT_ID = #{product_Id}
+ ]]>
+ </update>
 
 <select id="barcodeBasketRow" parameterType="String" resultType="pos">
 	SELECT B.NAME, A.CNT, B.PRICESELL
