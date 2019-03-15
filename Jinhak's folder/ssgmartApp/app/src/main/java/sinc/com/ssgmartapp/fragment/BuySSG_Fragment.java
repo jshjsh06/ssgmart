@@ -1,14 +1,22 @@
 package sinc.com.ssgmartapp.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +39,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +52,7 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sinc.com.ssgmartapp.MainActivity;
 import sinc.com.ssgmartapp.R;
 import sinc.com.ssgmartapp.adapter.CardListAdapter;
 import sinc.com.ssgmartapp.dto.MyBasketVO;
@@ -47,6 +62,8 @@ import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelper;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
 import sinc.com.ssgmartapp.helper.Util;
 import sinc.com.ssgmartapp.remote.RequestService;
+
+import static android.content.Context.SENSOR_SERVICE;
 
 
 /**
@@ -66,8 +83,6 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
     RequestService mService;
 
-    private FirebaseDatabase mDatabase;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Util.setGlobalFont(getContext(), getActivity().getWindow().getDecorView());
@@ -81,11 +96,9 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         recyclerView = mFragmentView.findViewById(R.id.buy_ssg_recycler_view);
         mService = Common.getUrlService();
 
-
         list = new ArrayList<>();
         adapter = new CardListAdapter(getContext(), list);
         locationTextView = mFragmentView.findViewById(R.id.marker_location_textView);
-        mDatabase = FirebaseDatabase.getInstance();
 
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         emartName = intent.getStringExtra("marker_location");
@@ -123,6 +136,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
         setCategorySpinner();
 
+
         return mFragmentView;
     }
 
@@ -155,7 +169,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
      * 매장 별,카테고리별 할인 품목 올때 쓱 리스트에 담기
      */
     private void addItemToCartByCategory(String storeName, String category) {
-        mService = Common.getMenuRequestByMarketName();
+        mService = Common.getUrlService();
 
         Log.d("storeName", storeName);
         mService.getMenuListByCategory(storeName, category)
@@ -178,7 +192,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
     /**
      * 19/02/28 (위진학)
-     * 매장 별 할인 품목 장바구니에 담기
+     * 매장 별 할인 품목 내 장바구니에 담는 스와이프
      */
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
@@ -192,6 +206,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
             adapter.sendBasket(addIndex);
 
             insertItem(addItem);
+            addItemToCart(emartName);
 
             Snackbar snackbar = Snackbar.make(mFragmentView, name + "를 장바구니에 넣었어요!!", Snackbar.LENGTH_SHORT);
             snackbar.setAction("취소", new View.OnClickListener() {
@@ -207,6 +222,10 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         }
     }
 
+    /**
+     * 19/03/15 (위진학)
+     * 상품 장바구니에 넣기
+     */
     private void insertItem(ProductListVO item) {
 
         MyBasketVO myBasketVO = new MyBasketVO();
@@ -214,6 +233,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         myBasketVO.setUser_Id(getUserEmail());
         myBasketVO.setDiscountPrice(Integer.parseInt(String.valueOf(Math.round(item.getDiscountPrice()))));
         myBasketVO.setProduct_Id(item.getProduct_Id());
+        myBasketVO.setStoreName(emartName);
 
         mService.insertMyBasket(myBasketVO).enqueue(new Callback<Integer>() {
             @Override
@@ -228,7 +248,6 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
-                Toast.makeText(getContext(), "Insert실패", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -324,4 +343,5 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     public void onCancelled(DatabaseError databaseError) {
 
     }
+
 }

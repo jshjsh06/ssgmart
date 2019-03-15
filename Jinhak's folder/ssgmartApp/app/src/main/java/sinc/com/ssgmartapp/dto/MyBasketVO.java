@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class MyBasketVO implements Serializable {
 
+    private String storeName;
     private String user_Id;
     private String product_Id;
     private int cnt;
@@ -45,10 +46,19 @@ public class MyBasketVO implements Serializable {
         this.product_Id = product_Id;
     }
 
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
+    }
+
     @Override
     public String toString() {
         return "MyBasketVO{" +
-                "user_Id='" + user_Id + '\'' +
+                "storeName='" + storeName + '\'' +
+                ", user_Id='" + user_Id + '\'' +
                 ", product_Id='" + product_Id + '\'' +
                 ", cnt=" + cnt +
                 ", discountPrice=" + discountPrice +

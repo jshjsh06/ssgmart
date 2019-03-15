@@ -12,6 +12,7 @@ import retrofit2.http.Query;
 import retrofit2.http.Url;
 import sinc.com.ssgmartapp.dto.Location;
 import sinc.com.ssgmartapp.dto.MyBasketVO;
+import sinc.com.ssgmartapp.dto.MyProductListVO;
 import sinc.com.ssgmartapp.dto.ProductListVO;
 
 public interface RequestService {
@@ -42,9 +43,15 @@ public interface RequestService {
 
     //내 장바구니 리스트 가져오기
     @GET("basket/selectMyBasket.do")
-    Call<List<ProductListVO>> getMyBasketListByMyId(@Query("user_Id") String user_Id);
+    Call<List<MyProductListVO>> getMyBasketListByMyId(@Query("user_Id") String user_Id);
 
+    //내 장바구니 리스트 삭제하기
+    @POST("basket/deleteMyBasket.do")
+    Call<List<MyProductListVO>> deleteMyBasketListByMyId(@Body MyProductListVO myProductListVO);
 
+    //내 장바구니 리스트 업데이트하기
+    @POST("basket/updateBasket.do")
+    Call<List<MyProductListVO>> updateMyBasketById(@Body List<MyProductListVO> list);
 
 
 }

@@ -36,4 +36,12 @@
         <item name="android:dropDownSelector">@android:color/white</item>
     </style>
 
+    <!--NumberPiker Style-->
+    <style name="AppTheme.Picker">
+        <item name="android:textColorPrimary">@android:color/black</item>
+        <item name="colorControlNormal">@color/itemName</item>
+        <item name="android:textColorHighlight">@color/colorAccent</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 </resources>

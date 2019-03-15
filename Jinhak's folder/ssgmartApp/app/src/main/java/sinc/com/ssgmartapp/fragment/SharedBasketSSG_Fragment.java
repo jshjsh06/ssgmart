@@ -12,6 +12,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import java.util.List;
 
 import sinc.com.ssgmartapp.R;
 import sinc.com.ssgmartapp.adapter.DeleteCardListAdapter;
+import sinc.com.ssgmartapp.dto.MyProductListVO;
 import sinc.com.ssgmartapp.dto.ProductListVO;
 import sinc.com.ssgmartapp.helper.RecyclerDeleteItemTouchHelper;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
@@ -40,7 +42,7 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
     View mFragmentView;
 
     private RecyclerView recyclerView;
-    private List<ProductListVO> list;
+    private List<MyProductListVO> list;
     private DeleteCardListAdapter adapter;
     private SwipeRefreshLayout swipeLayout;
     private FirebaseDatabase mDatabase;
@@ -59,7 +61,7 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
 
         recyclerView = mFragmentView.findViewById(R.id.basket_ssg_recycler_view);
         list = new ArrayList<>();
-        adapter = new DeleteCardListAdapter(getContext(), list);
+        adapter = new DeleteCardListAdapter(getContext(), list,getUserEmail());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -69,7 +71,12 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
         ItemTouchHelper.SimpleCallback itemTouchHelperCallBack
                 = new RecyclerDeleteItemTouchHelper(0, ItemTouchHelper.LEFT, this);
 
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallBackRight
+                = new RecyclerDeleteItemTouchHelper(0, ItemTouchHelper.RIGHT, this);
+
+
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
+        new ItemTouchHelper(itemTouchHelperCallBackRight).attachToRecyclerView(recyclerView);
 
         return mFragmentView;
     }
@@ -96,10 +103,14 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+
+        Log.d("direction",String.valueOf(direction));
+        //오른쪽으로 밀면 8 왼쪽으로 밀면 4
+
         if (viewHolder instanceof DeleteCardListAdapter.MyViewHolder) {
             String name = list.get(viewHolder.getAdapterPosition()).getProductName();
 
-            final ProductListVO deleteItem = list.get(viewHolder.getAdapterPosition());
+            final MyProductListVO deleteItem = list.get(viewHolder.getAdapterPosition());
             final int deleteIndex = viewHolder.getAdapterPosition();
 
             adapter.sendBasket(deleteIndex);
@@ -135,5 +146,11 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
     public void onStop() {
         super.onStop();
         FirebaseDatabase.getInstance().getReference().removeEventListener(this);
+    }
+
+    @NonNull
+    private String getUserEmail() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        return currentUser.getEmail();
     }
 }

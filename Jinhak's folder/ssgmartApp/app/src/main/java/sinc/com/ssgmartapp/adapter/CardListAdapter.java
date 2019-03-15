@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
@@ -60,6 +59,21 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
         Bitmap bm = BitmapFactory.decodeStream(inStream);
         holder.thumbnail.setImageBitmap(bm);
 
+        //가격 꾸미기
+        double normal = productListVO.getPrice();
+        double discount = productListVO.getDiscountPrice();
+
+        if(normal==discount){
+            holder.discountTxt.setText("");
+            holder.discountTxt.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
+            holder.discountPrice.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
+        }else{
+            holder.discountTxt.setText(String.valueOf(Integer.parseInt(String.valueOf(Math.round(productListVO.getPrice())))) + "원");
+            holder.discountTxt.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
+            holder.tradingBar.setVisibility(View.VISIBLE);
+        }
+
+
 /*        Picasso.with(context)
                 .load(productListVO.getImage())
                 .into(holder.thumbnail);*/
@@ -82,9 +96,10 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, normalPrice, discountPrice, stock, valid;
-        public ImageView thumbnail;
+        public TextView name, normalPrice, discountPrice, stock, valid , discountTxt;
+        public ImageView thumbnail,tradingBar;
         public RelativeLayout viewBackground, viewForeground;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -97,6 +112,8 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
             viewBackground = itemView.findViewById(R.id.view_background);
             viewForeground = itemView.findViewById(R.id.view_foreground);
 
+            discountTxt = itemView.findViewById(R.id.discountPrice_txt);
+            tradingBar = itemView.findViewById(R.id.trading_bar);
         }
     }
 }
