@@ -1,10 +1,17 @@
 package sinc.com.ssgmartapp.dto;
 
-public class ProductListVO {
-
-    private String product_Id, storeName, productName, category, image;
-    private double price, discountPrice, stock;
+public class MyProductListVO {
+    private String product_Id;
+    private String storeName;
+    private String productName;
+    private String category;
+    private String image;
+    private double price;
+    private double discountPrice;
+    private double stock;
     private String valid;
+    private String user_Id;
+    private int cnt;
 
     public String getProduct_Id() {
         return product_Id;
@@ -12,30 +19,6 @@ public class ProductListVO {
 
     public void setProduct_Id(String product_Id) {
         this.product_Id = product_Id;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public double getDiscountPrice() {
-        return discountPrice;
-    }
-
-    public void setDiscountPrice(double discountPrice) {
-        this.discountPrice = discountPrice;
-    }
-
-    public double getStock() {
-        return stock;
-    }
-
-    public void setStock(double stock) {
-        this.stock = stock;
     }
 
     public String getStoreName() {
@@ -70,6 +53,29 @@ public class ProductListVO {
         this.image = image;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getDiscountPrice() {
+        return discountPrice;
+    }
+
+    public void setDiscountPrice(double discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+    public double getStock() {
+        return stock;
+    }
+
+    public void setStock(double stock) {
+        this.stock = stock;
+    }
 
     public String getValid() {
         return valid;
@@ -79,9 +85,25 @@ public class ProductListVO {
         this.valid = valid;
     }
 
+    public String getUser_Id() {
+        return user_Id;
+    }
+
+    public void setUser_Id(String user_Id) {
+        this.user_Id = user_Id;
+    }
+
+    public int getCnt() {
+        return cnt;
+    }
+
+    public void setCnt(int cnt) {
+        this.cnt = cnt;
+    }
+
     @Override
     public String toString() {
-        return "ProductListVO{" +
+        return "MyProductListVO{" +
                 "product_Id='" + product_Id + '\'' +
                 ", storeName='" + storeName + '\'' +
                 ", productName='" + productName + '\'' +
@@ -91,6 +113,8 @@ public class ProductListVO {
                 ", discountPrice=" + discountPrice +
                 ", stock=" + stock +
                 ", valid='" + valid + '\'' +
+                ", user_Id='" + user_Id + '\'' +
+                ", cnt=" + cnt +
                 '}';
     }
 }

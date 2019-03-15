@@ -40,8 +40,13 @@ public class BasketDaoImpl implements BasketDao{
 	public List<Object> selectMyBasketRow(String username) { 
 		System.out.println("selectMyBasketRow is running");		
 		
+<<<<<<< HEAD
 		//Object obj2 = session.selectList("com.sinc.mybatis.basket.selectMyBasketRow", user_Id);
 		//System.out.println((ArrayList) obj2 + "@@@@@@@@@@@@@@@@");
+=======
+		Object obj2 = session.selectList("com.sinc.mybatis.basket.selectMyBasketRow", user_Id);
+//		System.out.println((ArrayList) obj2 + "@@@@@@@@@@@@@@@@");
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 		
 		// MYBASKET Table에서 나의 ID를 검색해서 SELECT 구문
 		return session.selectList("com.sinc.mybatis.basket.selectMyBasketRow", username);
@@ -53,6 +58,7 @@ public class BasketDaoImpl implements BasketDao{
 		System.out.println("deleteMyBasketRow is running");
 //		System.out.println(obj);
 		
+<<<<<<< HEAD
 		// MYBASKET Table에 Delete 하는 구문
 		session.insert("com.sinc.mybatis.basket.deleteMyBasketRow", obj);
 	}
@@ -67,6 +73,12 @@ public class BasketDaoImpl implements BasketDao{
 			System.out.println("obj.get : " + obj.get(i));
 			session.insert("com.sinc.mybatis.basket.updateBasketRow", obj.get(i));
 		}
+=======
+		// MYBASKET Table에 DELETE 하는 구문
+		session.insert("com.sinc.mybatis.basket.deleteMyBasketRow", obj);
+//		Object obj2 = session.selectList("com.sinc.mybatis.basket.selectMyBasketRows", map);
+		
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 	}
 
 	@Override

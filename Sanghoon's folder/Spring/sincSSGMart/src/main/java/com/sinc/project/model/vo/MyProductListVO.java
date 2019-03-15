@@ -12,11 +12,19 @@ public class MyProductListVO {
 	 private int discountPrice;
 	 private int stock;
 	 private String valid;
+<<<<<<< HEAD
 	  
 	 private String user_Id;
 	 private int cnt;
 	 
 	 public MyProductListVO() {}
+=======
+	 
+	private String user_Id;
+	private int cnt;
+	
+	public MyProductListVO() {}
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 
 	public MyProductListVO(String product_Id, String storeName, String productName, String category, byte[] image,
 			int price, int discountPrice, int stock, String valid, String user_Id, int cnt) {
@@ -130,5 +138,10 @@ public class MyProductListVO {
 				+ ", cnt=" + cnt + "]";
 	}
 	
+<<<<<<< HEAD
  
 }
+=======
+	
+}
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816

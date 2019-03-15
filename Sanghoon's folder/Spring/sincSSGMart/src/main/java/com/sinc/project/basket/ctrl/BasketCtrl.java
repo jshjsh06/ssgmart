@@ -17,7 +17,12 @@ import com.sinc.project.basket.service.BasketService;
 import com.sinc.project.model.vo.BasketVO;
 import com.sinc.project.model.vo.MyBasketVO;
 import com.sinc.project.model.vo.MyProductListVO;
+<<<<<<< HEAD
 
+=======
+import com.sinc.project.model.vo.ProductListVO;
+import com.sinc.project.model.vo.UserVO;
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 
 @Controller
 @RequestMapping(value = "/basket")
@@ -70,11 +75,16 @@ public class BasketCtrl {
 		return list;
 	}
 	
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 	@RequestMapping(value="/deleteMyBasket.do", method = RequestMethod.POST)
 	@ResponseBody
 	public void deleteMyBasket(@RequestBody MyProductListVO myProductList) { 
 		// 내장바구니에서 상품을 삭제하는 Ctrl. 거의 insertMyBasket와 유사
 		System.out.println("deleteMyBasket is running");
+<<<<<<< HEAD
 		
 		service.deleteMyBasket(myProductList);
 	}
@@ -88,7 +98,27 @@ public class BasketCtrl {
 		//System.out.println(myProductList);
 		service.updateBasket(myProductList);
 
+=======
+		System.out.println(myProductList.toString());
+		
+//		List<Object> list = service.deleteMyBasket(myProductList);
+		service.deleteMyBasket(myProductList);
+		
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 	}
+//	
+//	@RequestMapping(value="/insertBasketId.do", method = RequestMethod.GET)
+//	@ResponseBody
+//	public List<Object> insertBasketId(ProductListVO productList, UserVO user) { 
+//		// 내장바구니에서 상품을 삭제하는 Ctrl. 거의 insertMyBasket와 유사
+//		System.out.println("insertBasketId is running");
+//		deleteMap.put("product_Id", productList.getProduct_Id());
+//		deleteMap.put("user_Id", user.getUser_Id());
+//		
+//		List<Object> list = service.deleteMyBasket(deleteMap);
+//		
+//		return list;
+//	}
 	
 	
 	@RequestMapping(value="/pos.do", method = RequestMethod.POST) // ResonseBody를 사용하면 AJAX에서 자동으로 json으로 받을거에여!!

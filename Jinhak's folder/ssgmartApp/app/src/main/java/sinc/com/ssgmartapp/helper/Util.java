@@ -11,7 +11,6 @@ import android.widget.TextView;
  */
 
 public class Util {
-    private static Typeface mTypeface;
 
     public static void setGlobalFont(Context context, View view) {
         if (view != null) {

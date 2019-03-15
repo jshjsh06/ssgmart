@@ -9,12 +9,8 @@ public class Common {
         return RetrofitClient.getClient("https://ssg-mart-app.firebaseio.com/").create(RequestService.class);
     }
 
-    public static RequestService getLoginService() {
-        return RetrofitClient.getClient("http://10.149.178.13:8088/").create(RequestService.class);
-    }
-
-    public static RequestService getMenuRequestByMarketName(){
-        return RetrofitClient.getClient("http://10.149.178.13:8088/").create(RequestService.class);
+    public static RequestService getUrlService(){
+        return RetrofitClient.getClient("http://10.149.178.254:8088/").create(RequestService.class);
     }
 
 }
