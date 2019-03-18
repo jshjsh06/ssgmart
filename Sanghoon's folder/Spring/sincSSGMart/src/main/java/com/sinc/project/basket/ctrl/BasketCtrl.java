@@ -17,8 +17,12 @@ import com.sinc.project.basket.service.BasketService;
 import com.sinc.project.model.vo.BasketVO;
 import com.sinc.project.model.vo.MyBasketVO;
 import com.sinc.project.model.vo.MyProductListVO;
+<<<<<<< HEAD
+
+=======
 import com.sinc.project.model.vo.ProductListVO;
 import com.sinc.project.model.vo.UserVO;
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 
 @Controller
 @RequestMapping(value = "/basket")
@@ -42,33 +46,17 @@ public class BasketCtrl {
 		System.out.println("home call~~~~~");
 		return "pos/index"; // 이 리턴은 webapp에 있는 WEB-INF-views를 기준으로 한다!!!! product 폴더를 사용하고 싶으면 product/~~ 를 해야지!!
 	}
-
-	/*
-	 * @RequestMapping(value="/insertMyBasket.do", method = RequestMethod.GET)
-	 * 
-	 * @ResponseBody public List<Object> insertMyBasket(ProductListVO productList,
-	 * UserVO user) { // 안드로이드에서 ProductList와 User 정보를 동시에 보낼거임. 이렇게 받을 수 있는지 확인해야하는
-	 * 부분! // 상품목록에서 내 장바구니로 Swifing시 내 장바구니에 목록이 담기는 Ctrl // Insert문으로 MYBASKET
-	 * 테이블에 담기고, UserId를 Where 검색을 통해 MYBASKET에 담긴 물품들을 리턴함
-	 * System.out.println("insertMyBasket is running"); insertMap.put("product_Id",
-	 * productList.getProduct_Id()); insertMap.put("user_Id", user.getId());
-	 * 
-	 * List<Object> list = service.insertMyBasket(insertMap); insertMap.clear();
-	 * 
-	 * return list; }
-	 */
 	
 	@RequestMapping(value="/insertMyBasket.do", method = RequestMethod.POST)
 	@ResponseBody
 	public void insertMyBasket(@RequestBody MyBasketVO myBasket) {  
 		// 상품목록에서 내 장바구니로 Swifing시 내 장바구니에 목록이 담기는 Ctrl
 		System.out.println("insertMyBasket is running");
-		
-//		System.out.println(myBasket.toString());
-		
-//		List<Object> list = service.insertMyBasket(myBasket);
+
+		System.out.println(myBasket.getStoreName());
 		service.insertMyBasket(myBasket);
-//		return list;
+		
+
 	}
 	
 	@RequestMapping(value="/selectMyBasket.do", method = RequestMethod.GET)
@@ -80,20 +68,43 @@ public class BasketCtrl {
 		
 		List<Object> list = service.selectMyBasket(id);
 		
+		for(int i=0; i< list.size(); i ++) {
+			System.out.println(list.get(i));
+		}
+		
 		return list;
 	}
 	
+<<<<<<< HEAD
+=======
 
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 	@RequestMapping(value="/deleteMyBasket.do", method = RequestMethod.POST)
 	@ResponseBody
 	public void deleteMyBasket(@RequestBody MyProductListVO myProductList) { 
 		// 내장바구니에서 상품을 삭제하는 Ctrl. 거의 insertMyBasket와 유사
 		System.out.println("deleteMyBasket is running");
+<<<<<<< HEAD
+		
+		service.deleteMyBasket(myProductList);
+	}
+	
+	
+	@RequestMapping(value="/updateBasket.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void updateBasket(@RequestBody List<Object> myProductList) {  
+		
+		System.out.println("updateBasket is running");	
+		//System.out.println(myProductList);
+		service.updateBasket(myProductList);
+
+=======
 		System.out.println(myProductList.toString());
 		
 //		List<Object> list = service.deleteMyBasket(myProductList);
 		service.deleteMyBasket(myProductList);
 		
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 	}
 //	
 //	@RequestMapping(value="/insertBasketId.do", method = RequestMethod.GET)
@@ -108,6 +119,7 @@ public class BasketCtrl {
 //		
 //		return list;
 //	}
+	
 	
 	@RequestMapping(value="/pos.do", method = RequestMethod.POST) // ResonseBody를 사용하면 AJAX에서 자동으로 json으로 받을거에여!!
 	@ResponseBody

@@ -8,8 +8,17 @@ public class MyBasketVO implements Serializable {
     private String product_Id;
     private int cnt;
     private int discountPrice;
+    private String storeName;
 
-    public String getUser_Id() {
+    public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
+	}
+
+	public String getUser_Id() {
         return user_Id;
     }
 

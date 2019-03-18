@@ -53,38 +53,5 @@ public class ProductListCtrl {
 		System.out.println("list : " + list);
 		return list ; 
 	}
-	
-	
-	//************************************************************************************************************
-	// 전체 product 가져오기 where 조건 없음
-	@RequestMapping(value = "/productList.do", method = RequestMethod.GET)
-	public String getProductList(Model model) {
-		System.out.println("p_ListCtrl getProductList");
-		model.addAttribute("productlists", service.productList_list());
-		return "productList/productList";
-	}
-	
-	//  where 매장(jsp용)
-	@RequestMapping(value = "/productList3.do", method = RequestMethod.GET)
-	public String getProductList3(ProductListVO pListVO, Model model) {
-		String storeName = "명동센터점";
-		System.out.println("=======jsp, 매장 Controller");
-		this.pListVO.setStoreName(storeName);		
-		model.addAttribute("productlists", service.productList_list1(this.pListVO));
-	
-		return "productList/productList";
-	}
-	
-	// where 매장+카테고리(jsp용)
-	@RequestMapping(value = "/productList4.do", method = RequestMethod.GET)
-	public String getProductList4(ProductListVO pListVO, Model model) {
-		String storeName = "명동센터";
-		String category = "베이커리";
-		System.out.println("=======jsp, 매장&카테고리 Controller");		
-		this.pListVO.setStoreName(storeName);
-		this.pListVO.setCategory(category);		
-		model.addAttribute("productlists", service.productList_list2(this.pListVO));		
-		return "productList/productList";
-	}
 
 }

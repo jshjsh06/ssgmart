@@ -7,6 +7,15 @@
 	<select id="productRow" resultType="productList">
 	<![CDATA[  
 		SELECT E.NAME AS STORENAME, A.ID AS PRODUCT_ID, A.NAME AS PRODUCTNAME , A.PRICESELL AS PRICE , A.TEXTTIP AS VALID, C.NAME AS CATEGORY, (A.STOCKVOLUME + B.UNITS) AS STOCK,	
+<<<<<<< HEAD
+	(CASE WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(sSYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 > 360 THEN A.PRICESELL
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 60 THEN A.PRICESELL * 0.5
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 120 THEN A.PRICESELL * 0.6
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 180 THEN A.PRICESELL * 0.7
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 240 THEN A.PRICESELL * 0.8
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 300 THEN A.PRICESELL * 0.85
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 360 THEN A.PRICESELL * 0.9
+=======
 	(CASE WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 > 360 THEN A.PRICESELL
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 60 THEN A.PRICESELL * 0.5
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 120 THEN A.PRICESELL * 0.6
@@ -14,6 +23,7 @@ WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-m
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 240 THEN A.PRICESELL * 0.8
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 300 THEN A.PRICESELL * 0.85
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 360 THEN A.PRICESELL * 0.9
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 	END) AS DISCOUNTPRICE, A.IMAGE AS IMAGE
 		FROM PRODUCTS A
 		JOIN STOCKCURRENT  B ON(A.ID = B.PRODUCT)
@@ -25,12 +35,21 @@ WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-m
  	<![CDATA[ 	
 		SELECT E.NAME AS STORENAME, A.ID AS PRODUCT_ID ,A.NAME AS PRODUCTNAME , A.PRICESELL AS PRICE , A.TEXTTIP AS VALID, C.NAME AS CATEGORY, (A.STOCKVOLUME + B.UNITS) AS STOCK,	
 	(CASE WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 > 360 THEN A.PRICESELL
+<<<<<<< HEAD
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 60 THEN A.PRICESELL * 0.5
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 120 THEN A.PRICESELL * 0.6
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 180 THEN A.PRICESELL * 0.7
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 240 THEN A.PRICESELL * 0.8
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 300 THEN A.PRICESELL * 0.85
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 360 THEN A.PRICESELL * 0.9
+=======
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 60 THEN A.PRICESELL * 0.5
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 120 THEN A.PRICESELL * 0.6
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 180 THEN A.PRICESELL * 0.7
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 240 THEN A.PRICESELL * 0.8
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 300 THEN A.PRICESELL * 0.85
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 360 THEN A.PRICESELL * 0.9
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 	END) AS DISCOUNTPRICE, A.IMAGE AS IMAGE
 		FROM PRODUCTS A
 		JOIN STOCKCURRENT  B ON(A.ID = B.PRODUCT)
@@ -44,12 +63,21 @@ WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-m
 	<![CDATA[ 
 		SELECT E.NAME AS STORENAME, A.ID AS PRODUCT_ID, A.NAME AS PRODUCTNAME , A.PRICESELL AS PRICE , A.TEXTTIP AS VALID, C.NAME AS CATEGORY, (A.STOCKVOLUME + B.UNITS) AS STOCK,	
 	(CASE WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 > 360 THEN A.PRICESELL
+<<<<<<< HEAD
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 60 THEN A.PRICESELL * 0.5
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 120 THEN A.PRICESELL * 0.6
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 180 THEN A.PRICESELL * 0.7
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 240 THEN A.PRICESELL * 0.8
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 300 THEN A.PRICESELL * 0.85
+	WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 360 THEN A.PRICESELL * 0.9
+=======
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 60 THEN A.PRICESELL * 0.5
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 120 THEN A.PRICESELL * 0.6
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 180 THEN A.PRICESELL * 0.7
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 240 THEN A.PRICESELL * 0.8
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 300 THEN A.PRICESELL * 0.85
 WHEN (TO_DATE(A.TEXTTIP, 'yyyy-mm-dd hh24:mi') - TO_DATE(TO_CHAR(SYSDATE,'yyyy-mm-dd hh24:mi'), 'yyyy-mm-dd hh24:mi')) *24*60 <= 360 THEN A.PRICESELL * 0.9
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 	END) AS DISCOUNTPRICE, A.IMAGE AS IMAGE
 		FROM PRODUCTS A
 		JOIN STOCKCURRENT  B ON(A.ID = B.PRODUCT)

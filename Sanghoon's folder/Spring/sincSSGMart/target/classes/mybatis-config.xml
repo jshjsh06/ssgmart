@@ -8,7 +8,11 @@
 		<typeAlias type="com.sinc.project.model.vo.ProductListVO" alias="productList" />
 		<typeAlias type="com.sinc.project.model.vo.UserVO" alias="user" />
 		<typeAlias type="com.sinc.project.model.vo.MyBasketVO" alias="myBasket" />
+<<<<<<< HEAD
+		<typeAlias type="com.sinc.project.model.vo.MyProductListVO" alias="myProductList" />  
+=======
 		<typeAlias type="com.sinc.project.model.vo.MyProductListVO" alias="myProductList" />		
+>>>>>>> 0121a1eab31d1b40898c81fed75314f38dc5d816
 	</typeAliases>
 	
 </configuration>
