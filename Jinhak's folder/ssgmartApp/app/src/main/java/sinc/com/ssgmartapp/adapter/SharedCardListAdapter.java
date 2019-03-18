@@ -20,15 +20,16 @@ import java.util.List;
 
 import sinc.com.ssgmartapp.R;
 import sinc.com.ssgmartapp.dto.MyProductListVO;
+import sinc.com.ssgmartapp.dto.SharedProductVO;
 import sinc.com.ssgmartapp.helper.Util;
 
 public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAdapter.MyViewHolder> {
 
 
     private Context context;
-    private List<MyProductListVO> list;
+    private List<SharedProductVO> list;
     private String user_Id;
-    public SharedCardListAdapter(Context context, List<MyProductListVO> list, String user_Id) {
+    public SharedCardListAdapter(Context context, List<SharedProductVO> list, String user_Id) {
         this.context = context;
         this.list = list;
         this.user_Id=user_Id;
@@ -38,7 +39,7 @@ public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAd
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.delete_cardlist_item, parent, false);
+                .inflate(R.layout.shared_cardlist_item, parent, false);
         Util.setGlobalFont(context, itemView);
         return new MyViewHolder(itemView);
     }
@@ -46,31 +47,8 @@ public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAd
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        final MyProductListVO productListVO = list.get(position);
-        holder.name.setText(productListVO.getProductName());
-        holder.normalPrice.setText((Integer.parseInt(String.valueOf(Math.round(productListVO.getPrice()))) + "원"));
-        holder.valid.setText(productListVO.getValid());
-        holder.stock.setText(Integer.parseInt(String.valueOf(Math.round(productListVO.getStock()))) + "개");
-        holder.discountPrice.setText(Integer.parseInt(String.valueOf(Math.round(productListVO.getDiscountPrice()))) + "원");
+        final SharedProductVO sharedProductVO = list.get(position);
 
-        holder.picker.setMinValue(0);
-        holder.picker.setMaxValue(Integer.parseInt(String.valueOf(Math.round(productListVO.getStock()))));
-        holder.picker.setValue(productListVO.getCnt());
-
-        String data = productListVO.getImage();
-        byte[] bytePlainOrg = Base64.decode(data, 0);
-        //byte[] 데이터 stream 데이터로 변환 후 bitmapFactory로 이미지 생성
-        ByteArrayInputStream inStream = new ByteArrayInputStream(bytePlainOrg);
-        Bitmap bm = BitmapFactory.decodeStream(inStream);
-        holder.thumbnail.setImageBitmap(bm);
-
-        productListVO.setUser_Id(user_Id);
-        holder.picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                productListVO.setCnt(newVal);
-            }
-        });
 
 /*        Picasso.with(context)
                 .load(productListVO.getImage())
@@ -87,32 +65,26 @@ public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAd
         notifyItemRemoved(position);
     }
 
-    public void restoreItem(MyProductListVO productListVO, int position) {
-        list.add(position, productListVO);
+    public void restoreItem(SharedProductVO sharedProductVO, int position) {
+        list.add(position, sharedProductVO);
         notifyItemInserted(position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, normalPrice, discountPrice, stock, valid;
-        public ImageView thumbnail;
+        public TextView userName, totalPrice, arrivalTime, validity, stock;
+        public ImageView userImg;
         public RelativeLayout viewBackground, viewForeground;
-        public NumberPicker picker;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.name);
-            normalPrice = itemView.findViewById(R.id.normal_price);
-            valid = itemView.findViewById(R.id.valid);
+            userName = itemView.findViewById(R.id.user_name);
+            totalPrice = itemView.findViewById(R.id.total_price);
+            arrivalTime = itemView.findViewById(R.id.arrival_time);
+            validity = itemView.findViewById(R.id.validity);
             stock = itemView.findViewById(R.id.stock);
-            discountPrice = itemView.findViewById(R.id.discountPrice);
-            thumbnail = itemView.findViewById(R.id.thumbnail);
+            userImg = itemView.findViewById(R.id.user_img);
             viewBackground = itemView.findViewById(R.id.view_background);
             viewForeground = itemView.findViewById(R.id.view_foreground);
-
-            picker = itemView.findViewById(R.id.number_picker);
-            picker.setWrapSelectorWheel(true);
-
-
 
         }
     }

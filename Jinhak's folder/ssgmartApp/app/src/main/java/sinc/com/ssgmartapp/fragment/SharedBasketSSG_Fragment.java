@@ -44,20 +44,16 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
     private RecyclerView recyclerView;
     private List<MyProductListVO> list;
     private DeleteCardListAdapter adapter;
-    private SwipeRefreshLayout swipeLayout;
-    private FirebaseDatabase mDatabase;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        System.out.println("BasketSSG_Fragment.onCreate");
         super.onCreate(savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mFragmentView = inflater.inflate(R.layout.fragment_basket_ssg, container, false);
+        mFragmentView = inflater.inflate(R.layout.fragment_shared_basket_ssg, container, false);
 
         recyclerView = mFragmentView.findViewById(R.id.basket_ssg_recycler_view);
         list = new ArrayList<>();

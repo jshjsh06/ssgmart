@@ -27,6 +27,7 @@
     <string name="discountPrice_txt">할인가</string>
     <string name="sharedBasket">공유 장바구니</string>
     <string name="shared_store_txt">지 점</string>
+    <string name="shared_friends_txt">친구에게 공유하기</string>
 
 
 </resources>

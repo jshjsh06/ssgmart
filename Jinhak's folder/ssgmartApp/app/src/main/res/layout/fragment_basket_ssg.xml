@@ -16,20 +16,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/constraintLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/fragment_basket"
-        app:layout_constraintEnd_toEndOf="@+id/fragment_basket"
-        app:layout_constraintEnd_toStartOf="@+id/fragment_basket">
-
-    </android.support.constraint.ConstraintLayout>
-
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab_shared"
+        android:id="@+id/shared_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
@@ -37,14 +26,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:scaleType="center"
-        app:layout_constraintBottom_toTopOf="@+id/fab"
+        app:layout_constraintBottom_toTopOf="@+id/qr_fab"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_share_black_24dp"
         tools:ignore="VectorDrawableCompat" />
 
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/qr_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"

@@ -14,6 +14,7 @@ import sinc.com.ssgmartapp.dto.Location;
 import sinc.com.ssgmartapp.dto.MyBasketVO;
 import sinc.com.ssgmartapp.dto.MyProductListVO;
 import sinc.com.ssgmartapp.dto.ProductListVO;
+import sinc.com.ssgmartapp.dto.UserVO;
 
 public interface RequestService {
 
@@ -35,7 +36,7 @@ public interface RequestService {
 
     //매장 이름이랑 카테고리로 할인 상품 가져오기
     @GET("productList/productList2.do")
-    Call<List<ProductListVO>> getMenuListByCategory(@Query("storeName") String storeName ,@Query("category") String category);
+    Call<List<ProductListVO>> getMenuListByCategory(@Query("storeName") String storeName, @Query("category") String category);
 
     //내 장바구니에 담기
     @POST("basket/insertMyBasket.do")
@@ -43,7 +44,7 @@ public interface RequestService {
 
     //내 장바구니 리스트 가져오기
     @GET("basket/selectMyBasket.do")
-    Call<List<MyProductListVO>> getMyBasketListByMyId(@Query("user_Id") String user_Id,@Query("storeName") String storeName);
+    Call<List<MyProductListVO>> getMyBasketListByMyId(@Query("user_Id") String user_Id, @Query("storeName") String storeName);
 
     //내 장바구니 리스트 삭제하기
     @POST("basket/deleteMyBasket.do")
@@ -52,6 +53,14 @@ public interface RequestService {
     //내 장바구니 리스트 업데이트하기
     @POST("basket/updateBasket.do")
     Call<List<MyProductListVO>> updateMyBasketById(@Body List<MyProductListVO> list);
+
+    //내 아이디를 제외한 USER List 가져오기
+    @GET("shareBasket/returnAddress.do")
+    Call<List<UserVO>> getUserListByMyID(@Query("username") String username);
+
+    //상대방 장바구니에 공유하기
+    @GET("shareBasket/insertShareBasket.do")
+    Call<JsonObject> sendSharedBasketByMyID(@Query("my_id") String my_id, @Query("your_id") String your_id);
 
 
 }

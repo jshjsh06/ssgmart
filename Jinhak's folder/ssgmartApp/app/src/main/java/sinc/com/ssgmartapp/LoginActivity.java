@@ -15,11 +15,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import sinc.com.ssgmartapp.dto.UserData;
 import sinc.com.ssgmartapp.helper.Common;
 import sinc.com.ssgmartapp.helper.Util;
 import sinc.com.ssgmartapp.remote.RequestService;
@@ -37,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     //현재 로그인 된 유저 정보를 담을 변수
     private FirebaseUser currentUser;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mService = Common.getUrlService();
         mAuth = FirebaseAuth.getInstance();
-
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,9 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             loginCheck(id_editText.getText().toString(), pw_editText.getText().toString());
-
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(getApplicationContext(), "인증 실패",
@@ -97,8 +100,9 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 try {
+                    updateProfile();
                     Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), SSGMainActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {
@@ -129,4 +133,22 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
     }
+
+    private void updateProfile() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        Log.d("user",user.getEmail());
+        if (user == null) {
+            // 비 로그인 상태 (메시지를 전송할 수 없다.)
+
+        } else {
+            // 로그인 상태
+
+            UserData userData = new UserData();
+            userData.userEmailID = id_editText.getText().toString().substring(0, id_editText.getText().toString().indexOf('@'));
+            userData.fcmToken = FirebaseInstanceId.getInstance().getToken();
+
+            mDatabase.child("users").child(userData.userEmailID).setValue(userData);
+        }
+    }
+
 }
