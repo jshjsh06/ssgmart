@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -17,16 +16,27 @@
             android:padding="10dp">
 
             <ImageView
-                android:id="@+id/basket_icon"
+                android:id="@+id/delete_icon"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="10dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ssg_txt_img" />
+                android:src="@drawable/ic_delete_white_24dp" />
+
+            <ImageView
+                android:id="@+id/detail_icon"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentEnd="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_zoom_in_black_24dp" />
 
         </RelativeLayout>
 
@@ -44,37 +54,48 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginRight="10dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="10dp"
                 android:scaleType="centerCrop" />
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/total_price_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="20dp"
                 android:layout_toEndOf="@+id/thumbnail"
-                android:layout_toRightOf="@+id/thumbnail"
                 android:ellipsize="end"
                 android:fontFamily="sans-serif"
-                android:hint="제품명"
-                android:maxLines="1"
-                android:textColor="@color/itemName"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                android:text="총 가격"
+                android:textColor="@color/welcome_up_background"
+                android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/normal_price_txt"
+                android:id="@+id/total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/name"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@+id/thumbnail"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:hint="총 가격"
+                android:textColor="@color/itemName"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/arrival_time_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/total_price"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/thumbnail"
                 android:layout_toRightOf="@+id/thumbnail"
-                android:text="정상가"
+                android:text="도착시간"
                 android:textColor="@color/welcome_up_background"
                 android:textSize="15sp" />
 
@@ -82,7 +103,7 @@
                 android:id="@+id/normal_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/name"
+                android:layout_below="@+id/total_price"
                 android:layout_marginStart="70dp"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/thumbnail"
@@ -91,26 +112,26 @@
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/valid_txt"
+                android:id="@+id/validity_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/normal_price"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/thumbnail"
-                android:text="@string/valid_txt_txt"
+                android:text="@string/validity_txt_txt"
                 android:textColor="@color/welcome_up_background"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/valid"
+                android:id="@+id/validity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/normal_price"
                 android:layout_marginStart="70dp"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/thumbnail"
-                android:hint="유통기한"
+                android:hint="유효기간"
                 android:textColor="@color/Description"
                 android:textSize="15sp" />
 
@@ -118,11 +139,11 @@
                 android:id="@+id/stock_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/valid"
+                android:layout_below="@+id/validity"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/thumbnail"
-                android:text="재고"
+                android:text="제품수량"
                 android:textColor="@color/welcome_up_background"
                 android:textSize="15sp" />
 
@@ -130,46 +151,39 @@
                 android:id="@+id/stock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/valid"
+                android:layout_below="@+id/validity"
                 android:layout_marginStart="70dp"
                 android:layout_marginTop="5dp"
                 android:layout_toEndOf="@+id/thumbnail"
-                android:hint="재고"
+                android:hint="제품수량"
                 android:textColor="@color/Description"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/discountPrice_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/valid"
-                android:layout_marginTop="35dp"
-                android:layout_marginEnd="10dp"
-                android:layout_toLeftOf="@+id/discountPrice"
-                android:text="@string/discountPrice_txt"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
+            android:id="@+id/store_name_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/stock_txt"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toEndOf="@+id/thumbnail"
+            android:text="@string/shared_store_txt"
+            android:textColor="@color/welcome_up_background"
+            android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/discountPrice"
+                android:id="@+id/store_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/valid"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="35dp"
-                android:layout_marginEnd="30dp"
-                android:hint="할인가"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
-
-            <ImageView
-                android:id="@+id/discount_logo"
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/sale_logo" />
+                android:layout_below="@+id/stock_txt"
+                android:layout_marginStart="70dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="20dp"
+                android:layout_toEndOf="@+id/thumbnail"
+                android:hint="@string/shared_store_txt"
+                android:textColor="@color/welcome_up_background"
+                android:textSize="15sp" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

@@ -123,7 +123,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                 = new RecyclerDeleteItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallBack).attachToRecyclerView(recyclerView);
 
-        addItemToCart(getUserEmail());
+        addItemToCart(getUserEmail(),emartName);
 
         fab = mFragmentView.findViewById(R.id.fab);
 
@@ -171,7 +171,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
             adapter.sendBasket(deleteIndex);
             deleteItemToCart(deleteItem);
 
-            addItemToCart(getUserEmail());
+            addItemToCart(getUserEmail(),emartName);
         }
     }
 
@@ -179,9 +179,9 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
      * 19/03/14 (위진학)
      * 나의 장바구니 페이지에 내 장바구니 목록 담기
      */
-    private void addItemToCart(String user_Id) {
+    private void addItemToCart(String user_Id,String emartName) {
 
-        mService.getMyBasketListByMyId(user_Id)
+        mService.getMyBasketListByMyId(user_Id,emartName)
                 .enqueue(new Callback<List<MyProductListVO>>() {
                     @Override
                     public void onResponse(Call<List<MyProductListVO>> call, Response<List<MyProductListVO>> response) {
@@ -326,7 +326,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                 .enqueue(new Callback<List<MyProductListVO>>() {
                     @Override
                     public void onResponse(Call<List<MyProductListVO>> call, Response<List<MyProductListVO>> response) {
-                        addItemToCart(getUserEmail());
+                        addItemToCart(getUserEmail(),emartName);
                     }
 
                     @Override

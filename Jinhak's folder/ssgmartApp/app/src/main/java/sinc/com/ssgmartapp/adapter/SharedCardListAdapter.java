@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,39 +19,43 @@ import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import sinc.com.ssgmartapp.R;
-import sinc.com.ssgmartapp.dto.ProductListVO;
+import sinc.com.ssgmartapp.dto.MyProductListVO;
 import sinc.com.ssgmartapp.helper.Util;
 
-public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyViewHolder> {
+public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAdapter.MyViewHolder> {
 
 
     private Context context;
-    private List<ProductListVO> list;
-
-    public CardListAdapter(Context context, List<ProductListVO> list) {
+    private List<MyProductListVO> list;
+    private String user_Id;
+    public SharedCardListAdapter(Context context, List<MyProductListVO> list, String user_Id) {
         this.context = context;
         this.list = list;
-
+        this.user_Id=user_Id;
     }
 
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.cardlist_item, parent, false);
+                .inflate(R.layout.delete_cardlist_item, parent, false);
         Util.setGlobalFont(context, itemView);
         return new MyViewHolder(itemView);
     }
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        ProductListVO productListVO = list.get(position);
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
+        final MyProductListVO productListVO = list.get(position);
         holder.name.setText(productListVO.getProductName());
         holder.normalPrice.setText((Integer.parseInt(String.valueOf(Math.round(productListVO.getPrice()))) + "원"));
         holder.valid.setText(productListVO.getValid());
         holder.stock.setText(Integer.parseInt(String.valueOf(Math.round(productListVO.getStock()))) + "개");
         holder.discountPrice.setText(Integer.parseInt(String.valueOf(Math.round(productListVO.getDiscountPrice()))) + "원");
+
+        holder.picker.setMinValue(0);
+        holder.picker.setMaxValue(Integer.parseInt(String.valueOf(Math.round(productListVO.getStock()))));
+        holder.picker.setValue(productListVO.getCnt());
 
         String data = productListVO.getImage();
         byte[] bytePlainOrg = Base64.decode(data, 0);
@@ -59,19 +64,13 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
         Bitmap bm = BitmapFactory.decodeStream(inStream);
         holder.thumbnail.setImageBitmap(bm);
 
-        //가격 꾸미기
-        double normal = productListVO.getPrice();
-        double discount = productListVO.getDiscountPrice();
-
-        if(normal==discount){
-            holder.discountTxt.setText("정상가");
-            holder.discountTxt.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
-            holder.discountPrice.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
-        }else{
-            holder.discountTxt.setText("할인가");
-            holder.discountLogo.setVisibility(View.VISIBLE);
-        }
-
+        productListVO.setUser_Id(user_Id);
+        holder.picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                productListVO.setCnt(newVal);
+            }
+        });
 
 /*        Picasso.with(context)
                 .load(productListVO.getImage())
@@ -88,18 +87,17 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
         notifyItemRemoved(position);
     }
 
-    public void restoreItem(ProductListVO productListVO, int position) {
+    public void restoreItem(MyProductListVO productListVO, int position) {
         list.add(position, productListVO);
         notifyItemInserted(position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, normalPrice, discountPrice, stock, valid , discountTxt;
-        public ImageView thumbnail,discountLogo;
+        public TextView name, normalPrice, discountPrice, stock, valid;
+        public ImageView thumbnail;
         public RelativeLayout viewBackground, viewForeground;
-
-
+        public NumberPicker picker;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
@@ -111,8 +109,11 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
             viewBackground = itemView.findViewById(R.id.view_background);
             viewForeground = itemView.findViewById(R.id.view_foreground);
 
-            discountTxt = itemView.findViewById(R.id.discountPrice_txt);
-            discountLogo = itemView.findViewById(R.id.discount_logo);
+            picker = itemView.findViewById(R.id.number_picker);
+            picker.setWrapSelectorWheel(true);
+
+
+
         }
     }
 }

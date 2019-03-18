@@ -43,7 +43,7 @@ public interface RequestService {
 
     //내 장바구니 리스트 가져오기
     @GET("basket/selectMyBasket.do")
-    Call<List<MyProductListVO>> getMyBasketListByMyId(@Query("user_Id") String user_Id);
+    Call<List<MyProductListVO>> getMyBasketListByMyId(@Query("user_Id") String user_Id,@Query("storeName") String storeName);
 
     //내 장바구니 리스트 삭제하기
     @POST("basket/deleteMyBasket.do")

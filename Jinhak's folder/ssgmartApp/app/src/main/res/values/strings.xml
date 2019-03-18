@@ -23,8 +23,10 @@
     <string name="SSGMart_shop_txt">쓱마트 쇼핑</string>
     <string name="normal_price_txt">정상가</string>
     <string name="valid_txt_txt">유통기한</string>
+    <string name="validity_txt_txt">유효기한</string>
     <string name="discountPrice_txt">할인가</string>
     <string name="sharedBasket">공유 장바구니</string>
+    <string name="shared_store_txt">지 점</string>
 
 
 </resources>
