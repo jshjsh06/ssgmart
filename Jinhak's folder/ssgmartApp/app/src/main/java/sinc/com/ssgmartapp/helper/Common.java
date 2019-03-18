@@ -10,7 +10,7 @@ public class Common {
     }
 
     public static RequestService getUrlService(){
-        return RetrofitClient.getClient("http://10.149.178.254:8088/").create(RequestService.class);
+        return RetrofitClient.getClient("http://192.168.43.143:8088/").create(RequestService.class);
     }
 
 }

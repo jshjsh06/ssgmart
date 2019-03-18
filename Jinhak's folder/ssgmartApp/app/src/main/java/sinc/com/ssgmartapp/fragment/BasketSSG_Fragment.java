@@ -1,5 +1,6 @@
 package sinc.com.ssgmartapp.fragment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -40,6 +41,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,6 +75,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
     private long mShakeTime;
     private static final int SHAKE_SKIP_TIME = 500;
     private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
+    private String emartName;
 
 
     LayoutInflater inflate;
@@ -95,7 +98,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         mFragmentView = inflater.inflate(R.layout.fragment_basket_ssg, container, false);
 
         recyclerView = mFragmentView.findViewById(R.id.basket_ssg_recycler_view);
-        adapter = new DeleteCardListAdapter(getContext(), list,getUserEmail());
+        adapter = new DeleteCardListAdapter(getContext(), list, getUserEmail());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -107,6 +110,14 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         mSensorManager = (SensorManager) this.getActivity().getSystemService(SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+        Intent intent = Objects.requireNonNull(getActivity()).getIntent();
+        emartName = intent.getStringExtra("marker_location");
+
+
+        if (emartName == null) {
+            emartName = "명동센터점";
+        }
+        Log.d("매장이름",emartName);
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallBack
                 = new RecyclerDeleteItemTouchHelper(0, ItemTouchHelper.LEFT, this);
@@ -317,6 +328,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                     public void onResponse(Call<List<MyProductListVO>> call, Response<List<MyProductListVO>> response) {
                         addItemToCart(getUserEmail());
                     }
+
                     @Override
                     public void onFailure(Call<List<MyProductListVO>> call, Throwable t) {
 
