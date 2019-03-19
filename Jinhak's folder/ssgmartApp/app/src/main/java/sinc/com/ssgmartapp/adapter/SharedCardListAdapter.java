@@ -15,6 +15,8 @@ import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.ByteArrayInputStream;
 import java.util.List;
 
@@ -28,11 +30,10 @@ public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAd
 
     private Context context;
     private List<SharedProductVO> list;
-    private String user_Id;
-    public SharedCardListAdapter(Context context, List<SharedProductVO> list, String user_Id) {
+
+    public SharedCardListAdapter(Context context, List<SharedProductVO> list) {
         this.context = context;
         this.list = list;
-        this.user_Id=user_Id;
     }
 
     @NonNull
@@ -49,10 +50,16 @@ public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAd
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
         final SharedProductVO sharedProductVO = list.get(position);
 
+        holder.userName.setText(sharedProductVO.getUserName());
+        holder.totalPrice.setText(String.valueOf(sharedProductVO.getTotal_price()));
+        holder.arrivalTime.setText(sharedProductVO.getArr_time());
+        holder.validity.setText(sharedProductVO.getDeadline());
+        holder.stock.setText(String.valueOf(sharedProductVO.getTotal_cnt()));
+        holder.storeName.setText(sharedProductVO.getStore());
 
-/*        Picasso.with(context)
-                .load(productListVO.getImage())
-                .into(holder.thumbnail);*/
+        Picasso.with(context)
+                .load(sharedProductVO.getUser_image())
+                .into(holder.userImg);
     }
 
     @Override
@@ -72,9 +79,10 @@ public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAd
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView userName, totalPrice, arrivalTime, validity, stock;
+        public TextView userName, totalPrice, arrivalTime, validity, stock, storeName;
         public ImageView userImg;
         public RelativeLayout viewBackground, viewForeground;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             userName = itemView.findViewById(R.id.user_name);
@@ -83,6 +91,7 @@ public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAd
             validity = itemView.findViewById(R.id.validity);
             stock = itemView.findViewById(R.id.stock);
             userImg = itemView.findViewById(R.id.user_img);
+            storeName = itemView.findViewById(R.id.store_name);
             viewBackground = itemView.findViewById(R.id.view_background);
             viewForeground = itemView.findViewById(R.id.view_foreground);
 

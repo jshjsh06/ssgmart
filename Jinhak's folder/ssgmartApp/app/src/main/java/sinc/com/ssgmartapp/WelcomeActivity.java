@@ -24,6 +24,7 @@ import sinc.com.ssgmartapp.helper.Util;
 /**
  * Edited by Jinhak on 07-03-2019.
  */
+
 public class WelcomeActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
@@ -37,14 +38,13 @@ public class WelcomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Util.setGlobalFont(this,getWindow().getDecorView());
 
         // Checking for first time launch - before calling setContentView()
         prefManager = new PreferenceManager(this);
-
-        /*  if (!prefManager.isFirstTimeLaunch()) {
+        if (!prefManager.isFirstTimeLaunch()) {
             launchHomeScreen();
-        }*/
+            finish();
+        }
 
         // Making notification bar transparent
         if (Build.VERSION.SDK_INT >= 21) {
@@ -123,9 +123,9 @@ public class WelcomeActivity extends AppCompatActivity {
     }
 
     private void launchHomeScreen() {
-        //주석 풀면 설치하고 한번만 실행됨.
-        //prefManager.setFirstTimeLaunch(false);
+        prefManager.setFirstTimeLaunch(false);
         startActivity(new Intent(WelcomeActivity.this, SSGMainActivity.class));
+        finish();
     }
 
     //  viewpager change listener

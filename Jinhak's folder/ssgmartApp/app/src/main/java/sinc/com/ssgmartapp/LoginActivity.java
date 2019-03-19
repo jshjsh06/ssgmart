@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     updateProfile();
                     Toast.makeText(getApplicationContext(), "로그인 성공", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(getApplicationContext(), SSGMainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
                     startActivity(intent);
                     finish();
                 } catch (Exception e) {
@@ -137,18 +137,13 @@ public class LoginActivity extends AppCompatActivity {
     private void updateProfile() {
         FirebaseUser user = mAuth.getCurrentUser();
         Log.d("user",user.getEmail());
-        if (user == null) {
-            // 비 로그인 상태 (메시지를 전송할 수 없다.)
+        // 로그인 상태
 
-        } else {
-            // 로그인 상태
+        UserData userData = new UserData();
+        userData.userEmailID = id_editText.getText().toString().substring(0, id_editText.getText().toString().indexOf('@'));
+        userData.fcmToken = FirebaseInstanceId.getInstance().getToken();
 
-            UserData userData = new UserData();
-            userData.userEmailID = id_editText.getText().toString().substring(0, id_editText.getText().toString().indexOf('@'));
-            userData.fcmToken = FirebaseInstanceId.getInstance().getToken();
-
-            mDatabase.child("users").child(userData.userEmailID).setValue(userData);
-        }
+        mDatabase.child("users").child(userData.userEmailID).setValue(userData);
     }
 
 }

@@ -16,7 +16,7 @@ import sinc.com.ssgmartapp.adapter.SectionsPagerAdapter;
 import sinc.com.ssgmartapp.helper.Util;
 
 /**
- * 메인 앞쪽에 SSG페이 버튼 및 스크린 화면 넣어야 함.
+ *  세 가지 Tab Layout
  */
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
@@ -64,8 +64,10 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
                     case 1:
                         refresh();
                         break;
-                    default:
+                    case 2:
                         refresh();
+                        break;
+                    default:
                         break;
                 }
             }
@@ -85,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         return true;
     }
 
+    /**
+     * 19/03/18 (위진학)
+     * 지도 페이지로 넘기기
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

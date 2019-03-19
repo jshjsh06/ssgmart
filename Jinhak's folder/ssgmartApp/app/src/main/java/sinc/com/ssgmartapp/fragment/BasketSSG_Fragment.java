@@ -89,7 +89,6 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
     private RecyclerView recyclerView;
     private List<MyProductListVO> list;
     private DeleteCardListAdapter adapter;
-    private SwipeRefreshLayout swipeLayout;
     private FirebaseDatabase mFirebaseDatabase;
     RequestService mService;
 
@@ -121,7 +120,6 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         list = new ArrayList<>();
         mService = Common.getUrlService();
-        inflater = LayoutInflater.from(getContext());
         mFirebaseDatabase = FirebaseDatabase.getInstance();
 
 
@@ -170,8 +168,8 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         shared_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                updateMyBasket(list);
                 getUserList(getUserEmail());
-
             }
         });
         return mFragmentView;
@@ -241,7 +239,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     /**
      * 19/03/14 (위진학)
-     * 나의 장바구니 페이지에 내 장바구니 목록 담기
+     * 나의 장바구니 페이지에 내 개별 상품 삭제하기
      */
     private void deleteItemToCart(MyProductListVO myProductListVO) {
 
@@ -259,25 +257,10 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                 });
     }
 
-    @NonNull
-    private String getUserEmail() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        return currentUser.getEmail();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseDatabase.getInstance().getReference().addValueEventListener(this);
-    }
-
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        FirebaseDatabase.getInstance().getReference().removeEventListener(this);
-    }
-
+    /**
+     * 19/03/18 (위진학)
+     * 흔들어서 QR 코드 생성하기
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -358,7 +341,6 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         alertDialog.show();
     }
 
-
     /**
      * 19/03/14 (위진학)
      * 나의 장바구니 페이지에 내 장바구니 목록 담기
@@ -409,7 +391,10 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         user_list_dialog.show();
 
     }
-
+    /**
+     * 19/03/18 (위진학)
+     * 나를 제외한 등록된 사용자 리스트 가져오기
+     */
     private void getUserList(String userEmail) {
         mService.getUserListByMyID(userEmail)
                 .enqueue(new Callback<List<UserVO>>() {
@@ -427,7 +412,10 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                 });
     }
 
-    //FCM 다이얼로그 띄우기
+    /**
+     * 19/03/18 (위진학)
+     * FCM 다이얼로그 띄우기
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -455,6 +443,10 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     }
 
+    /**
+     * 19/03/18 (위진학)
+     * 상대방에게 장바구니 공유하기
+     */
     private void sendSharedBasket(String my_Id, String your_id) {
         mService.sendSharedBasketByMyID(my_Id, your_id)
                 .enqueue(new Callback<JsonObject>() {
@@ -522,5 +514,24 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                     }
                 });
 
+    }
+
+    @NonNull
+    private String getUserEmail() {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        return currentUser.getEmail();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseDatabase.getInstance().getReference().addValueEventListener(this);
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        FirebaseDatabase.getInstance().getReference().removeEventListener(this);
     }
 }

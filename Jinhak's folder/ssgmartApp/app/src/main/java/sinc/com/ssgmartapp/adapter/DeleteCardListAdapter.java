@@ -65,6 +65,19 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
         Bitmap bm = BitmapFactory.decodeStream(inStream);
         holder.thumbnail.setImageBitmap(bm);
 
+
+        //가격 꾸미기
+        double normal = productListVO.getPrice();
+        double discount = productListVO.getDiscountPrice();
+
+        if(normal==discount){
+            holder.discountTxt.setText("정상가");
+            holder.discountTxt.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
+            holder.discountPrice.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
+        }else{
+            holder.discountTxt.setText("할인가");
+        }
+
         productListVO.setUser_Id(user_Id);
         holder.picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -95,7 +108,7 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, normalPrice, discountPrice, stock, valid;
+        public TextView name, normalPrice, discountPrice, stock, valid,discountTxt;
         public ImageView thumbnail;
         public RelativeLayout viewBackground, viewForeground;
         public NumberPicker picker;
@@ -111,6 +124,8 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
             viewForeground = itemView.findViewById(R.id.view_foreground);
 
             picker = itemView.findViewById(R.id.number_picker);
+            discountTxt = itemView.findViewById(R.id.discountPrice_txt);
+
             picker.setWrapSelectorWheel(true);
 
 

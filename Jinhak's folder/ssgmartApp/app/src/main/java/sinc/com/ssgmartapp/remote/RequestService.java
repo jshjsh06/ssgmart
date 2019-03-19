@@ -14,6 +14,7 @@ import sinc.com.ssgmartapp.dto.Location;
 import sinc.com.ssgmartapp.dto.MyBasketVO;
 import sinc.com.ssgmartapp.dto.MyProductListVO;
 import sinc.com.ssgmartapp.dto.ProductListVO;
+import sinc.com.ssgmartapp.dto.SharedProductVO;
 import sinc.com.ssgmartapp.dto.UserVO;
 
 public interface RequestService {
@@ -61,6 +62,18 @@ public interface RequestService {
     //상대방 장바구니에 공유하기
     @GET("shareBasket/insertShareBasket.do")
     Call<JsonObject> sendSharedBasketByMyID(@Query("my_id") String my_id, @Query("your_id") String your_id);
+
+    //상대방 장바구니에 공유하기
+    @GET("shareBasket/selectSharedBasket.do")
+    Call<List<SharedProductVO>> getSharedListByMyID(@Query("user_Id") String my_id);
+
+    //공유 장바구니에 상대방 장바구니 삭제하기
+    @POST("/shareBasket/deleteSharedBasket.do")
+    Call<SharedProductVO> deleteSharedCartById(@Body SharedProductVO sharedProductVO);
+
+    //공유 장바구니 각각 공유한 사용자 장바구니 상세보기
+    @POST("shareBasket/detailSharedBasket.do")
+    Call<List<MyProductListVO>> showSharedListByYourId(@Body SharedProductVO sharedProductVO);
 
 
 }

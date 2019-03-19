@@ -28,6 +28,8 @@
     <string name="sharedBasket">공유 장바구니</string>
     <string name="shared_store_txt">지 점</string>
     <string name="shared_friends_txt">친구에게 공유하기</string>
+    <string name="delete_txt">삭제하기</string>
+    <string name="detail_txt">상세보기</string>
 
 
 </resources>
