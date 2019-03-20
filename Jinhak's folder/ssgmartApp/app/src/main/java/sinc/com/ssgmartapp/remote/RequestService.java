@@ -75,5 +75,8 @@ public interface RequestService {
     @POST("shareBasket/detailSharedBasket.do")
     Call<List<MyProductListVO>> showSharedListByYourId(@Body SharedProductVO sharedProductVO);
 
+    //상대방의 아이템 내 장바구니에 넣기
+    @POST("shareBasket/fromSharedBasketToMyBasket.do")
+    Call<Void> showSharedListByYourId(@Body List<MyProductListVO> myProductListVOList);
 
 }

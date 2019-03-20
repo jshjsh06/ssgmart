@@ -1,6 +1,8 @@
 package sinc.com.ssgmartapp.dto;
 
+
 public class SharedProductVO {
+    private int basket;
     private String user_image;
     private int total_price;
     private String arr_time;
@@ -8,23 +10,15 @@ public class SharedProductVO {
     private int total_cnt;
     private String store;
     private String userName;
-    private int basket;
+    private String user_Id;
+    private String send_Id;
 
-    public SharedProductVO() {
-        super();
-        // TODO Auto-generated constructor stub
+    public int getBasket() {
+        return basket;
     }
 
-    public SharedProductVO(String user_image, int total_price, String arr_time, String deadline, int total_cnt,
-                           String store, String userName) {
-        super();
-        this.user_image = user_image;
-        this.total_price = total_price;
-        this.arr_time = arr_time;
-        this.deadline = deadline;
-        this.total_cnt = total_cnt;
-        this.store = store;
-        this.userName = userName;
+    public void setBasket(int basket) {
+        this.basket = basket;
     }
 
     public String getUser_image() {
@@ -83,25 +77,35 @@ public class SharedProductVO {
         this.userName = userName;
     }
 
-    public int getBasket() {
-        return basket;
+    public String getUser_Id() {
+        return user_Id;
     }
 
-    public void setBasket(int basket) {
-        this.basket = basket;
+    public void setUser_Id(String user_Id) {
+        this.user_Id = user_Id;
+    }
+
+    public String getSend_Id() {
+        return send_Id;
+    }
+
+    public void setSend_Id(String send_Id) {
+        this.send_Id = send_Id;
     }
 
     @Override
     public String toString() {
         return "SharedProductVO{" +
-                "user_image='" + user_image + '\'' +
+                "basket=" + basket +
+                ", user_image='" + user_image + '\'' +
                 ", total_price=" + total_price +
                 ", arr_time='" + arr_time + '\'' +
                 ", deadline='" + deadline + '\'' +
                 ", total_cnt=" + total_cnt +
                 ", store='" + store + '\'' +
                 ", userName='" + userName + '\'' +
-                ", basket=" + basket +
+                ", user_Id='" + user_Id + '\'' +
+                ", send_Id='" + send_Id + '\'' +
                 '}';
     }
 }

@@ -6,12 +6,36 @@ public class MyProductListVO {
     private String productName;
     private String category;
     private String image;
-    private double price;
-    private double discountPrice;
-    private double stock;
+    private int price;
+    private int discountPrice;
+    private int stock;
     private String valid;
     private String user_Id;
     private int cnt;
+    private String rev_Id;
+    private String send_Id;
+    private int basket;
+    private boolean check;
+
+    public int getBasket() {
+        return basket;
+    }
+
+    public void setBasket(int basket) {
+        this.basket = basket;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public MyProductListVO() {
+    }
+
 
     public String getProduct_Id() {
         return product_Id;
@@ -45,35 +69,28 @@ public class MyProductListVO {
         this.category = category;
     }
 
-    public String getImage() {
-        return image;
-    }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
-    public double getDiscountPrice() {
+    public int getDiscountPrice() {
         return discountPrice;
     }
 
-    public void setDiscountPrice(double discountPrice) {
+    public void setDiscountPrice(int discountPrice) {
         this.discountPrice = discountPrice;
     }
 
-    public double getStock() {
+    public int getStock() {
         return stock;
     }
 
-    public void setStock(double stock) {
+    public void setStock(int stock) {
         this.stock = stock;
     }
 
@@ -101,6 +118,31 @@ public class MyProductListVO {
         this.cnt = cnt;
     }
 
+    public String getRev_Id() {
+        return rev_Id;
+    }
+
+    public void setRev_Id(String rev_Id) {
+        this.rev_Id = rev_Id;
+    }
+
+    public String getSend_Id() {
+        return send_Id;
+    }
+
+    public void setSend_Id(String send_Id) {
+        this.send_Id = send_Id;
+    }
+
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean check) {
+        this.check = check;
+    }
+
     @Override
     public String toString() {
         return "MyProductListVO{" +
@@ -115,6 +157,10 @@ public class MyProductListVO {
                 ", valid='" + valid + '\'' +
                 ", user_Id='" + user_Id + '\'' +
                 ", cnt=" + cnt +
+                ", rev_Id='" + rev_Id + '\'' +
+                ", send_Id='" + send_Id + '\'' +
+                ", basket=" + basket +
+                ", check=" + check +
                 '}';
     }
 }

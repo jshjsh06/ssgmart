@@ -1,10 +1,14 @@
 package sinc.com.ssgmartapp.fragment;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,16 +32,28 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.JsonObject;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import jxl.biff.drawing.Button;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sinc.com.ssgmartapp.R;
 import sinc.com.ssgmartapp.adapter.DeleteCardListAdapter;
+import sinc.com.ssgmartapp.adapter.DetailCardListAdapter;
 import sinc.com.ssgmartapp.adapter.SharedCardListAdapter;
 import sinc.com.ssgmartapp.dto.MyProductListVO;
 import sinc.com.ssgmartapp.dto.ProductListVO;
@@ -62,6 +78,14 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
     private int delete_index;
     private SharedProductVO delete_item;
     private List<MyProductListVO> detail_list;
+
+    private BottomSheetDialog mBottomSheetDialog;
+
+    private DetailCardListAdapter detailCardListAdapter;
+    private String send_id;
+    private int basket;
+
+    LayoutInflater inflate;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,7 +154,8 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
 
         if (viewHolder instanceof SharedCardListAdapter.MyViewHolder) {
 
-            String name = list.get(viewHolder.getAdapterPosition()).getUserName();
+            String name = list.get(viewHolder.getAdapterPosition()).getSend_Id();
+            Log.d("send_id", name);
 
             final SharedProductVO item = list.get(viewHolder.getAdapterPosition());
             final int index = viewHolder.getAdapterPosition();
@@ -192,9 +217,142 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
      * 공유 장바구니 자세히 보기 다이얼로그
      */
     private void detailDialog(SharedProductVO item, int index) {
-//        adapter.sendBasket(index);
-//        adapter.restoreItem(item, index);
+        adapter.sendBasket(index);
+        adapter.restoreItem(item, index);
+
+        send_id = item.getSend_Id();
+        basket = item.getBasket();
+
         showSharedListByYourId(item);
+
+        detailCardListAdapter = new DetailCardListAdapter(getContext(), detail_list);
+
+        mBottomSheetDialog = new BottomSheetDialog(getContext());
+        View v = getLayoutInflater().inflate(R.layout.bottom_dialog, null);
+        RecyclerView recyclerView = v.findViewById(R.id.detail_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(detailCardListAdapter);
+
+        mBottomSheetDialog.setContentView(v);
+        mBottomSheetDialog.show();
+        mBottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                mBottomSheetDialog = null;
+            }
+        });
+
+        mBottomSheetDialog.findViewById(R.id.create_shared_qr_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkTrueDetailList(detail_list,"Q");
+                Toast.makeText(getContext(), "QR 코드 생성!", Toast.LENGTH_SHORT).show();
+                mBottomSheetDialog.dismiss();
+            }
+        });
+        mBottomSheetDialog.findViewById(R.id.get_my_basket_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkTrueDetailList(detail_list,"B");
+                Toast.makeText(getContext(), "내 장바구니에 담겼습니다.", Toast.LENGTH_SHORT).show();
+                mBottomSheetDialog.dismiss();
+
+                adapter.sendBasket(delete_index);
+            }
+        });
+    }
+
+
+    /**
+     * 19/03/20 (위진학)
+     * 내가 체크한 상품들 맞는지 검사하기
+     */
+    private void checkTrueDetailList(List<MyProductListVO> detail_list,String check) {
+
+        Log.d("product", String.valueOf(detail_list.size()));
+        List<MyProductListVO> myProductListVOList = new ArrayList<>();
+
+        for (int i = 0; i < detail_list.size(); i++) {
+            if (detail_list.get(i).isCheck()) {
+                detail_list.get(i).setSend_Id(send_id);
+                detail_list.get(i).setUser_Id(getUserEmail());
+                detail_list.get(i).setBasket(basket);
+                myProductListVOList.add(detail_list.get(i));
+            }
+            detail_list.get(i).setCheck(false);
+        }
+        if (myProductListVOList.size() == 0) {
+            Toast.makeText(getContext(), "선택한 상품이 없어요", Toast.LENGTH_SHORT).show();
+        } else if(check.equals("B")) {
+            setSharedBasketInMyBasket(myProductListVOList);
+        } else if(check.equals("Q")){
+            createQRCode(myProductListVOList);
+        }
+    }
+
+
+    /**
+     * 19/03/20 (위진학)
+     * 공유된 장바구니 펼쳐서 나의 장바구니에 담기
+     */
+    private void setSharedBasketInMyBasket(List<MyProductListVO> myProductListVOList) {
+
+        mService.showSharedListByYourId(myProductListVOList)
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+
+    }
+
+    /**
+     * 19/03/20 (위진학)
+     * 상대방이 보내준 장바구니에서 내가 체크한 상품들 QR코드 생성하기
+     */
+    private void createQRCode(List<MyProductListVO> myProductListVOList) {
+
+        inflate = LayoutInflater.from(getContext());
+        View v = inflate.inflate(R.layout.qr_dialog, null);
+        ImageView imageView = v.findViewById(R.id.qr_Dialog_imageView);
+
+        JSONArray array = new JSONArray();
+        array.put(myProductListVOList);
+
+        //QR코드에 들어갈 내용 넣어주기
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("QR_Info",array);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(String.valueOf(obj), BarcodeFormat.QR_CODE, 500, 500);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+
+            imageView.setImageBitmap(bitmap);
+
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+
+        AlertDialog alertDialog = new AlertDialog.Builder(inflate.getContext())
+                .setView(v)
+                .setTitle(R.string.qr_code_title)
+                .setCancelable(true)
+                .create();
+
+        alertDialog.show();
     }
 
 
@@ -212,7 +370,6 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
                         list.clear();
                         list.addAll(response.body());
                         //Log.d("SharedList",response.body().toString());
-
                         adapter.notifyDataSetChanged();
                     }
 
@@ -245,7 +402,7 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
 
     /**
      * 19/03/14 (위진학)
-     * 공유 장바구니 페이지에 내 상대방이 보낸 장비구니 삭제하기
+     * 공유 장바구니 페이지에 자세히보기
      */
     private void showSharedListByYourId(SharedProductVO sharedProductVO) {
 
@@ -253,10 +410,11 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
                 .enqueue(new Callback<List<MyProductListVO>>() {
                     @Override
                     public void onResponse(Call<List<MyProductListVO>> call, Response<List<MyProductListVO>> response) {
+                        detail_list.clear();
                         detail_list.addAll(response.body());
-                        Log.d("Response",detail_list.toString());
-
+                        Log.d("here","here");
                         adapter.notifyDataSetChanged();
+                        detailCardListAdapter.notifyDataSetChanged();
                     }
 
                     @Override

@@ -50,15 +50,18 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import okio.Utf8;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -318,11 +321,28 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         ImageView imageView = v.findViewById(R.id.qr_Dialog_imageView);
 
         //QR코드에 들어갈 내용 넣어주기
-        String qr_text = "wlsgkr@gmail.com";
+        JSONObject obj = new JSONObject();
+        String check = "true";
+        String user_id = getUserEmail();
+        String store = emartName;
+
+        try {
+            obj.put("heck", check);
+            obj.put("user_Id", user_id);
+            obj.put("store", store);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Log.d("utf",obj.toString());
+
+        Charset chrutf = Charset.forName("UTF-8");
+        final String b = new String(obj.toString().getBytes(),chrutf);
+        System.out.println(b);
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(qr_text, BarcodeFormat.QR_CODE, 500, 500);
+            BitMatrix bitMatrix = multiFormatWriter.encode(b, BarcodeFormat.QR_CODE, 500, 500);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
@@ -391,6 +411,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         user_list_dialog.show();
 
     }
+
     /**
      * 19/03/18 (위진학)
      * 나를 제외한 등록된 사용자 리스트 가져오기

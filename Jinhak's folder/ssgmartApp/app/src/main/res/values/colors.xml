@@ -13,6 +13,7 @@
     <color name="welcome_up_background">#414758</color>
     <color name="welcome_down_background">#dee0ec</color>
 
+    <color name="trans">#00000000</color>
 
     <!-- dots inactive colors -->
     <color name="dot_inactive_screen">#ffa000</color>
