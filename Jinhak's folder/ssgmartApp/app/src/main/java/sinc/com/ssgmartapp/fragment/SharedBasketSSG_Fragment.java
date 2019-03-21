@@ -58,7 +58,7 @@ import sinc.com.ssgmartapp.remote.RequestService;
 /**
  * 장바구니 Fragment
  */
-public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener,MyFragmentRefreshCallBack {
+public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener, MyFragmentRefreshCallBack {
     View mFragmentView;
 
     private RecyclerView recyclerView;
@@ -79,7 +79,6 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
 
     public static MyFragmentRefreshCallBack myFragmentRefreshCallBack;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,7 +86,9 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
         detail_list = new ArrayList<>();
         mService = Common.getUrlService();
         inflater = LayoutInflater.from(getContext());
+
         myFragmentRefreshCallBack = this;
+
 
         mFragmentView = inflater.inflate(R.layout.fragment_shared_basket_ssg, container, false);
 
@@ -181,7 +182,9 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getContext(), "너는 취소 했어!", Toast.LENGTH_SHORT).show();
+                        Snackbar snackbar = Snackbar.make(mFragmentView, item.getUserName() + "취소 하셨어요", Snackbar.LENGTH_SHORT);
+                        snackbar.setActionTextColor(Color.YELLOW);
+                        snackbar.show();
                         adapter.sendBasket(delete_index);
                         adapter.restoreItem(delete_item, delete_index);
                     }
@@ -224,7 +227,7 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
             @Override
             public void onClick(View v) {
                 checkTrueDetailList(detail_list, "Q");
-                Toast.makeText(getContext(), "QR 코드 생성!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "QR 코드 생성", Toast.LENGTH_SHORT).show();
                 mBottomSheetDialog.dismiss();
             }
         });
@@ -232,7 +235,9 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
             @Override
             public void onClick(View v) {
                 checkTrueDetailList(detail_list, "B");
-                Toast.makeText(getContext(), "내 장바구니에 담겼습니다.", Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(mFragmentView, "내 장바구니에 담겼어요!!", Snackbar.LENGTH_SHORT);
+                snackbar.setActionTextColor(Color.YELLOW);
+                snackbar.show();
                 mBottomSheetDialog.dismiss();
 
                 adapter.sendBasket(delete_index);
@@ -361,7 +366,7 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
                     @Override
                     public void onResponse(Call<List<SharedProductVO>> call, Response<List<SharedProductVO>> response) {
                         if (response.body() == null) {
-                            Log.d("sharedBasket",String.valueOf(response.body()));
+                            Log.d("sharedBasket", String.valueOf(response.body()));
                         } else {
                             list.clear();
                             list.addAll(response.body());
@@ -438,9 +443,17 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
         return currentUser.getEmail();
     }
 
+
+    /**
+     * 19/03/21 (위진학)
+     * (CustomMethod) 공유가 됐을 때 새로고침하는 Method
+     */
     @Override
     public void myFragmentRefresh() {
-        Log.d("refreshFragment","refreshFragment");
         addSharedItemByMyId(getUserEmail());
+
+        Snackbar snackbar = Snackbar.make(mFragmentView, "장바구니가 도착했어요!!", Snackbar.LENGTH_SHORT);
+        snackbar.setActionTextColor(Color.YELLOW);
+        snackbar.show();
     }
 }

@@ -65,6 +65,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentIntent(pendingIntent)
                 .setContentInfo(notification.getTitle())
                 .setLargeIcon(icon)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setColor(Color.RED)
                 .setLights(Color.RED, 1000, 300)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
