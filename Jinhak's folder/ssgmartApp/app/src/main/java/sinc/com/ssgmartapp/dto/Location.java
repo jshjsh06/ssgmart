@@ -6,6 +6,15 @@ public class Location {
     String address;
     String lat;
     String lon;
+    String ID;
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public String getName() {
         return name;
@@ -46,6 +55,7 @@ public class Location {
                 ", address='" + address + '\'' +
                 ", lat='" + lat + '\'' +
                 ", lon='" + lon + '\'' +
+                ", ID='" + ID + '\'' +
                 '}';
     }
 }

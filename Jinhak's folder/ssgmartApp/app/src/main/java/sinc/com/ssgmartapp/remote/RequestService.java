@@ -31,6 +31,10 @@ public interface RequestService {
     Call<JsonObject> userLogin(@Query("username") String username,
                                @Query("password") String password);
 
+
+    /**
+     * BasketSSG_Fragment Service
+     */
     //매장 이름으로 할인상품 가져오기
     @GET("productList/productList1.do")
     Call<List<ProductListVO>> getMenuListByMarketName(@Query("storeName") String storeName);
@@ -43,6 +47,10 @@ public interface RequestService {
     @POST("basket/insertMyBasket.do")
     Call<Integer> insertMyBasket(@Body MyBasketVO myBasketVO);
 
+
+    /**
+     * BasketSSG_Fragment Service
+     */
     //내 장바구니 리스트 가져오기
     @GET("basket/selectMyBasket.do")
     Call<List<MyProductListVO>> getMyBasketListByMyId(@Query("user_Id") String user_Id, @Query("storeName") String storeName);
@@ -61,8 +69,12 @@ public interface RequestService {
 
     //상대방 장바구니에 공유하기
     @GET("shareBasket/insertShareBasket.do")
-    Call<JsonObject> sendSharedBasketByMyID(@Query("my_id") String my_id, @Query("your_id") String your_id);
-
+    Call<JsonObject> sendSharedBasketByMyID(@Query("my_id") String my_id,
+                                            @Query("your_id") String your_id,
+                                            @Query("emart_name") String emart_name);
+    /**
+     * SharedBasketSSG_Fragment Service
+     */
     //상대방 장바구니에 공유하기
     @GET("shareBasket/selectSharedBasket.do")
     Call<List<SharedProductVO>> getSharedListByMyID(@Query("user_Id") String my_id);
@@ -78,5 +90,9 @@ public interface RequestService {
     //상대방의 아이템 내 장바구니에 넣기
     @POST("shareBasket/fromSharedBasketToMyBasket.do")
     Call<Void> showSharedListByYourId(@Body List<MyProductListVO> myProductListVOList);
+
+    //선택한 QR코드 업데이트 하기
+    @POST("shareBasket/makingShareBasketQR.do")
+    Call<Void> updateQRSharedBasketToMyBasket(@Body List<MyProductListVO> myProductListVOList);
 
 }

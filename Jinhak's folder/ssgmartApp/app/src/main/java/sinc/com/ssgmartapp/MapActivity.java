@@ -103,22 +103,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         }
 
 
-        //회현이프라자점 좌표
+        //첫 시작 좌표
         LatLng s_inc = new LatLng(37.5577087, 126.9731124);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(s_inc, 15));
-
-        markerOptions = new MarkerOptions();
-        markerOptions.position(s_inc).title("회현이프라자점");
-        markerOptions.snippet("서울특별시 중구 남대문로5가 세종대로4길 25");
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
-
-        googleMap.addMarker(markerOptions).showInfoWindow();
 
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
+                String storeId = getStoreId(emart24_location,marker.getTitle());
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.putExtra("marker_location", marker.getTitle());
+                intent.putExtra("marker_id",storeId);
                 startActivity(intent);
                 finish();
             }
@@ -154,6 +149,17 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
 
 
         }
+    }
+
+    public String getStoreId(List<Location> locations,String title){
+        String id = null;
+
+        for(Location lo : locations){
+            if(lo.getName().equals(title)){
+                id=lo.getID();
+            }
+        }
+        return id;
     }
 
 

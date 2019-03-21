@@ -16,26 +16,10 @@ public class MyProductListVO {
     private String send_Id;
     private int basket;
     private boolean check;
-
-    public int getBasket() {
-        return basket;
-    }
-
-    public void setBasket(int basket) {
-        this.basket = basket;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
+    private String store_Id;
 
     public MyProductListVO() {
     }
-
 
     public String getProduct_Id() {
         return product_Id;
@@ -134,6 +118,13 @@ public class MyProductListVO {
         this.send_Id = send_Id;
     }
 
+    public int getBasket() {
+        return basket;
+    }
+
+    public void setBasket(int basket) {
+        this.basket = basket;
+    }
 
     public boolean isCheck() {
         return check;
@@ -141,6 +132,22 @@ public class MyProductListVO {
 
     public void setCheck(boolean check) {
         this.check = check;
+    }
+
+    public String getStore_Id() {
+        return store_Id;
+    }
+
+    public void setStore_Id(String store_Id) {
+        this.store_Id = store_Id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     @Override
@@ -161,6 +168,7 @@ public class MyProductListVO {
                 ", send_Id='" + send_Id + '\'' +
                 ", basket=" + basket +
                 ", check=" + check +
+                ", store_Id='" + store_Id + '\'' +
                 '}';
     }
 }

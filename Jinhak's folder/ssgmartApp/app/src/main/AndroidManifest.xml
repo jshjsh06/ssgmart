@@ -31,7 +31,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".IntroActivity"/>
         <activity android:name=".WelcomeActivity"/>
         <activity android:name=".MainActivity"/>
         <activity android:name=".MapActivity"/>

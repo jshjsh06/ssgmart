@@ -101,6 +101,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
     private static final int SHAKE_SKIP_TIME = 500;
     private static final float SHAKE_THRESHOLD_GRAVITY = 2.7F;
     private String emartName;
+    private String emartId;
 
 
     LayoutInflater inflate;
@@ -143,10 +144,11 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         emartName = intent.getStringExtra("marker_location");
-
+        emartId = intent.getStringExtra("marker_id");
 
         if (emartName == null) {
             emartName = "명동센터점";
+            emartId = "0";
         }
         Log.d("매장이름", emartName);
 
@@ -181,17 +183,6 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-
-//        dataSnapshot.getValue();
-//        list.clear();
-//        for (DataSnapshot fileSnapshot : dataSnapshot.child("users").child(getUid()).child("myBasket").getChildren()) {
-//            if (fileSnapshot != null) {
-//                ProductListVO item = fileSnapshot.getValue(ProductListVO.class);
-//                list.add(item);
-//            }
-//            else return;
-//        }
-//        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -219,7 +210,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     /**
      * 19/03/14 (위진학)
-     * 나의 장바구니 페이지에 내 장바구니 목록 담기
+     * (Retrofit) 나의 장바구니 페이지에 내 장바구니 목록 담기
      */
     private void addItemToCart(String user_Id, String emartName) {
 
@@ -242,10 +233,9 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     /**
      * 19/03/14 (위진학)
-     * 나의 장바구니 페이지에 내 개별 상품 삭제하기
+     * (Retrofit) 나의 장바구니 페이지에 내 개별 상품 삭제하기
      */
     private void deleteItemToCart(MyProductListVO myProductListVO) {
-
         mService.deleteMyBasketListByMyId(myProductListVO)
                 .enqueue(new Callback<List<MyProductListVO>>() {
                     @Override
@@ -262,7 +252,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     /**
      * 19/03/18 (위진학)
-     * 흔들어서 QR 코드 생성하기
+     * (CustomMethod) 흔들어서 QR 코드 생성하기
      */
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -310,7 +300,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     /**
      * 19/03/18 (위진학)
-     * 내 장바구니에 담긴 목록 QR코드 생성하기
+     * (CustomMethod) 내 장바구니에 담긴 목록 QR코드 생성하기
      */
     public void qrDialog() {
 
@@ -324,25 +314,22 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         JSONObject obj = new JSONObject();
         String check = "true";
         String user_id = getUserEmail();
-        String store = emartName;
 
         try {
-            obj.put("heck", check);
+            obj.put("check", check);
             obj.put("user_Id", user_id);
-            obj.put("store", store);
+            obj.put("store_Id", emartId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        Log.d("utf",obj.toString());
-
         Charset chrutf = Charset.forName("UTF-8");
-        final String b = new String(obj.toString().getBytes(),chrutf);
-        System.out.println(b);
+        final String qr = new String(obj.toString().getBytes(), chrutf);
+        System.out.println(qr);
 
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(b, BarcodeFormat.QR_CODE, 500, 500);
+            BitMatrix bitMatrix = multiFormatWriter.encode(qr, BarcodeFormat.QR_CODE, 500, 500);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 
@@ -363,10 +350,9 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     /**
      * 19/03/14 (위진학)
-     * 나의 장바구니 페이지에 내 장바구니 목록 담기
+     * (Retrofit) 나의 장바구니 페이지에 내 장바구니 목록 담기
      */
     private void updateMyBasket(List<MyProductListVO> list) {
-
         mService.updateMyBasketById(list)
                 .enqueue(new Callback<List<MyProductListVO>>() {
                     @Override
@@ -383,7 +369,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     /**
      * 19/03/18 (위진학)
-     * 등록된 친구 리스트 다이얼로그
+     * (CustomMethod) 등록된 친구 리스트 다이얼로그
      */
     private void sharedFriends(List<UserVO> userList) {
         Log.d("userList", userList.toString());
@@ -414,7 +400,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
     /**
      * 19/03/18 (위진학)
-     * 나를 제외한 등록된 사용자 리스트 가져오기
+     * (Retrofit) 나를 제외한 등록된 사용자 리스트 가져오기
      */
     private void getUserList(String userEmail) {
         mService.getUserListByMyID(userEmail)
@@ -451,7 +437,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             sendPostToFCM(chatData, editText.getText().toString());
-                            sendSharedBasket(getUserEmail(), chatData.getUser_Id());
+                            sendSharedBasket(getUserEmail(), chatData.getUser_Id(), emartName);
                             user_list_dialog.dismiss();
                         }
                     })
@@ -461,26 +447,6 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                         }
                     }).show();
         }
-
-    }
-
-    /**
-     * 19/03/18 (위진학)
-     * 상대방에게 장바구니 공유하기
-     */
-    private void sendSharedBasket(String my_Id, String your_id) {
-        mService.sendSharedBasketByMyID(my_Id, your_id)
-                .enqueue(new Callback<JsonObject>() {
-                    @Override
-                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<JsonObject> call, Throwable t) {
-
-                    }
-                });
 
     }
 
@@ -531,6 +497,27 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+    }
+
+
+    /**
+     * 19/03/18 (위진학)
+     * (Retrofit) 상대방에게 장바구니 공유하기
+     */
+    private void sendSharedBasket(String my_Id, String your_id, String emartName) {
+        mService.sendSharedBasketByMyID(my_Id, your_id, emartName)
+                .enqueue(new Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<JsonObject> call, Throwable t) {
 
                     }
                 });

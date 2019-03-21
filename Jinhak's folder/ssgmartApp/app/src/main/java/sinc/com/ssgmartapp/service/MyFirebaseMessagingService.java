@@ -20,6 +20,8 @@ import java.util.Map;
 
 import sinc.com.ssgmartapp.MainActivity;
 import sinc.com.ssgmartapp.R;
+import sinc.com.ssgmartapp.fragment.SharedBasketSSG_Fragment;
+
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
@@ -36,6 +38,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         Map<String, String> data = remoteMessage.getData();
+
+        SharedBasketSSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
 
         sendNotification(notification, data);
     }
