@@ -89,7 +89,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
         if (emartName == null) {
             emartName = "명동센터점";
-            emartId = "0";
+            emartId = "LOC_1";
             locationTextView.setText(emartName);
         }
         {

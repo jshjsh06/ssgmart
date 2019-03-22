@@ -15,7 +15,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -24,6 +23,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,14 +33,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.JsonObject;
@@ -61,7 +58,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import okio.Utf8;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,13 +65,11 @@ import sinc.com.ssgmartapp.R;
 import sinc.com.ssgmartapp.adapter.DeleteCardListAdapter;
 import sinc.com.ssgmartapp.adapter.UserComponentAdapter;
 import sinc.com.ssgmartapp.dto.MyProductListVO;
-import sinc.com.ssgmartapp.dto.SharedProductVO;
 import sinc.com.ssgmartapp.dto.UserData;
 import sinc.com.ssgmartapp.dto.UserVO;
 import sinc.com.ssgmartapp.helper.Common;
 import sinc.com.ssgmartapp.helper.RecyclerDeleteItemTouchHelper;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
-import sinc.com.ssgmartapp.helper.Util;
 import sinc.com.ssgmartapp.remote.RequestService;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -148,7 +142,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
         if (emartName == null) {
             emartName = "명동센터점";
-            emartId = "0";
+            emartId = "LOC_1";
         }
         Log.d("매장이름", emartName);
 
@@ -343,9 +337,28 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                 .setView(v)
                 .setTitle(R.string.qr_code_title)
                 .setCancelable(true)
+                .setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        if(keyCode==KeyEvent.KEYCODE_BACK){
+                            dialog.dismiss();
+                            addItemToCart(getUserEmail(), emartName);
+                            return true;
+                        }
+                        return false;
+                    }
+                })
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        addItemToCart(getUserEmail(), emartName);
+                    }
+                })
                 .create();
 
         alertDialog.show();
+        addItemToCart(getUserEmail(), emartName);
+
     }
 
     /**

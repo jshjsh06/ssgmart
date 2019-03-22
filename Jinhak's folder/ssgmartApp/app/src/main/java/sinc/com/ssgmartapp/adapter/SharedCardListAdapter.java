@@ -2,26 +2,20 @@ package sinc.com.ssgmartapp.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
 import sinc.com.ssgmartapp.R;
-import sinc.com.ssgmartapp.dto.MyProductListVO;
 import sinc.com.ssgmartapp.dto.SharedProductVO;
 import sinc.com.ssgmartapp.helper.Util;
 

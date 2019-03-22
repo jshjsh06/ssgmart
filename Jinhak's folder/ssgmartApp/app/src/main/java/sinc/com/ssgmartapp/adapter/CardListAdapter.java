@@ -2,11 +2,8 @@ package sinc.com.ssgmartapp.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +11,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.io.ByteArrayInputStream;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import sinc.com.ssgmartapp.R;
@@ -52,22 +50,26 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
         holder.stock.setText(Integer.parseInt(String.valueOf(Math.round(productListVO.getStock()))) + "개");
         holder.discountPrice.setText(Integer.parseInt(String.valueOf(Math.round(productListVO.getDiscountPrice()))) + "원");
 
-        String data = productListVO.getImage();
-        byte[] bytePlainOrg = Base64.decode(data, 0);
-        //byte[] 데이터 stream 데이터로 변환 후 bitmapFactory로 이미지 생성
-        ByteArrayInputStream inStream = new ByteArrayInputStream(bytePlainOrg);
-        Bitmap bm = BitmapFactory.decodeStream(inStream);
-        holder.thumbnail.setImageBitmap(bm);
+//        String data = productListVO.getImage();
+//        byte[] bytePlainOrg = Base64.decode(data, 0);
+//        //byte[] 데이터 stream 데이터로 변환 후 bitmapFactory로 이미지 생성
+//        ByteArrayInputStream inStream = new ByteArrayInputStream(bytePlainOrg);
+//        Bitmap bm = BitmapFactory.decodeStream(inStream);
+//        holder.thumbnail.setImageBitmap(bm);
+
+        Picasso.with(context)
+                .load(productListVO.getImage())
+                .into(holder.thumbnail);
 
         //가격 꾸미기
         double normal = productListVO.getPrice();
         double discount = productListVO.getDiscountPrice();
 
-        if(normal==discount){
+        if (normal == discount) {
             holder.discountTxt.setText("정상가");
             holder.discountTxt.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
             holder.discountPrice.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
-        }else{
+        } else {
             holder.discountTxt.setText("할인가");
             holder.discountLogo.setVisibility(View.VISIBLE);
         }
@@ -95,8 +97,8 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, normalPrice, discountPrice, stock, valid , discountTxt;
-        public ImageView thumbnail,discountLogo;
+        public TextView name, normalPrice, discountPrice, stock, valid, discountTxt;
+        public ImageView thumbnail, discountLogo;
         public RelativeLayout viewBackground, viewForeground;
 
 

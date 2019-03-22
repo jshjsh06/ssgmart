@@ -2,11 +2,8 @@ package sinc.com.ssgmartapp.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +11,11 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.NumberPicker;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.io.ByteArrayInputStream;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import sinc.com.ssgmartapp.R;
@@ -64,16 +60,16 @@ public class DetailCardListAdapter extends RecyclerView.Adapter<DetailCardListAd
         holder.priceStock.setText(ps);
 
 
-        String data = productListVO.getImage();
-        byte[] bytePlainOrg = Base64.decode(data, 0);
-        //byte[] 데이터 stream 데이터로 변환 후 bitmapFactory로 이미지 생성
-        ByteArrayInputStream inStream = new ByteArrayInputStream(bytePlainOrg);
-        Bitmap bm = BitmapFactory.decodeStream(inStream);
-        holder.thumbnail.setImageBitmap(bm);
+//        String data = productListVO.getImage();
+//        byte[] bytePlainOrg = Base64.decode(data, 0);
+//        //byte[] 데이터 stream 데이터로 변환 후 bitmapFactory로 이미지 생성
+//        ByteArrayInputStream inStream = new ByteArrayInputStream(bytePlainOrg);
+//        Bitmap bm = BitmapFactory.decodeStream(inStream);
+//        holder.thumbnail.setImageBitmap(bm);
 
-/*        Picasso.with(context)
+        Picasso.with(context)
                 .load(productListVO.getImage())
-                .into(holder.thumbnail);*/
+                .into(holder.thumbnail);
 
         holder.checkBox.setSelected(false);
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

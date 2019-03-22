@@ -4,16 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import sinc.com.ssgmartapp.fragment.BasketSSG_Fragment;
 import sinc.com.ssgmartapp.fragment.BuySSG_Fragment;
 import sinc.com.ssgmartapp.fragment.SharedBasketSSG_Fragment;
 
-/**
- * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
+
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     public SectionsPagerAdapter(FragmentManager fm) {

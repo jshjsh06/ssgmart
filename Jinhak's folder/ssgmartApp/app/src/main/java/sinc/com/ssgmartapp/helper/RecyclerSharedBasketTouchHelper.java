@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 
-import sinc.com.ssgmartapp.adapter.DeleteCardListAdapter;
 import sinc.com.ssgmartapp.adapter.SharedCardListAdapter;
 
 public class RecyclerSharedBasketTouchHelper extends ItemTouchHelper.SimpleCallback {
