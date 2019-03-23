@@ -39,7 +39,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         Map<String, String> data = remoteMessage.getData();
 
-        SharedBasketSSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
+        //SharedBasketSSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
 
         sendNotification(notification, data);
     }
