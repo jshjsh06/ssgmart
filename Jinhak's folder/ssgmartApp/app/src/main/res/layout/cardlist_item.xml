@@ -167,9 +167,7 @@
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentEnd="true"
-                android:visibility="invisible"
-                app:srcCompat="@drawable/sale_logo" />
+                android:layout_alignParentEnd="true" />
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>

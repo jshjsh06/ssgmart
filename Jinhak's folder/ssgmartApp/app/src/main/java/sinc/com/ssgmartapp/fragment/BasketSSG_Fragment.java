@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -30,10 +31,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -71,6 +75,7 @@ import sinc.com.ssgmartapp.dto.UserVO;
 import sinc.com.ssgmartapp.helper.Common;
 import sinc.com.ssgmartapp.helper.RecyclerDeleteItemTouchHelper;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
+import sinc.com.ssgmartapp.helper.Util;
 import sinc.com.ssgmartapp.remote.MyFragmentRefreshCallBack;
 import sinc.com.ssgmartapp.remote.RequestService;
 
@@ -79,7 +84,7 @@ import static android.content.Context.SENSOR_SERVICE;
 /**
  * 장바구니 Fragment
  */
-public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener, SensorEventListener, AdapterView.OnItemClickListener,MyFragmentRefreshCallBack{
+public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener, SensorEventListener, AdapterView.OnItemClickListener, MyFragmentRefreshCallBack {
 
     private static final String FCM_MESSAGE_URL = "https://fcm.googleapis.com/fcm/send";
     private static final String SERVER_KEY = "AAAAMVZD4uA:APA91bGylAREesXJvgHZi6kGZqsVbDa3vnFAxwnAaCbSV6drUXiXKrX8SmUnTKiZzRGDMA9Xwzj0lGzPzFVo8_s22zBXGf0eGpfFfa5DtdKipGZwvZ-pyl5fiznfuQe_VlBpkoQ41e4r";
@@ -108,6 +113,8 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
     List<UserVO> user_list;
     private Dialog user_list_dialog;
     private ListView listView;
+
+    private Spinner storeSpinner;
 
     public static MyFragmentRefreshCallBack myFragmentRefreshCallBack;
 
@@ -166,6 +173,12 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                 qrDialog();
             }
         });
+
+        storeSpinner = mFragmentView.findViewById(R.id.store_spinner);
+
+        Util.setGlobalFont(getContext(), storeSpinner);
+
+        setStoreCategorySpinner();
 
 
         user_list = new ArrayList<>();
@@ -346,7 +359,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                 .setOnKeyListener(new DialogInterface.OnKeyListener() {
                     @Override
                     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                        if(keyCode==KeyEvent.KEYCODE_BACK){
+                        if (keyCode == KeyEvent.KEYCODE_BACK) {
                             dialog.dismiss();
                             addItemToCart(getUserEmail(), emartName);
                             return true;
@@ -569,6 +582,61 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         Snackbar snackbar = Snackbar.make(mFragmentView, "장바구니에 담겨있던 상품이 팔렸어요..!", Snackbar.LENGTH_SHORT);
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
+    }
+
+    /**
+     * 19/03/14 (위진학)
+     * 스피너 카테고리 선택시 매장별,할인별 제품 새로고침
+     */
+    public void setStoreCategorySpinner() {
+
+        String[] str = getResources().getStringArray(R.array.storeCategory);
+
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.store_spinner_item, str) {
+            @NonNull
+            @Override
+            public View getView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                Typeface externalFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/BMDOHYEON.ttf");
+                ((TextView) v).setTypeface(externalFont);
+                return v;
+            }
+
+            @NonNull
+            @Override
+            public View getDropDownView(int position, @NonNull View convertView, @NonNull ViewGroup parent) {
+                View v = super.getDropDownView(position, convertView, parent);
+                Typeface externalFont = Typeface.createFromAsset(getContext().getAssets(), "fonts/BMDOHYEON.ttf");
+                ((TextView) v).setTypeface(externalFont);
+                return v;
+            }
+        };
+
+        storeSpinner.setAdapter(adapter);
+
+
+        for (int i = 0; i < str.length; i++) {
+            if(emartName.equals(str[i])){
+                storeSpinner.setSelection(i);
+            }
+        }
+
+        storeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+
+                } else {
+                    addItemToCart(getUserEmail(), storeSpinner.getItemAtPosition(position).toString());
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
 }

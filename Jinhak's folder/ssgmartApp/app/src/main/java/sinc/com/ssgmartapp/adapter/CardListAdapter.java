@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,13 +51,6 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
         holder.stock.setText(Integer.parseInt(String.valueOf(Math.round(productListVO.getStock()))) + "개");
         holder.discountPrice.setText(Integer.parseInt(String.valueOf(Math.round(productListVO.getDiscountPrice()))) + "원");
 
-//        String data = productListVO.getImage();
-//        byte[] bytePlainOrg = Base64.decode(data, 0);
-//        //byte[] 데이터 stream 데이터로 변환 후 bitmapFactory로 이미지 생성
-//        ByteArrayInputStream inStream = new ByteArrayInputStream(bytePlainOrg);
-//        Bitmap bm = BitmapFactory.decodeStream(inStream);
-//        holder.thumbnail.setImageBitmap(bm);
-
         Picasso.with(context)
                 .load(productListVO.getImage())
                 .into(holder.thumbnail);
@@ -71,13 +65,9 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
             holder.discountPrice.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
         } else {
             holder.discountTxt.setText("할인가");
-            holder.discountLogo.setVisibility(View.VISIBLE);
+            holder.discountLogo.setImageResource(R.drawable.sale_logo);
         }
 
-
-/*        Picasso.with(context)
-                .load(productListVO.getImage())
-                .into(holder.thumbnail);*/
     }
 
     @Override
@@ -91,6 +81,7 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
     }
 
     public void restoreItem(ProductListVO productListVO, int position) {
+        list.remove(position);
         list.add(position, productListVO);
         notifyItemInserted(position);
     }

@@ -19,7 +19,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,6 +54,7 @@ import sinc.com.ssgmartapp.dto.SharedProductVO;
 import sinc.com.ssgmartapp.helper.Common;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
 import sinc.com.ssgmartapp.helper.RecyclerSharedBasketTouchHelper;
+import sinc.com.ssgmartapp.helper.SharedBasket_itemClickListener;
 import sinc.com.ssgmartapp.remote.MyFragmentRefreshCallBack;
 import sinc.com.ssgmartapp.remote.RequestService;
 
@@ -100,6 +103,35 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         recyclerView.setAdapter(adapter);
+
+        recyclerView.addOnItemTouchListener(new SharedBasket_itemClickListener(getActivity(), recyclerView,
+                new SharedBasket_itemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+
+                        SharedProductVO clickItem = new SharedProductVO();
+                        clickItem.setSend_Id(list.get(position).getSend_Id());
+                        clickItem.setBasket(list.get(position).getBasket());
+                        clickItem.setStore(list.get(position).getStore());
+                        clickItem.setUserName(list.get(position).getUserName());
+                        clickItem.setUser_image(list.get(position).getUser_image());
+                        clickItem.setTotal_price(list.get(position).getTotal_price());
+                        clickItem.setTotal_cnt(list.get(position).getTotal_cnt());
+                        clickItem.setArr_time(list.get(position).getArr_time());
+                        clickItem.setDeadline(list.get(position).getDeadline());
+
+                        detailDialog(clickItem, position);
+
+                        adapter.sendBasket(position);
+                        adapter.restoreItem(clickItem, position);
+
+                    }
+
+                    @Override
+                    public void onItemLongClick(View view, int position) {
+
+                    }
+                }));
 
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallBack
@@ -299,14 +331,16 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
     private void setSharedBasketInMyBasket(List<MyProductListVO> myProductListVOList) {
 
         mService.showSharedListByYourId(myProductListVOList)
-                .enqueue(new Callback<Void>() {
+                .enqueue(new Callback<Integer>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-
+                    public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        Log.d("response",String.valueOf(response.body()));
+                        addSharedItemByMyId(getUserEmail());
+                        adapter.notifyDataSetChanged();
                     }
 
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    public void onFailure(Call<Integer> call, Throwable t) {
 
                     }
                 });
@@ -331,7 +365,7 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
         try {
             obj.put("check", check);
             obj.put("basket", basket);
-            obj.put("user_Id",user_Id);
+            obj.put("user_Id", user_Id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -352,9 +386,17 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
                 .setView(v)
                 .setTitle(R.string.qr_code_title)
                 .setCancelable(true)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        addSharedItemByMyId(getUserEmail());
+                    }
+                })
                 .create();
 
         alertDialog.show();
+
+        addSharedItemByMyId(getUserEmail());
     }
 
     /**
@@ -367,7 +409,7 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
                     @Override
                     public void onResponse(Call<List<SharedProductVO>> call, Response<List<SharedProductVO>> response) {
                         if (response.body() == null) {
-                            Log.d("sharedBasket", String.valueOf(response.body()));
+
                         } else {
                             list.clear();
                             list.addAll(response.body());
@@ -414,7 +456,6 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
                     public void onResponse(Call<List<MyProductListVO>> call, Response<List<MyProductListVO>> response) {
                         detail_list.clear();
                         detail_list.addAll(response.body());
-                        Log.d("here", "here");
                         adapter.notifyDataSetChanged();
                         detailCardListAdapter.notifyDataSetChanged();
                     }
@@ -457,5 +498,6 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
+
 
 }

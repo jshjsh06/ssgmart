@@ -45,13 +45,14 @@ import sinc.com.ssgmartapp.helper.Common;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelper;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
 import sinc.com.ssgmartapp.helper.Util;
+import sinc.com.ssgmartapp.remote.MyFragmentRefreshCallBack;
 import sinc.com.ssgmartapp.remote.RequestService;
 
 
 /**
  * 올때 쓱 Fragment
  */
-public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener {
+public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener,MyFragmentRefreshCallBack {
 
     View mFragmentView;
 
@@ -65,6 +66,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     private String emartId;
 
     RequestService mService;
+    public static MyFragmentRefreshCallBack myFragmentRefreshCallBack;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +80,9 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         mFragmentView = inflater.inflate(R.layout.fragment_buy_ssg, container, false);
         recyclerView = mFragmentView.findViewById(R.id.buy_ssg_recycler_view);
         mService = Common.getUrlService();
+
+        myFragmentRefreshCallBack = this;
+
 
         list = new ArrayList<>();
         adapter = new CardListAdapter(getContext(), list);
@@ -114,7 +119,6 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
         //category 선택시
         categorySpinner = mFragmentView.findViewById(R.id.category_spinner);
-        String[] str = getResources().getStringArray(R.array.category);
 
         Util.setGlobalFont(getContext(), mFragmentView);
         Util.setGlobalFont(getContext(), categorySpinner);
@@ -188,10 +192,11 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
             final int addIndex = viewHolder.getAdapterPosition();
 
             //mDatabase.getReference().child("users").child(getUid()).child("myBasket").push().setValue(addItem);
-            adapter.sendBasket(addIndex);
+            adapter.restoreItem(addItem,addIndex);
 
             insertItem(addItem);
             addItemToCart(emartName);
+            adapter.notifyDataSetChanged();
 
             Snackbar snackbar = Snackbar.make(mFragmentView, name + "를 장바구니에 넣었어요!!", Snackbar.LENGTH_SHORT);
 
@@ -217,8 +222,8 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
                 try {
-                    Log.d("InsertItem", response.body().toString());
-                    Toast.makeText(getContext(), "Insert 성공", Toast.LENGTH_LONG).show();
+                    addItemToCart(emartName);
+                    adapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -241,6 +246,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
             @Override
             public void onRefresh() {
                 addItemToCart(emartName);
+                adapter.notifyDataSetChanged();
                 swipeLayout.setRefreshing(false);
             }
         });
@@ -316,4 +322,12 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
     }
 
+    /**
+     * 19/03/21 (위진학)
+     * (CustomMethod) 공유가 됐을 때 새로고침하는 Method
+     */
+    @Override
+    public void myFragmentRefresh() {
+        addItemToCart(emartName);
+    }
 }

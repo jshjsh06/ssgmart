@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,16 +43,16 @@ public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAd
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
-        final SharedProductVO sharedProductVO = list.get(position);
+            final SharedProductVO sharedProductVO = list.get(position);
 
-        holder.userName.setText(sharedProductVO.getUserName());
-        holder.totalPrice.setText(String.valueOf(sharedProductVO.getTotal_price()));
-        holder.arrivalTime.setText(sharedProductVO.getArr_time());
-        holder.validity.setText(sharedProductVO.getDeadline());
-        holder.stock.setText(String.valueOf(sharedProductVO.getTotal_cnt()));
-        holder.storeName.setText(sharedProductVO.getStore());
+            holder.userName.setText(sharedProductVO.getUserName());
+            holder.totalPrice.setText(String.valueOf(sharedProductVO.getTotal_price()));
+            holder.arrivalTime.setText(sharedProductVO.getArr_time());
+            holder.validity.setText(sharedProductVO.getDeadline());
+            holder.stock.setText(String.valueOf(sharedProductVO.getTotal_cnt()));
+            holder.storeName.setText(sharedProductVO.getStore());
 
-        Picasso.with(context)
+            Picasso.with(context)
                 .load(sharedProductVO.getUser_image())
                 .into(holder.userImg);
     }

@@ -22,6 +22,7 @@ import java.util.Map;
 import sinc.com.ssgmartapp.MainActivity;
 import sinc.com.ssgmartapp.R;
 import sinc.com.ssgmartapp.fragment.BasketSSG_Fragment;
+import sinc.com.ssgmartapp.fragment.BuySSG_Fragment;
 import sinc.com.ssgmartapp.fragment.SharedBasketSSG_Fragment;
 
 
@@ -45,6 +46,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         if(notification.getBody().equals(check1)){
             sendNotification(notification, data);
             BasketSSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
+            BuySSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
 
         }else{
             sendNotification(notification, data);

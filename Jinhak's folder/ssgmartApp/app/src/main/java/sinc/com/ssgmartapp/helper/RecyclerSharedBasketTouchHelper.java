@@ -61,4 +61,6 @@ public class RecyclerSharedBasketTouchHelper extends ItemTouchHelper.SimpleCallb
     public int convertToAbsoluteDirection(int flags, int layoutDirection) {
         return super.convertToAbsoluteDirection(flags, layoutDirection);
     }
+
+
 }

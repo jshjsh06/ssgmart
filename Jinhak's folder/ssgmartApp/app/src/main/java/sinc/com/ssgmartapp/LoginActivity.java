@@ -15,8 +15,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonObject;
 
@@ -31,7 +34,7 @@ import sinc.com.ssgmartapp.remote.RequestService;
 /**
  * 로그인
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements ValueEventListener {
 
     private EditText id_editText;
     private EditText pw_editText;
@@ -116,20 +119,22 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-//    //로그아웃 안했으면, 즉 로그인 되어있으면 자동으로 메인페이지로 이동시키기
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        // Check if user is signed in (non-null) and update UI accordingly.
-//        currentUser = mAuth.getCurrentUser();
-//        if(currentUser != null){
-//            startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
-//            finish();
-//        }
-//    }
+    //로그아웃 안했으면, 즉 로그인 되어있으면 자동으로 메인페이지로 이동시키기
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            startActivity(new Intent(LoginActivity.this, WelcomeActivity.class));
+            finish();
+        }
+    }
 
     @Override
     protected void onStop() {
+        FirebaseDatabase.getInstance().getReference().removeEventListener(this);
+
         super.onStop();
     }
 
@@ -145,4 +150,13 @@ public class LoginActivity extends AppCompatActivity {
         mDatabase.child("users").child(userData.userEmailID).setValue(userData);
     }
 
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
 }

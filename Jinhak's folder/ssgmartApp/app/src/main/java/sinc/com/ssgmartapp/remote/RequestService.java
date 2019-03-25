@@ -89,7 +89,7 @@ public interface RequestService {
 
     //상대방의 아이템 내 장바구니에 넣기
     @POST("shareBasket/fromSharedBasketToMyBasket.do")
-    Call<Void> showSharedListByYourId(@Body List<MyProductListVO> myProductListVOList);
+    Call<Integer> showSharedListByYourId(@Body List<MyProductListVO> myProductListVOList);
 
     //선택한 QR코드 업데이트 하기
     @POST("shareBasket/makingShareBasketQR.do")

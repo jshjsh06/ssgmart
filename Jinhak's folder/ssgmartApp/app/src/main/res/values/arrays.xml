@@ -9,6 +9,18 @@
         <item> 도시락</item>
         <item> 베이커리</item>
     </string-array>
+
+
+    <string-array name="storeCategory">
+        <item> 매장명</item>
+        <item> 명동센터점</item>
+        <item> 남산힐튼점</item>
+        <item> 중림점</item>
+        <item> 메사빌딩점</item>
+        <item> 회현이프라자점</item>
+    </string-array>
+
+
 </resources>
 
 
