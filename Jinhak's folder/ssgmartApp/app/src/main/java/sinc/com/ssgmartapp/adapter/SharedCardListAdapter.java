@@ -55,6 +55,7 @@ public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAd
             Picasso.with(context)
                 .load(sharedProductVO.getUser_image())
                 .into(holder.userImg);
+
     }
 
     @Override
