@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -70,6 +71,7 @@ import sinc.com.ssgmartapp.dto.UserVO;
 import sinc.com.ssgmartapp.helper.Common;
 import sinc.com.ssgmartapp.helper.RecyclerDeleteItemTouchHelper;
 import sinc.com.ssgmartapp.helper.RecyclerItemTouchHelperListener;
+import sinc.com.ssgmartapp.remote.MyFragmentRefreshCallBack;
 import sinc.com.ssgmartapp.remote.RequestService;
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -77,7 +79,7 @@ import static android.content.Context.SENSOR_SERVICE;
 /**
  * 장바구니 Fragment
  */
-public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener, SensorEventListener, AdapterView.OnItemClickListener {
+public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener, SensorEventListener, AdapterView.OnItemClickListener,MyFragmentRefreshCallBack{
 
     private static final String FCM_MESSAGE_URL = "https://fcm.googleapis.com/fcm/send";
     private static final String SERVER_KEY = "AAAAMVZD4uA:APA91bGylAREesXJvgHZi6kGZqsVbDa3vnFAxwnAaCbSV6drUXiXKrX8SmUnTKiZzRGDMA9Xwzj0lGzPzFVo8_s22zBXGf0eGpfFfa5DtdKipGZwvZ-pyl5fiznfuQe_VlBpkoQ41e4r";
@@ -107,6 +109,8 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
     private Dialog user_list_dialog;
     private ListView listView;
 
+    public static MyFragmentRefreshCallBack myFragmentRefreshCallBack;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         System.out.println("BasketSSG_Fragment.onCreate");
@@ -119,6 +123,8 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         list = new ArrayList<>();
         mService = Common.getUrlService();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
+
+        myFragmentRefreshCallBack = this;
 
 
         mFragmentView = inflater.inflate(R.layout.fragment_basket_ssg, container, false);
@@ -555,4 +561,14 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         super.onStop();
         FirebaseDatabase.getInstance().getReference().removeEventListener(this);
     }
+
+    @Override
+    public void myFragmentRefresh() {
+        addItemToCart(getUserEmail(), emartName);
+
+        Snackbar snackbar = Snackbar.make(mFragmentView, "장바구니에 담겨있던 상품이 팔렸어요..!", Snackbar.LENGTH_SHORT);
+        snackbar.setActionTextColor(Color.YELLOW);
+        snackbar.show();
+    }
+
 }

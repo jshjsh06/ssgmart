@@ -327,10 +327,11 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
         JSONObject obj = new JSONObject();
         String check = "false";
         String basket = String.valueOf(myProductListVOList.get(0).getBasket());
-
+        String user_Id = getUserEmail();
         try {
             obj.put("check", check);
             obj.put("basket", basket);
+            obj.put("user_Id",user_Id);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -456,4 +457,5 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
     }
+
 }

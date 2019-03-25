@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -20,6 +21,7 @@ import java.util.Map;
 
 import sinc.com.ssgmartapp.MainActivity;
 import sinc.com.ssgmartapp.R;
+import sinc.com.ssgmartapp.fragment.BasketSSG_Fragment;
 import sinc.com.ssgmartapp.fragment.SharedBasketSSG_Fragment;
 
 
@@ -39,9 +41,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         Map<String, String> data = remoteMessage.getData();
 
-        //SharedBasketSSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
+        String check1 = "장바구니에 담겨있던 상품이 팔렸어요..!";
+        if(notification.getBody().equals(check1)){
+            sendNotification(notification, data);
+            BasketSSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
 
-        sendNotification(notification, data);
+        }else{
+            sendNotification(notification, data);
+            SharedBasketSSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
+        }
+
     }
 
     /**
