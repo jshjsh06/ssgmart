@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,12 +59,24 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
         double discount = productListVO.getDiscountPrice();
 
         if (normal == discount) {
+
             holder.discountTxt.setText("정상가");
             holder.discountTxt.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
             holder.discountPrice.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
+
+            Picasso.with(context)
+                    .load("https://firebasestorage.googleapis.com/v0/b/ssg-mart-app.appspot.com/o/AndroidImage%2Ftrans.png?alt=media&token=70ec003f-177b-45ba-adaf-358cdc86aaf6")
+                    .into(holder.discountLogo);
+
         } else {
+
             holder.discountTxt.setText("할인가");
-            holder.discountLogo.setImageResource(R.drawable.sale_logo);
+            holder.discountTxt.setTextColor(context.getResources().getColor(R.color.colorAccent));
+            holder.discountPrice.setTextColor(context.getResources().getColor(R.color.colorAccent));
+
+            Picasso.with(context)
+                    .load("https://firebasestorage.googleapis.com/v0/b/ssg-mart-app.appspot.com/o/AndroidImage%2Fsale_logo.png?alt=media&token=722c3ee8-f973-4386-a618-e8a4dd1a520c")
+                    .into(holder.discountLogo);
         }
 
     }
@@ -73,11 +84,6 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
     @Override
     public int getItemCount() {
         return list.size();
-    }
-
-    public void sendBasket(int position) {
-        list.remove(position);
-        notifyItemRemoved(position);
     }
 
     public void restoreItem(ProductListVO productListVO, int position) {
@@ -88,8 +94,8 @@ public class CardListAdapter extends RecyclerView.Adapter<CardListAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, normalPrice, discountPrice, stock, valid, discountTxt;
-        public ImageView thumbnail, discountLogo;
+        TextView name, normalPrice, discountPrice, stock, valid, discountTxt;
+        ImageView thumbnail, discountLogo;
         public RelativeLayout viewBackground, viewForeground;
 
 

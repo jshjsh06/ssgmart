@@ -231,9 +231,13 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                 .enqueue(new Callback<List<MyProductListVO>>() {
                     @Override
                     public void onResponse(Call<List<MyProductListVO>> call, Response<List<MyProductListVO>> response) {
-                        list.clear();
-                        list.addAll(response.body());
-                        adapter.notifyDataSetChanged();
+                        if (response.body() == null) {
+
+                        } else {
+                            list.clear();
+                            list.addAll(response.body());
+                            adapter.notifyDataSetChanged();
+                        }
                     }
 
                     @Override
@@ -371,6 +375,8 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         addItemToCart(getUserEmail(), emartName);
+                        BuySSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
+
                     }
                 })
                 .create();
@@ -494,7 +500,8 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         final UserData userData = dataSnapshot.getValue(UserData.class);
-
+                        Log.d("Message", userData.userEmailID);
+                        Log.d("Message", userData.fcmToken);
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
@@ -584,6 +591,11 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
         snackbar.show();
     }
 
+    @Override
+    public void snakBar() {
+
+    }
+
     /**
      * 19/03/14 (위진학)
      * 스피너 카테고리 선택시 매장별,할인별 제품 새로고침
@@ -616,7 +628,7 @@ public class BasketSSG_Fragment extends Fragment implements RecyclerItemTouchHel
 
 
         for (int i = 0; i < str.length; i++) {
-            if(emartName.equals(str[i])){
+            if (emartName.equals(str[i])) {
                 storeSpinner.setSelection(i);
             }
         }

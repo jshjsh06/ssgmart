@@ -56,8 +56,11 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
     View mFragmentView;
 
+    private List<ProductListVO> realList;
+
+
+
     private RecyclerView recyclerView;
-    private List<ProductListVO> list;
     private CardListAdapter adapter;
     private SwipeRefreshLayout swipeLayout;
     private TextView locationTextView;
@@ -68,11 +71,6 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     RequestService mService;
     public static MyFragmentRefreshCallBack myFragmentRefreshCallBack;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        Util.setGlobalFont(getContext(), getActivity().getWindow().getDecorView());
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
@@ -83,9 +81,10 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
         myFragmentRefreshCallBack = this;
 
+        realList = new ArrayList<>();
 
-        list = new ArrayList<>();
-        adapter = new CardListAdapter(getContext(), list);
+        adapter = new CardListAdapter(getContext(), realList);
+
         locationTextView = mFragmentView.findViewById(R.id.marker_location_textView);
 
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
@@ -140,9 +139,8 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
                 .enqueue(new Callback<List<ProductListVO>>() {
                     @Override
                     public void onResponse(Call<List<ProductListVO>> call, Response<List<ProductListVO>> response) {
-                        list.clear();
-                        list.addAll(response.body());
-                        Log.d("storeName", response.body().toString());
+                        realList.clear();
+                        realList.addAll(response.body());
                         adapter.notifyDataSetChanged();
                     }
 
@@ -160,14 +158,12 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     private void addItemToCartByCategory(String storeName, String category) {
         mService = Common.getUrlService();
 
-        Log.d("storeName", storeName);
         mService.getMenuListByCategory(storeName, category)
                 .enqueue(new Callback<List<ProductListVO>>() {
                     @Override
                     public void onResponse(Call<List<ProductListVO>> call, Response<List<ProductListVO>> response) {
-                        list.clear();
-                        list.addAll(response.body());
-                        Log.d("storeName", response.body().toString());
+                        realList.clear();
+                        realList.addAll(response.body());
                         adapter.notifyDataSetChanged();
                     }
 
@@ -186,16 +182,16 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CardListAdapter.MyViewHolder) {
-            String name = list.get(viewHolder.getAdapterPosition()).getProductName();
+            String name = realList.get(viewHolder.getAdapterPosition()).getProductName();
 
-            final ProductListVO addItem = list.get(viewHolder.getAdapterPosition());
+            final ProductListVO addItem = realList.get(viewHolder.getAdapterPosition());
             final int addIndex = viewHolder.getAdapterPosition();
 
-            //mDatabase.getReference().child("users").child(getUid()).child("myBasket").push().setValue(addItem);
-            adapter.restoreItem(addItem,addIndex);
 
             insertItem(addItem);
-            addItemToCart(emartName);
+            adapter.restoreItem(addItem,addIndex);
+
+
             adapter.notifyDataSetChanged();
 
             Snackbar snackbar = Snackbar.make(mFragmentView, name + "를 장바구니에 넣었어요!!", Snackbar.LENGTH_SHORT);
@@ -330,4 +326,12 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
     public void myFragmentRefresh() {
         addItemToCart(emartName);
     }
+
+    @Override
+    public void snakBar() {
+        Snackbar snackbar = Snackbar.make(mFragmentView, "공유 장바구니가 도착했어요", Snackbar.LENGTH_SHORT);
+        snackbar.setActionTextColor(Color.YELLOW);
+        snackbar.show();
+    }
+
 }

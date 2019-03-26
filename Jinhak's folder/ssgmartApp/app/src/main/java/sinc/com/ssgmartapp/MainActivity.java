@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -16,13 +17,15 @@ import sinc.com.ssgmartapp.adapter.SectionsPagerAdapter;
 import sinc.com.ssgmartapp.helper.Util;
 
 /**
- *  세 가지 Tab Layout
+ * 세 가지 Tab Layout
  */
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
 
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
+
+    public static int currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-
+        currentFragment = 0;
         //각각 탭 Page가 바뀌었을 때(플로팅 버튼 숨기기)
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -57,14 +60,16 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
             @Override
             public void onPageSelected(int position) {
-
                 switch (position) {
                     case 0:
+                        currentFragment = position;
                         break;
                     case 1:
+                        currentFragment = position;
                         refresh();
                         break;
                     case 2:
+                        currentFragment = position;
                         refresh();
                         break;
                     default:

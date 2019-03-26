@@ -27,8 +27,6 @@ public class DetailCardListAdapter extends RecyclerView.Adapter<DetailCardListAd
 
     private Context context;
     private List<MyProductListVO> list;
-    int mCheckedPostion = -1;
-    private boolean isChecked = false;
 
     public DetailCardListAdapter(Context context, List<MyProductListVO> list) {
         this.context = context;
@@ -59,14 +57,6 @@ public class DetailCardListAdapter extends RecyclerView.Adapter<DetailCardListAd
         String ps = priceStock + "원 / " + cntString + "개";
         holder.priceStock.setText(ps);
 
-
-//        String data = productListVO.getImage();
-//        byte[] bytePlainOrg = Base64.decode(data, 0);
-//        //byte[] 데이터 stream 데이터로 변환 후 bitmapFactory로 이미지 생성
-//        ByteArrayInputStream inStream = new ByteArrayInputStream(bytePlainOrg);
-//        Bitmap bm = BitmapFactory.decodeStream(inStream);
-//        holder.thumbnail.setImageBitmap(bm);
-
         Picasso.with(context)
                 .load(productListVO.getImage())
                 .into(holder.thumbnail);
@@ -95,16 +85,6 @@ public class DetailCardListAdapter extends RecyclerView.Adapter<DetailCardListAd
     @Override
     public int getItemCount() {
         return list.size();
-    }
-
-    public void sendBasket(int position) {
-        list.remove(position);
-        notifyItemRemoved(position);
-    }
-
-    public void restoreItem(MyProductListVO productListVO, int position) {
-        list.add(position, productListVO);
-        notifyItemInserted(position);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

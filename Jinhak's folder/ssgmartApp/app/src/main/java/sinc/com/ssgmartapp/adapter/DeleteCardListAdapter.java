@@ -26,10 +26,11 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
     private Context context;
     private List<MyProductListVO> list;
     private String user_Id;
-    public DeleteCardListAdapter(Context context, List<MyProductListVO> list,String user_Id) {
+
+    public DeleteCardListAdapter(Context context, List<MyProductListVO> list, String user_Id) {
         this.context = context;
         this.list = list;
-        this.user_Id=user_Id;
+        this.user_Id = user_Id;
     }
 
     @NonNull
@@ -55,13 +56,6 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
         holder.picker.setMaxValue(Integer.parseInt(String.valueOf(Math.round(productListVO.getStock()))));
         holder.picker.setValue(productListVO.getCnt());
 
-//        String data = productListVO.getImage();
-//        byte[] bytePlainOrg = Base64.decode(data, 0);
-//        //byte[] 데이터 stream 데이터로 변환 후 bitmapFactory로 이미지 생성
-//        ByteArrayInputStream inStream = new ByteArrayInputStream(bytePlainOrg);
-//        Bitmap bm = BitmapFactory.decodeStream(inStream);
-//        holder.thumbnail.setImageBitmap(bm);
-
         Picasso.with(context)
                 .load(productListVO.getImage())
                 .into(holder.thumbnail);
@@ -71,12 +65,15 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
         double normal = productListVO.getPrice();
         double discount = productListVO.getDiscountPrice();
 
-        if(normal==discount){
+        if (normal == discount) {
             holder.discountTxt.setText("정상가");
             holder.discountTxt.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
             holder.discountPrice.setTextColor(context.getResources().getColor(R.color.welcome_up_background));
-        }else{
+        } else {
             holder.discountTxt.setText("할인가");
+            holder.discountTxt.setTextColor(context.getResources().getColor(R.color.colorAccent));
+            holder.discountPrice.setTextColor(context.getResources().getColor(R.color.colorAccent));
+
         }
 
         productListVO.setUser_Id(user_Id);
@@ -87,9 +84,6 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
             }
         });
 
-/*        Picasso.with(context)
-                .load(productListVO.getImage())
-                .into(holder.thumbnail);*/
     }
 
     @Override
@@ -109,10 +103,11 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, normalPrice, discountPrice, stock, valid,discountTxt;
+        TextView name, normalPrice, discountPrice, stock, valid, discountTxt;
         public ImageView thumbnail;
         public RelativeLayout viewBackground, viewForeground;
-        public NumberPicker picker;
+        NumberPicker picker;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
@@ -128,7 +123,6 @@ public class DeleteCardListAdapter extends RecyclerView.Adapter<DeleteCardListAd
             discountTxt = itemView.findViewById(R.id.discountPrice_txt);
 
             picker.setWrapSelectorWheel(true);
-
 
 
         }

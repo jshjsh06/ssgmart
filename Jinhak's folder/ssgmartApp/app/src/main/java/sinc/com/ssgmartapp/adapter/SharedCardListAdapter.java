@@ -75,8 +75,8 @@ public class SharedCardListAdapter extends RecyclerView.Adapter<SharedCardListAd
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView userName, totalPrice, arrivalTime, validity, stock, storeName;
-        public ImageView userImg;
+        TextView userName, totalPrice, arrivalTime, validity, stock, storeName;
+        ImageView userImg;
         public RelativeLayout viewBackground, viewForeground;
 
         public MyViewHolder(@NonNull View itemView) {

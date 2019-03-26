@@ -19,9 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,12 +60,15 @@ import sinc.com.ssgmartapp.remote.RequestService;
  * 장바구니 Fragment
  */
 public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener, MyFragmentRefreshCallBack {
+
+
     View mFragmentView;
 
     private RecyclerView recyclerView;
     private List<SharedProductVO> list;
     private SharedCardListAdapter adapter;
     RequestService mService;
+
     private int delete_index;
     private SharedProductVO delete_item;
     private List<MyProductListVO> detail_list;
@@ -81,6 +82,12 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
     LayoutInflater inflate;
 
     public static MyFragmentRefreshCallBack myFragmentRefreshCallBack;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -334,7 +341,7 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
                 .enqueue(new Callback<Integer>() {
                     @Override
                     public void onResponse(Call<Integer> call, Response<Integer> response) {
-                        Log.d("response",String.valueOf(response.body()));
+                        Log.d("response", String.valueOf(response.body()));
                         addSharedItemByMyId(getUserEmail());
                         adapter.notifyDataSetChanged();
                     }
@@ -492,11 +499,16 @@ public class SharedBasketSSG_Fragment extends Fragment implements RecyclerItemTo
      */
     @Override
     public void myFragmentRefresh() {
-        addSharedItemByMyId(getUserEmail());
 
-        Snackbar snackbar = Snackbar.make(mFragmentView, "장바구니가 도착했어요!!", Snackbar.LENGTH_SHORT);
+        addSharedItemByMyId(getUserEmail());
+        Snackbar snackbar = Snackbar.make(mFragmentView, "공유 장바구니가 도착했어요!", Snackbar.LENGTH_SHORT);
         snackbar.setActionTextColor(Color.YELLOW);
         snackbar.show();
+    }
+
+    @Override
+    public void snakBar() {
+
     }
 
 

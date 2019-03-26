@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -25,6 +24,8 @@ import sinc.com.ssgmartapp.fragment.BasketSSG_Fragment;
 import sinc.com.ssgmartapp.fragment.BuySSG_Fragment;
 import sinc.com.ssgmartapp.fragment.SharedBasketSSG_Fragment;
 
+import static sinc.com.ssgmartapp.MainActivity.currentFragment;
+
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     /**
@@ -32,6 +33,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
      */
+
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -43,14 +46,19 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Map<String, String> data = remoteMessage.getData();
 
         String check1 = "장바구니에 담겨있던 상품이 팔렸어요..!";
-        if(notification.getBody().equals(check1)){
+
+        if (notification.getBody().equals(check1)) {
             sendNotification(notification, data);
             BasketSSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
             BuySSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
-
-        }else{
+        } else {
             sendNotification(notification, data);
-            SharedBasketSSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
+            if (currentFragment == 0) {
+                BuySSG_Fragment.myFragmentRefreshCallBack.snakBar();
+
+            } else {
+                SharedBasketSSG_Fragment.myFragmentRefreshCallBack.myFragmentRefresh();
+            }
         }
 
     }
@@ -59,7 +67,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * Create and show a custom notification containing the received FCM message.
      *
      * @param notification FCM notification payload received.
-     * @param data FCM data payload received.
+     * @param data         FCM data payload received.
      */
     private void sendNotification(RemoteMessage.Notification notification, Map<String, String> data) {
         Bitmap icon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher_new);
