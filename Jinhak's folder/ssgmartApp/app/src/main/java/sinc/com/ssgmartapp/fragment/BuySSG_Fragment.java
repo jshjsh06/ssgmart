@@ -52,12 +52,11 @@ import sinc.com.ssgmartapp.remote.RequestService;
 /**
  * 올때 쓱 Fragment
  */
-public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener,MyFragmentRefreshCallBack {
+public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelperListener, ValueEventListener, MyFragmentRefreshCallBack {
 
     View mFragmentView;
 
     private List<ProductListVO> realList;
-
 
 
     private RecyclerView recyclerView;
@@ -189,7 +188,7 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
 
 
             insertItem(addItem);
-            adapter.restoreItem(addItem,addIndex);
+            adapter.restoreItem(addItem, addIndex);
 
 
             adapter.notifyDataSetChanged();
@@ -241,7 +240,14 @@ public class BuySSG_Fragment extends Fragment implements RecyclerItemTouchHelper
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                addItemToCart(emartName);
+                String[] str = getResources().getStringArray(R.array.category);
+                Log.d("Selection", str[categorySpinner.getSelectedItemPosition()]);
+
+                String selectStr = str[categorySpinner.getSelectedItemPosition()];
+
+                if (selectStr.equals(str[0])) addItemToCart(emartName);
+                else addItemToCartByCategory(emartName, selectStr);
+
                 adapter.notifyDataSetChanged();
                 swipeLayout.setRefreshing(false);
             }
